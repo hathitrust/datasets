@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+gem 'rpairtree', :require => 'pairtree'
+gem 'threach'
+gem 'sequel'
+gem 'mysql2'
+#gem 'jruby_threach'
+gem 'rubyzip', :require => 'zip'
+gem 'byebug'
+gem 'pry'
