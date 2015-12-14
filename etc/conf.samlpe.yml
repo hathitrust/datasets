@@ -1,0 +1,6 @@
+---
+database:
+  host: mysql-sdr
+  database: ht
+  user: USER
+  password: PASSWORD
