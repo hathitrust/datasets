@@ -13,8 +13,10 @@ def email(set_name,recipient,data)
   cnt = data.size
   (cnt < 1) and return
 
-  subject = "Delete notifications for #{set_name} dataset"
-  body = <<DOC
+  message = <<DOC
+From: HathiTrust <feedback@issues.hathitrust.org>
+To: #{recipient}
+Subject: Delete notifications for #{set_name} dataset
 Dear HathiTrust dataset recipient,
 
 What follows is a list of HathiTrust volumes formerly in the \"#{set_name}\" dataset that no longer meet the criteria for inclusion. In accordance with our terms of use, please delete all copies you retain of these volumes and reply to this email to confirm these volumes have been deleted.
@@ -28,12 +30,13 @@ HathiTrust
 ===BEGIN ID LIST===
 DOC
   data.each do |item|
-    body+="#{item[:namespace]}.#{item.[:id]}\n"
+    message+="#{item[:namespace]}.#{item[:id]}\n"
   end
-  body+="\n\n===END ID LIST===\n"
+  message+="\n\n===END ID LIST===\n"
 
-  ### send message here ###
-
+  Net::SMTP.start('localhost') do |smtp|  
+    smtp.send_message message, 'feedback@issues.hathitrust.org', recipient    
+  end
 end
 
 # ht_text = deletes.where(:in_copyright => true)
