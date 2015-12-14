@@ -27,7 +27,7 @@ if(ARGV.size > 0)
   end
 end
 
-puts "auditing datase at #{dataset_path} starting from #{audit_path}"
+puts "auditing dataset at #{dataset_path} starting from #{audit_path}"
 
 Open3.pipeline_r("find #{audit_path} -follow -type f -name '*.zip'") {|o, ts|
   o.each do |line|

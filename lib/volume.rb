@@ -158,7 +158,7 @@ class Volume
     date = File.mtime(self.zip(dataset_path))
 
     # record state to db
-    HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:zip_date=>date,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access)
+    HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:zip_date=>date,:pd_us=>pd_us_flag,:pd_world=>pd_world_flag,:open_access=>open_access_flag)
   end
 
   def delete
