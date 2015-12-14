@@ -75,7 +75,7 @@ class Volume
     pd_world and open_access and self._link("#{dataset_path}_pd_world_open_access")
   
     # write to database
-    HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access})
+    HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access)
   end
 
   # watch out for "quote" naming bug
@@ -129,23 +129,24 @@ class Volume
     pd_world             = File.file?(self.zip("#{dataset_path}_pd_world"))
     pd_world_open_access = File.file?(self.zip("#{dataset_path}_pd_world_open_access"))
 
-    pd_us       = false
-    pd_world    = false
-    open_access = false
-    
+    pd_us_flag       = false
+    pd_world_flag    = false
+    open_access_flag = false
+  
     # convert list of symlinks to valid db state
-    if(pd and pd_open_access and pd_world and pd_open_access)
+    if(pd and pd_open_access and pd_world and pd_world_open_access)
       # pd_us, pd_world, open_access
-      pd_us = pd_world = open_access = true
-    elsif(!pd and !pd_open_access and !pd_world and !pd_open_access)
+      pd_us_flag = pd_world_flag = open_access_flag = true
+    elsif(!pd and !pd_open_access and !pd_world and !pd_world_open_access)
       # ic only
-    elsif(pd and !pd_open_access and pd_world and !pd_open_access)
+      pd_us_flag = pd_world_flag = open_access_flag = false
+    elsif(pd and !pd_open_access and pd_world and !pd_world_open_access)
       # pd_us, pd_world
-      pd_us = pd_world = true
-    elsif(pd and pd_open_access and !pd_world and !pd_open_access)
+      pd_us_flag = pd_world_flag = true
+    elsif(pd and pd_open_access and !pd_world and !pd_world_open_access)
       # pd_us, open_access
-      pd_us = open_access = true
-    elsif(pd and !pd_open_access and !pd_world and !pd_open_access)
+      pd_us_flag = open_access_flag = true
+    elsif(pd and !pd_open_access and !pd_world and !pd_world_open_access)
       # pd_us
       pd_us = true
     else
@@ -157,7 +158,7 @@ class Volume
     date = File.mtime(self.zip(dataset_path))
 
     # record state to db
-    HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:zip_date=>date,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access})
+    HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:zip_date=>date,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access)
   end
 
   def delete

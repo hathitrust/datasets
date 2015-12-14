@@ -7,6 +7,7 @@
 # end
 require 'open3'
 require_relative '../lib/config.rb'
+require_relative '../lib/volume.rb'
 
 dataset_path = HTConfig.config['dataset_path']
 audit_path = dataset_path
@@ -28,7 +29,7 @@ end
 
 puts "auditing datase at #{dataset_path} starting from #{audit_path}"
 
-Open3.pipeline_r("find #{dataset_path} -follow -type f -name '*.zip'") {|o, ts|
+Open3.pipeline_r("find #{audit_path} -follow -type f -name '*.zip'") {|o, ts|
   o.each do |line|
     volume = Volume.newFromPath(line)
     volume.restore_db_entry
