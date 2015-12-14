@@ -1,2 +1,4 @@
 .DS_Store
 conf.yml
+Gemfile.lock
+.bundle
