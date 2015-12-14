@@ -55,29 +55,79 @@ class Volume
     self.nsid
   end
 
-  def link(permissions)
-    # get subset flags
-  
-    # get subset list
+  def link
+    # determine flags
+    pd_us = true
+    pd_world = false
+    open_access = false
+    if (@rights[:attr] != 9)
+      pd_world = true
+    end
+    if (@rights[:access_profile] = 1)
+      open_access = true
+    end
   
     # link appropriately
-    # watch out for "quote" naming bug
+    dataset_path = HTConfig.config['dataset_path']
+    self._link("#{dataset_path}_pd")
+    open_access              and self._link("#{dataset_path}_pd_open_access")
+    pd_world                 and self._link("#{dataset_path}_pd_world")
+    pd_world and open_access and self._link("#{dataset_path}_pd_world_open_access")
   
     # write to database
-  
+    HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access})
+  end
+
+  # watch out for "quote" naming bug
+  def _link(link_tree)
+    link = self.path(link_tree)
+    unless(File.symlink?(link))
+      parent_dir = Pathname.new(link).parent
+      unless File.directory?(parent_dir)
+        FileUtils.mkdir_p(parent_dir)
+      end
+      FileUtils.ln_s vol.path(data_tree), link
+    end
   end
 
   def ingest
-    # 
+    tree = HTConfig.config['dataset_path']
+    # check for zip
+    unless(File.exist?(self.zip))
+      HTDB.warn(:volume=>self,:stage=>'Dataset::Extract',message=>'no zip')
+      return
+    end
+    # get zip date
+    date = File.mtime(self.zip)
+    txt_size = `unzip -l '#{self.zip}' *.txt | tail -1`.scan(/\d+/)[0].to_i
+    unless(txt_size > 0)
+      HTDB.info(:volume=>self,:stage=>'Dataset::Extract',message=>'no text',detail=>"no text")
+      return
+    end
+    # ensure link dir
+    dir = self.path(tree)
+    File.directory?(dir) or FileUtils.mkdir_p(dir)
+    # link mets
+    mets = self.mets(tree)
+    File.symlink?(mets) or FileUtils.ln_s(self.mets,mets)
+
+    zip = self.zip(tree)
+    # purge zip if present
+    FileUtils.rm_f zip
+    # place new zip
+    system "cd /ram/dataset; unzip '#{self.zip}' *.txt > /dev/null; zip '#{zip}' '#{self.ptid}'/* > /dev/null; rm -rf '#{self.ptid}'"
+
+    # record action in datasase
+    HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:date=>date)
   end
 
   def restore_db_entry
-    dataset_path = HTConfig.config['dataset']['dataset_path']
+    dataset_path = HTConfig.config['dataset_path']
     # look for symlinks
-    pd                   = File.file?(self.zip("#{dataset_path}_ht_text_pd"))
-    pd_open_access       = File.file?(self.zip("#{dataset_path}_ht_text_pd_open_access"))
-    pd_world             = File.file?(self.zip("#{dataset_path}_ht_text_pd_world"))
-    pd_world_open_access = File.file?(self.zip("#{dataset_path}_ht_text_pd_world_open_access"))
+    pd                   = File.file?(self.zip("#{dataset_path}_pd"))
+    pd_open_access       = File.file?(self.zip("#{dataset_path}_pd_open_access"))
+    pd_world             = File.file?(self.zip("#{dataset_path}_pd_world"))
+    pd_world_open_access = File.file?(self.zip("#{dataset_path}_pd_world_open_access"))
 
     pd_us       = false
     pd_world    = false
@@ -107,15 +157,7 @@ class Volume
     date = File.mtime(self.zip(dataset_path))
 
     # record state to db
-    HTDB.get()[:dataset_tracking].insert(:namespace=>self.namespace,:id=>self.id,:date=>date,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access})  
-  end
-
-  def self.subset_flags(rights)
-  end
-
-  def self.subsets_to_link(flags)
-    # convert flags to subset list
-  
+    HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:date=>date,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access})
   end
 end
 
