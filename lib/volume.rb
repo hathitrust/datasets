@@ -24,6 +24,16 @@ class Volume
     return self.new(namespace,id)
   end
 
+  # create volume from a napspace id pair in a string
+  # delimiter is expected to match "[\t\., ]+", so extra junk chars are tolerated
+  def self.newFromNSID(nsid)
+    nsid.strip!
+    m = /^(?<namespace>[a-z0-9]+)(?<delim>[\t\., ]+)(?<id>[^\s]+)$/.match(nsid)
+    namespace = m[:namespace]
+    id = m[:id]
+    return self.new(namespace,id)
+  end
+
   def nsid
     @namespace+'.'+@id
   end
@@ -124,10 +134,14 @@ class Volume
   def restore_db_entry
     dataset_path = HTConfig.config['dataset_path']
     # look for symlinks
+    ic                   = File.file?(self.zip(dataset_path))
     pd                   = File.file?(self.zip("#{dataset_path}_pd"))
     pd_open_access       = File.file?(self.zip("#{dataset_path}_pd_open_access"))
     pd_world             = File.file?(self.zip("#{dataset_path}_pd_world"))
     pd_world_open_access = File.file?(self.zip("#{dataset_path}_pd_world_open_access"))
+
+    # stop if ic item is not found
+    ic or return
 
     pd_us_flag       = false
     pd_world_flag    = false
@@ -148,7 +162,7 @@ class Volume
       pd_us_flag = open_access_flag = true
     elsif(pd and !pd_open_access and !pd_world and !pd_world_open_access)
       # pd_us
-      pd_us = true
+      pd_us_flag = true
     else
       # invalid state, default to ic only and issue warning
       HTDB.warn(volume=>self,message=>"invalid link state",detail=>"pd = #{pd}, pd_open_access = #{pd_open_access}, pd_world = #{pd_world}, pd_world_open_access = #{pd_world_open_access}",stage=>"Dataset::RestoreDB")

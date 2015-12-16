@@ -2,6 +2,7 @@
 # notify.rb [--only-urgent] [--dry-run]
 # send notifications to users about recent deletes
 
+require 'net/smtp'
 require_relative './database.rb'
 
 only_urgent = false
@@ -17,6 +18,8 @@ def email(set_name,recipient,data)
 From: HathiTrust <feedback@issues.hathitrust.org>
 To: #{recipient}
 Subject: Delete notifications for #{set_name} dataset
+
+
 Dear HathiTrust dataset recipient,
 
 What follows is a list of HathiTrust volumes formerly in the \"#{set_name}\" dataset that no longer meet the criteria for inclusion. In accordance with our terms of use, please delete all copies you retain of these volumes and reply to this email to confirm these volumes have been deleted.

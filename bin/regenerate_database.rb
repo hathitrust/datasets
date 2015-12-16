@@ -29,7 +29,7 @@ end
 
 puts "auditing dataset at #{dataset_path} starting from #{audit_path}"
 
-Open3.pipeline_r("find #{audit_path} -follow -type f -name '*.zip'") {|o, ts|
+Open3.pipeline_r("find '#{audit_path}' -follow -type f -name '*.zip'") {|o, ts|
   o.each do |line|
     volume = Volume.newFromPath(line)
     volume.restore_db_entry
