@@ -8,7 +8,8 @@ START_OF_TREE='obj'
 # top of subtree
 START_OF_BRANCHES='pairtree_root'
 # if the current path is a prefix of any of these strings, keep digging
-SPECIAL_BRANCHES=['obj/hvd/pairtree_root','obj/mdp/pairtree_root/39/01/50','obj/mdp/pairtree_root/39/07/60','obj/uc1/pairtree_root']
+### That is to say, add paths here that are large enough that we want to start out crawler beneath them ###
+SPECIAL_BRANCHES=['obj/hvd/pairtree_root','obj/mdp/pairtree_root/39/01/50','obj/mdp/pairtree_root/39/07/60','obj/uc1/pairtree_root/$b','obj/uc1/pairtree_root/b3']
 
 root=ARGV[0]
 root or abort "Can't run without root path"
@@ -34,7 +35,6 @@ def dig(dir,in_tree=false,in_branches=false,prefix=nil)
     prefix = (dir.dirname.to_s + '/')
   end
 
-  # eww, get your termination conditions straight
   if(in_branches && !special(prefix,dir))
     return dir.to_s
   end
@@ -44,8 +44,9 @@ def dig(dir,in_tree=false,in_branches=false,prefix=nil)
   d.each do |child|
     child.start_with?('.') and next
     child_pn = Pathname.new("#{dir.to_s}/#{child}")
-    child_pn.directory? or next
-    if(!in_branches || special(prefix,child_pn))
+    if(!child_pn.directory?)
+      leaves<<child_pn.to_s
+    elsif(!in_branches || special(prefix,child_pn))
       leaves<<dig(child_pn,in_tree,in_branches,prefix)
     else
       leaves<<child_pn.to_s

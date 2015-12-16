@@ -65,12 +65,33 @@ module HTDB
     self.get[:dataset_tracking].natural_left_join(:rights_current).where(:pd_world=>true,:attr=>9)
   end
 
-  def self.notifications(urgent_only=false)
+  def self.notifications(urgent_only: false)
     q = self.get[:dataset_deletes]
     if(urgent_only)
       q = q.where(:urgent=>true)
     end
     return q
+  end
+
+  def self.items(subset: nil)
+    q = self.get[:dataset_tracking]
+    return q unless(subset)
+    case subset
+    when 'ht_text_pd'
+      q = q.where(:pd_us=>true)
+    when 'ht_text_pd_open_access'
+      q = q.where(:pd_us=>true,:open_access=>true)
+    when 'ht_text_pd_world'
+      q = q.where(:pd_world=>true)
+    when 'ht_text_pd_world_open_access'
+      q = q.where(:pd_world=>true,:open_access=>true)
+    when 'ht_text'
+      # no nothing
+    else
+      raise "invalid subset: #{subset}"
+    end
+
+    q
   end
 
   def self.purge_notifications(urgent_only=false)
