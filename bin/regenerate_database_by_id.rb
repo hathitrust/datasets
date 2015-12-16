@@ -21,3 +21,5 @@ ARGF.each do |line|
     volume.restore_db_entry
   end  
 end
+
+worker_pool.shutdown

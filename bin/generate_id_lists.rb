@@ -6,7 +6,7 @@ require_relative '../lib/config.rb'
 
 dataset_path = HTConfig.config['dataset_path']
 
-def write_id_list(items,path)
+def write_id_list(path,items)
   open(path, mode='w') do |f|
     items.each do |item|
       f.puts "#{item[:namespace]}.#{item[:id]}"

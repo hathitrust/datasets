@@ -1,5 +1,5 @@
 # ingest.rb
-# add volumes listed on STDIN to the full dataset
+# add missing and outdated volumes to the full dataset
 
 require 'concurrent'
 require_relative './database.rb'

@@ -41,12 +41,12 @@ module HTDB
 
   # items in full set missing from one or more subsets
   def self.items_to_link
-    self.rights_volumes_pd.natural_left_join(:dataset_tracking).exclude(:zip_date=>nil).where('(pd_us IS NULL) OR (pd_world IS NULL and attr != 9) OR (open_access IS NULL and access_profile = 1)')
+    self.rights_volumes_pd.natural_left_join(:dataset_tracking).exclude(:zip_date=>nil).where('(pd_us IS FALSE) OR (pd_world IS FALSE and attr != 9) OR (open_access IS FALSE and access_profile = 1)')
   end
 
   # items out of date in full set
   def self.items_to_reingest
-    self.get[:feed_audit].join(:dataset_tracking, 'feed_audit.zip_date > dataset_tracking.zip_date')
+    self.get[:feed_audit].join(:dataset_tracking, 'feed_audit.namespace = dataset_tracking.namespace AND feed_audit.id = dataset_tracking.id AND feed_audit.zip_date > dataset_tracking.zip_date')
   end
 
   # items to remove from all sets (including full)

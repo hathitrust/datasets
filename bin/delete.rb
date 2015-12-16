@@ -1,5 +1,5 @@
-# ingest.rb
-# add volumes listed on STDIN to the full dataset
+# delete.rb
+# remove volumes from dataset based on rights criteria
 
 require 'concurrent'
 require_relative './database.rb'
