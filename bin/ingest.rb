@@ -2,8 +2,8 @@
 # add missing and outdated volumes to the full dataset
 
 require 'concurrent'
-require_relative './database.rb'
-require_relative './volume.rb'
+require_relative '../lib/database.rb'
+require_relative '../lib/volume.rb'
 
 worker_pool = Concurrent::ThreadPoolExecutor.new(
    min_threads: 50,
@@ -14,16 +14,16 @@ worker_pool = Concurrent::ThreadPoolExecutor.new(
 
 HTDB.items_to_ingest.select(:namespace,:id).each do |row|
   worker_pool.post do
-    volume = Volume.new(row[:nomespace],row[:id])
+    volume = Volume.new(row[:namespace],row[:id])
     volume.ingest
-  end  
+  end
 end
 
-HTDB.items_to_reingest.select(:namespace,:id).each do |row|
+HTDB.items_to_reingest.each do |row|
   worker_pool.post do
-    volume = Volume.new(row[:nomespace],row[:id])
+    volume = Volume.new(row[:namespace],row[:id])
     volume.ingest
-  end  
+  end
 end
 
 worker_pool.shutdown

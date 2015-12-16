@@ -14,28 +14,28 @@ worker_pool = Concurrent::ThreadPoolExecutor.new(
 
 HTDB.items_to_delete.select(:namespace,:id).each do |row|
   worker_pool.post do
-    volume = Volume.new(row[:nomespace],row[:id])
+    volume = Volume.new(row[:namespace],row[:id])
     volume.delete
   end  
 end
 
 HTDB.items_to_delink_from_all.select(:namespace,:id).each do |row|
   worker_pool.post do
-    volume = Volume.new(row[:nomespace],row[:id])
+    volume = Volume.new(row[:namespace],row[:id])
     volume.delink
   end  
 end
 
 HTDB.items_to_delink_from_open_access.select(:namespace,:id).each do |row|
   worker_pool.post do
-    volume = Volume.new(row[:nomespace],row[:id])
+    volume = Volume.new(row[:namespace],row[:id])
     volume.delink_open_access
   end  
 end
 
 HTDB.items_to_delink_from_world.select(:namespace,:id).each do |row|
   worker_pool.post do
-    volume = Volume.new(row[:nomespace],row[:id])
+    volume = Volume.new(row[:namespace],row[:id])
     volume.delink_pd_world
   end  
 end

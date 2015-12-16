@@ -73,30 +73,35 @@ class Volume
     if (@rights[:attr] != 9)
       pd_world = true
     end
-    if (@rights[:access_profile] = 1)
+    if (@rights[:access_profile] == 1)
       open_access = true
     end
   
     # link appropriately
     dataset_path = HTConfig.config['dataset_path']
-    self._link("#{dataset_path}_pd")
-    open_access              and self._link("#{dataset_path}_pd_open_access")
-    pd_world                 and self._link("#{dataset_path}_pd_world")
-    pd_world and open_access and self._link("#{dataset_path}_pd_world_open_access")
+    self._link(dataset_path,"#{dataset_path}_pd")
+    if(open_access)
+      self._link(dataset_path,"#{dataset_path}_pd_open_access")
+    end
+    if(pd_world)
+      self._link(dataset_path,"#{dataset_path}_pd_world")
+    end
+    if(pd_world && open_access)
+      self._link(dataset_path,"#{dataset_path}_pd_world_open_access")
+    end
   
     # write to database
-    HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access)
+    HTDB.get[:dataset_tracking].where(:namespace=>self.namespace,:id=>self.id).update(:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access)
   end
 
-  # watch out for "quote" naming bug
-  def _link(link_tree)
+  def _link(data_tree,link_tree)
     link = self.path(link_tree)
     unless(File.symlink?(link))
       parent_dir = Pathname.new(link).parent
       unless File.directory?(parent_dir)
         FileUtils.mkdir_p(parent_dir)
       end
-      FileUtils.ln_s vol.path(data_tree), link
+      FileUtils.ln_s self.path(data_tree), link
     end
   end
 

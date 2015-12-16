@@ -2,8 +2,8 @@
 # add volumes listed on STDIN to the full dataset
 
 require 'concurrent'
-require_relative './database.rb'
-require_relative './volume.rb'
+require_relative '../lib/database.rb'
+require_relative '../lib/volume.rb'
 
 worker_pool = Concurrent::ThreadPoolExecutor.new(
    min_threads: 50,
@@ -12,11 +12,14 @@ worker_pool = Concurrent::ThreadPoolExecutor.new(
    fallback_policy: :caller_runs
 )
 
+# require 'byebug'
+# byebug
+
 HTDB.items_to_link.select(:namespace,:id,:attr,:access_profile).each do |row|
   worker_pool.post do
-    volume = Volume.new(row[:nomespace],row[:id],{attr: row[:attr], access_profile: row[:access_profile]})
+    volume = Volume.new(row[:namespace],row[:id],rights: {attr: row[:attr], access_profile: row[:access_profile]})
     volume.link
-  end  
+  end
 end
 
 worker_pool.shutdown

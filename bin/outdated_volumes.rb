@@ -3,6 +3,6 @@
 
 require_relative '../lib/database.rb'
 
-HTDB.items_to_reingest.select(:namespace,:id).each do |hash|
+HTDB.items_to_reingest.each do |hash|
   puts "#{hash[:namespace]}\t#{hash[:id]}"
 end
