@@ -180,7 +180,12 @@ class Volume
     HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:zip_date=>date,:pd_us=>pd_us_flag,:pd_world=>pd_world_flag,:open_access=>open_access_flag)
   end
 
-  def delete
+  def txt_size
+    `unzip -l '#{self.zip}' *.txt | tail -1`.scan(/\d+/)[0].to_i
+  end
+
+  # args are the current state of the dataset_tacking entry
+  def delete(pd_us,pd_world,open_access)
     # remove from full set and all subsets
     dataset_path = HTConfig.config['dataset_path']
     bases=[dataset_path,"#{dataset_path}_pd","#{dataset_path}_pd_open_access","#{dataset_path}_pd_world","#{dataset_path}_pd_world_open_access"]
@@ -188,11 +193,11 @@ class Volume
       FileUtils.rmtree(self.path(base))
     end
     # record
-    HTDB.get[:dataset_deletes].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:in_copyright=>1,:pd_us=>1,:pd_world=>1,:open_access=>1)
+    HTDB.get[:dataset_deletes].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:in_copyright=>true,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access,:world_open_access=>(open_access&&pd_world))
     HTDB.get[:dataset_tracking].where(:namespace=>self.namespace,:id=>self.id).delete
   end
 
-  def delink
+  def delink(pd_us,pd_world,open_access)
     # remove from all subsets 
     dataset_path = HTConfig.config['dataset_path']
     bases=["#{dataset_path}_pd","#{dataset_path}_pd_open_access","#{dataset_path}_pd_world","#{dataset_path}_pd_world_open_access"]
@@ -200,11 +205,11 @@ class Volume
       FileUtils.rmtree(self.path(base))
     end
     # record
-    HTDB.get[:dataset_deletes].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:pd_us=>1,:pd_world=>1,:open_access=>1)
-    HTDB.get[:dataset_tracking].where(:namespace=>self.namespace,:id=>self.id).update(:pd_us=>0,:pd_world=>0,:open_access=>0)
+    HTDB.get[:dataset_deletes].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:pd_us=>pd_us,:pd_world=>pd_world,:open_access=>open_access,:world_open_access=>(open_access&&pd_world))
+    HTDB.get[:dataset_tracking].where(:namespace=>self.namespace,:id=>self.id).update(:pd_us=>false,:pd_world=>false,:open_access=>false)
   end
 
-  def delink_open_access
+  def delink_open_access(pd_us,pd_world,open_access)
     # delete from OPEN_ACCESS subsets
     dataset_path = HTConfig.config['dataset_path']
     bases=["#{dataset_path}_pd_open_access","#{dataset_path}_pd_world_open_access"]
@@ -212,11 +217,11 @@ class Volume
       FileUtils.rmtree(self.path(base))
     end
     # record
-    HTDB.get[:dataset_deletes].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:open_access=>1)
-    HTDB.get[:dataset_tracking].where(:namespace=>self.namespace,:id=>self.id).update(:open_access=>0)
+    HTDB.get[:dataset_deletes].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:open_access=>open_access,:world_open_access=>(open_access&&pd_world))
+    HTDB.get[:dataset_tracking].where(:namespace=>self.namespace,:id=>self.id).update(:open_access=>false)
   end
 
-  def delink_pd_world
+  def delink_pd_world(pd_us,pd_world,open_access)
     # delete from PD_WORLD subsets
     dataset_path = HTConfig.config['dataset_path']
     bases=["#{dataset_path}_pd_world","#{dataset_path}_pd_world_open_access"]
@@ -224,8 +229,8 @@ class Volume
       FileUtils.rmtree(self.path(base))
     end    
     # record
-    HTDB.get[:dataset_deletes].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:pd_world=>1)
-    HTDB.get[:dataset_tracking].where(:namespace=>self.namespace,:id=>self.id).update(:pd_world=>0)
+    HTDB.get[:dataset_deletes].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:pd_world=>pd_world,:world_open_access=>(open_access&&pd_world))
+    HTDB.get[:dataset_tracking].where(:namespace=>self.namespace,:id=>self.id).update(:pd_world=>false)
   end
 
 end
