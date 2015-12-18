@@ -1,18 +1,17 @@
 # notify.rb
-# notify.rb [--only-urgent] [--dry-run]
+# notify.rb [--urgent-only] [--dry-run]
 # send notifications to users about recent deletes
 
 require 'net/smtp'
-require_relative './database.rb'
+require_relative '../lib/database.rb'
 
-only_urgent = false
+urgent_only = false
 dry_run = false
 
-deletes = HTDB.notifications(only_urgent).select(:namespace,:id)
+deletes = HTDB.notifications(urgent_only: urgent_only).select(:namespace,:id)
 
 def email(set_name,recipient,data)
-  cnt = data.size
-  (cnt < 1) and return
+  (data.count < 1) and return
 
   message = <<DOC
 From: HathiTrust <feedback@issues.hathitrust.org>
