@@ -1,5 +1,7 @@
-require 'sequel'
-DB = Sequel.connect(:adapter => 'mysql2', :database=>'ht', :user => 'rrotter', :password => 'somthingness1', :host => 'mysql-sdr')
+# usage: bundle exec hathi_file.rb <file_to_load>
+
+require_relative '../lib/database.rb'
+DB=HTDB.get
 
 headings = [:namespace,:id,:rec,:pubdate,:lang,:gov]
 rows = []
@@ -15,11 +17,4 @@ ARGF.each do |line|
     rows = []
   end
 end
-
-__END__
-
-    my $htid = $fields[0];
-    my ($namespace,$id) = split(/\./,$htid,2);
-    my $pubdate = $fields[16];
-    my $lang008 = $fields[18];
 

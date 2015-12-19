@@ -2,3 +2,6 @@
 conf.yml
 Gemfile.lock
 .bundle
+.byebug_history
+var
+vendor
