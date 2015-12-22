@@ -36,12 +36,3 @@ puts ""
 puts "Items to ingest (estimate, always high): #{sprintf('%7d',HTDB.items_to_ingest.count)}"
 puts "Items to reingest:                       #{sprintf('%7d',HTDB.items_to_reingest.count)}"
 puts "Items to link:                           #{sprintf('%7d',HTDB.items_to_link.count)}"
-if(DEBUG)
-  puts ""
-  puts "Filesystem:"
-  puts dataset_path
-  puts "#{dataset_path}_pd"
-  puts "#{dataset_path}_pd_open_access"
-  puts "#{dataset_path}_pd_world"
-  puts "#{dataset_path}_pd_world_open_access"
-end
