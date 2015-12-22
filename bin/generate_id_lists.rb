@@ -1,3 +1,13 @@
+#!/bin/bash
+
+=begin >/dev/null 2>&1
+source "$(dirname $0)/../lib/ruby.sh"
+require '2.2'
+ruby.sh
+=end
+
+#!ruby
+
 # generate_id_lists.rb
 # generate id list for each subset
 

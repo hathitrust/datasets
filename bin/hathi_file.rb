@@ -1,4 +1,14 @@
-# usage: bundle exec hathi_file.rb <file_to_load>
+#!/bin/bash
+
+=begin >/dev/null 2>&1
+source "$(dirname $0)/../lib/ruby.sh"
+require '2.2'
+ruby.sh $@
+=end
+
+#!ruby
+
+# usage: hathi_file.rb <file_to_load>
 
 require_relative '../lib/database.rb'
 DB=HTDB.get
@@ -17,4 +27,3 @@ ARGF.each do |line|
     rows = []
   end
 end
-

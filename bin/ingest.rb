@@ -1,3 +1,13 @@
+#!/bin/bash
+
+=begin >/dev/null 2>&1
+source "$(dirname $0)/../lib/ruby.sh"
+require 'jruby-9.0'
+ruby.sh
+=end
+
+#!ruby
+
 # ingest.rb
 # add missing and outdated volumes to the full dataset
 

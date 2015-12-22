@@ -1,3 +1,13 @@
+#!/bin/bash
+
+=begin >/dev/null 2>&1
+source "$(dirname $0)/../lib/ruby.sh"
+require '2.2'
+ruby.sh
+=end
+
+#!ruby
+
 # notify.rb
 # notify.rb [--urgent-only] [--dry-run]
 # send notifications to users about recent deletes
