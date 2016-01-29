@@ -1,6 +1,8 @@
 require_relative './config.rb'
 require 'sequel'
 
+PD_RIGHTS_ATTRS = [1,7,9,10,11,12,13,14,15,17,18,20,21,22,23,24,25]
+
 module HTDB
 
   def self.get
@@ -31,7 +33,7 @@ module HTDB
   end
 
   def self.rights_volumes_pd
-    self.rights_volumes_all.filter(:attr=>[1,7,9,10,11,12,13,14,15,17,20,21,22,23,24,25])
+    self.rights_volumes_all.filter(:attr=>PD_RIGHTS_ATTRS)
   end
 
   # items missing from full set
@@ -56,7 +58,7 @@ module HTDB
 
   # items in one or more subsets where they don't belong
   def self.items_to_delink_from_all
-    self.get[:dataset_tracking].natural_left_join(:rights_current).where(:pd_us=>true).exclude(:attr=>[1,7,9,10,11,12,13,14,15,17,20,21,22,23,24,25],:access_profile=>[1,2])
+    self.get[:dataset_tracking].natural_left_join(:rights_current).where(:pd_us=>true).exclude(:attr=>PD_RIGHTS_ATTRS,:access_profile=>[1,2])
   end
   def self.items_to_delink_from_open_access
     self.get[:dataset_tracking].natural_left_join(:rights_current).where(:open_access=>true,:access_profile=>2)
