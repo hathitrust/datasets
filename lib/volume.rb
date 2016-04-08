@@ -136,6 +136,13 @@ class Volume
     HTDB.get[:dataset_tracking].on_duplicate_key_update.insert(:namespace=>self.namespace,:id=>self.id,:zip_date=>date)
   end
 
+  # reset zip date to the distant past to force a reingest
+  # returns the number of affected rows (should be zero or one)
+  def reset_zip_date
+    date = '1999-09-09 01:01:01'
+    HTDB.get[:dataset_tracking].where(:namespace=>self.namespace,:id=>self.id).update(:zip_date=>date)
+  end
+
   def restore_db_entry
     dataset_path = HTConfig.config['dataset_path']
     # look for symlinks
