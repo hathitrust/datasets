@@ -9,11 +9,35 @@ ruby.sh
 #!ruby
 
 # info.rb
-# print some information about current datasets
+# print information about datasets
+
+# usage
+# info.rb # get dataset info dump
+# info.rb ns.id # get info about a volume
 
 require_relative '../lib/config.rb'
 require_relative '../lib/database.rb'
+require_relative '../lib/volume.rb'
 dataset_path = HTConfig.config['dataset_path']
+
+if(ARGV.size > 0)
+  if(ARGV.size == 1)
+    nsid = ARGV[0]
+    vol = Volume.newFromNSID(nsid)
+    puts "Volume: #{vol.nsid}"
+    puts "dataset_tracking: #{HTDB.get[:dataset_tracking].where(:namespace=>vol.namespace,:id=>vol.id).all}"
+    puts "rights: #{HTDB.get[:rights_current].where(:namespace=>vol.namespace,:id=>vol.id).all}"
+    puts "filesystem:"
+    puts "  mets_path: #{vol.mets}"
+    puts "  mets_stat: #{File::Stat.new(vol.mets).inspect}"
+    puts "  zip_path:  #{vol.zip}"
+    puts "  zip_stat:  #{File::Stat.new(vol.zip).inspect}"
+  else
+    abort "Too many args"
+  end
+
+  exit 0
+end
 
 puts "Total items in datasets: #{HTDB.items.count}"
 puts ""

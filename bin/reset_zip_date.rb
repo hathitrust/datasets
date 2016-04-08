@@ -2,6 +2,7 @@
 # reads id list from ARGF (stdin/named file), tries to set datestamp in dataset_tracking table
 # to an implausible date in the past. This will force re-ingest on the next update.
 
+require 'concurrent'
 require_relative '../lib/volume.rb'
 
 worker_pool = Concurrent::ThreadPoolExecutor.new(

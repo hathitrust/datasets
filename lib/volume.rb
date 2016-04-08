@@ -27,7 +27,7 @@ class Volume
   # create volume from a napspace id pair in a string
   # delimiter is expected to match "[\t\., ]+", so extra junk chars are tolerated
   def self.newFromNSID(nsid)
-    nsid.strip!
+    nsid = nsid.strip
     m = /^(?<namespace>[a-z0-9]+)(?<delim>[\t\., ]+)(?<id>[^\s]+)$/.match(nsid)
     namespace = m[:namespace]
     id = m[:id]
