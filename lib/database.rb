@@ -94,8 +94,8 @@ module HTDB
     q
   end
 
-  def self.purge_notifications(urgent_only=false)
-    self.notifications(urgent_only).delete
+  def self.purge_notifications(urgent_only: false)
+    self.notifications(urgent_only: urgent_only).delete
   end
 
   def self.info(namespace: nil,id: nil,volume: nil,message: nil,detail: nil,stage: nil)
