@@ -15,6 +15,12 @@ require 'concurrent'
 require_relative '../lib/database.rb'
 require_relative '../lib/volume.rb'
 
+# ensure presence of scratch space
+scratch = '/ram/dataset'
+File.directory?(scratch) or FileUtils.mkdir_p(scratch)
+File.directory?(scratch) or abort("Cannot create scratch directory #{stratch}")
+File.writable?(scratch)  or abort("Cannot write to scratch directory #{stratch}")
+
 worker_pool = Concurrent::ThreadPoolExecutor.new(
    min_threads: 50,
    max_threads: 50,
