@@ -13,7 +13,7 @@ function require {
     	export JAVA_HOME=`/usr/libexec/java_home`
     else
     	# Debian and EL
-    	export JAVA_HOME=`find /usr/lib/jvm -maxdepth 1 -mindepth 1 -type d | sort -r | head -1`
+    	export JAVA_HOME=`find /usr/lib/jvm -maxdepth 1 -mindepth 1 -type d | sort -Vr | head -1`
     fi
     export PATH="${JAVA_HOME}/bin:$PATH"    
   fi
