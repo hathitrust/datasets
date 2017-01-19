@@ -2,7 +2,7 @@
 
 =begin >/dev/null 2>&1
 source "$(dirname $0)/../lib/ruby.sh"
-require 'jruby-9.0'
+require 'jruby-9.1'
 ruby.sh
 =end
 
