@@ -1,7 +1,0 @@
----
-database:
-  host: mysql-sdr
-  database: ht
-  user: USER
-  password: PASSWORD
-dataset_path: /htprep/datasets/ht_text
