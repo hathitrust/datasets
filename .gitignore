@@ -5,3 +5,4 @@ Gemfile.lock
 .byebug_history
 var
 vendor
+.idea
