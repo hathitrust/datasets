@@ -9,6 +9,12 @@ class Filter
   # @return [Array<Volume>]
   def filter(volumes); end
 
+  # Filter out volumes that *do* meet this filter's
+  # critera.
+  # @param [Array<Volume>] volumes
+  # @return [Array<Volume>]
+  def inverse_filter(volumes); end
+
   # Check if a single volume is in the set described by
   # this filter.
   # @param [Volume] volume
