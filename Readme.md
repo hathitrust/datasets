@@ -24,18 +24,18 @@ ls -l /datasets/ht_text_pd_world/obj/exp/pairtree_root/11/22/33/44/55/66/77
 ```
 
 ## Operation
-### Queue Check
+1. ### Queue Check
 Prior to beginning a new run, the queue of jobs must be empty.  In order to be empty, each job must have completed successfully.  Failed jobs are re-queued.  This is done to prevent race conditions with multiple changes to the same volume.
 
-### Get Changes
+1. ### Get Changes
 There are two kinds of changes to the HathiTrust volumes that the research datasets need to incorporate:
-- *Rights*: Updates to the copyright determination or access rights.  Queried from the aptly named, rights table.
-- *Content*: Updates to the OCR text.  Queried from the re-ingest feed table.
+    - *Rights*: Updates to the copyright determination or access rights.  Queried from the aptly named, rights table.
+    - *Content*: Updates to the OCR text.  Queried from the re-ingest feed table.
 
-### Filter Changes
+1. ### Filter Changes
 The list of changes is filtered into queues.  There is a queue for each subset and a queue for the content changes.
 
-### Schedule Jobs
+1. ### Schedule Jobs
 For each volume in a queue, a job is scheduled to apply the changes to the filesystem.
 
 ## Use
