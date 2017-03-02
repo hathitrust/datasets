@@ -1,5 +1,3 @@
-require "volume"
-
 # Filters volumes based on criteria.
 class Filter
 

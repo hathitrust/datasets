@@ -1,9 +1,3 @@
-require "filesystem"
-require "path_resolver"
-require "volume"
-require "volume_writer"
-require "pathname"
-
 # Writes and deletes symlinks within the subsets
 # to the superset.
 class VolumeLinker

@@ -1,9 +1,4 @@
-require "filesystem"
-require "path_resolver"
-require "volume"
 require "volume_writer"
-require "zip_writer"
-require "pathname"
 
 # Writes and deletes volumes within the superset.
 class VolumeCreator < VolumeWriter

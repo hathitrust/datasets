@@ -1,5 +1,4 @@
 require "path_resolver"
-require "volume"
 require "pairtree"
 require "pathname"
 

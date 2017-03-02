@@ -1,8 +1,3 @@
-require "volume_repo"
-require "path_resolver"
-require "volume_writer"
-require "filter"
-
 # Adds volumes to a dataset
 class AdderDeleter
 

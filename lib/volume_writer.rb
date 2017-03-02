@@ -1,7 +1,3 @@
-require "filesystem"
-require "volume"
-require "zip_writer"
-
 # Writes and deletes volumes within the superset.
 class VolumeWriter
 

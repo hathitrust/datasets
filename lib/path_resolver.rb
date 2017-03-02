@@ -1,6 +1,3 @@
-require "volume"
-require "pathname"
-
 # Interface for constructing filesystem paths from volumes.
 class PathResolver
 
