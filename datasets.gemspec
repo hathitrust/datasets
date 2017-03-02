@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "resque-retry"
   spec.add_runtime_dependency "resque-pool"
   spec.add_runtime_dependency "resque-scheduler"
-  spec.add_runtime_dependency "oj"
   spec.add_runtime_dependency "sequel"
   spec.add_runtime_dependency "rubyzip"
 

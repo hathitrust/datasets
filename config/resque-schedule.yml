@@ -1,0 +1,11 @@
+tests:
+  every:
+    - "60s"
+    - :first_in: "5s"
+  class: "TestJob"
+  queue: default
+  args:
+    - 111
+    - 222
+
+
