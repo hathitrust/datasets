@@ -1,0 +1,46 @@
+id,name,dscr,access_profile,digitization_source
+1,google,Google,2,google
+2,lit-dlps-dc,"University of Michigan Library IT, Digital Library Production Service, Digital Conversion",1,umich*;umdl-umich
+3,ump,University of Michigan Press,3,umich;press-umich*
+4,ia,Internet Archive,1,archive
+5,yale,Yale University (with support from Microsoft),1,yale;ht_support-microsoft*
+6,mdl,Minnesota Digital Library,4,mndigital
+7,mhs,Minnesota Historical Society,4,mnhs
+8,usup,Utah State University Press,3,usupress
+9,ucm,Universidad Complutense de Madrid,1,ucm
+10,purd,Purdue University,1,purdue
+11,getty,Getty Research Institute,1,getty
+12,um-dc-mp,"University of Michigan, Duderstadt Center, Millennium Project",1,umich;milproj-dc-umich*
+13,uiuc,University of Illinois at Urbana-Champaign,1,illinois
+14,brooklynmuseum,Brooklyn Museum,1,brooklynmuseum
+15,uf,State University System of Florida,1,flbog
+16,tamu,Texas A&M,1,tamu
+17,udel,University of Delaware,1,udel
+18,private,Private Donor,1,ht_private
+19,umich,University of Michigan (Other),1,umich
+20,clark,Clark Art Institute,1,clarkart
+21,ku,Knowledge Unlatched,1,knowledgeunlatched
+22,mcgill,McGill University,1,mcgill
+23,bc,Boston College,1,bc
+24,nnc,Columbia University,1,columbia
+25,geu,Emory University,1,emory
+26,borndigital,Born Digital (placeholder),1,NULL
+27,yale2,Yale University,1,yale
+28,mou,University of Missouri,1,missouri
+29,chtanc,National Central Library of Taiwan,1,washington;ncl
+30,bentley-umich,"Bentley Historical Library, University of Michigan",1,umich*;bentley-umich
+31,clements-umich,"William L. Clements Library, University of Michigan",1,umich*;clements-umich
+32,wau,University of Washington,1,washington
+33,cornell,Cornell University,1,cornell
+34,cornell-ms,Cornell University (with support from Microsoft),1,cornell*;ht_support-microsoft
+35,umd,University of Maryland,1,umd
+36,frick,The Frick Collection,1,frick
+37,northwestern,Northwestern University,1,northwestern
+38,umn,University of Minnesota,1,umn
+39,berkeley,"University of California, Berkeley",1,berkeley
+40,ucmerced,"University of California, Merced",1,ucmerced
+41,nd,University of Notre Dame,1,nd
+42,princeton,Princeton University,1,princeton
+43,uq,The University of Queensland,1,uq
+44,ucla,"University of California, Los Angeles",1,ucla
+45,osu,The Ohio State University,1,osu
