@@ -20,8 +20,17 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "rpairtree"
+  spec.add_runtime_dependency "resque"
+  spec.add_runtime_dependency "resque-retry"
+  spec.add_runtime_dependency "resque-pool"
+  spec.add_runtime_dependency "resque-scheduler"
+  spec.add_runtime_dependency "oj"
+  spec.add_runtime_dependency "sequel"
 
+  spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "bundler", "~> 1.13"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "activesupport"
+  spec.add_development_dependency "pry"
 end
