@@ -1,4 +1,4 @@
-require "volume_writer"
+require "datasets/volume_writer"
 
 # Writes and deletes volumes within the superset.
 class VolumeCreator < VolumeWriter

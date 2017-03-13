@@ -1,4 +1,4 @@
-$: << File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
+$: << File.expand_path(File.join(File.dirname(__FILE__), "../lib/datasets"))
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

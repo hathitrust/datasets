@@ -1,4 +1,4 @@
-require "path_resolver"
+require "datasets/path_resolver"
 require "pairtree"
 require "pathname"
 

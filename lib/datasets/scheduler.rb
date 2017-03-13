@@ -1,5 +1,5 @@
-require "create_job"
-require "delete_job"
+require "datasets/jobs/create_job"
+require "datasets/jobs/delete_job"
 
 # Adds volumes to a dataset
 class Scheduler

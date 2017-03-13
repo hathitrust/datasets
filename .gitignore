@@ -1,3 +1,12 @@
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
 .DS_Store
 conf.yml
 .bundle
@@ -6,3 +15,4 @@ var
 vendor
 .idea
 tags
+.rspec
