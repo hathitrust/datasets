@@ -1,4 +1,5 @@
 
+# frozen_string_literal: true
 module Datasets
   class Volume
     attr_reader :namespace, :id,
@@ -25,6 +26,10 @@ module Datasets
         namespace: namespace, id: id,
         access_profile: access_profile, right: right
       }
+    end
+
+    def to_s
+      "#{namespace}.#{id} #{right} #{access_profile}"
     end
 
   end
