@@ -8,6 +8,7 @@ PATH
       resque-retry
       resque-scheduler
       rpairtree
+      rubyzip
       sequel
 
 GEM
@@ -69,6 +70,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
+    rubyzip (1.2.1)
     rufus-scheduler (3.3.4)
       tzinfo
     sequel (4.44.0)
@@ -98,4 +100,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   1.13.6
+   1.14.6
