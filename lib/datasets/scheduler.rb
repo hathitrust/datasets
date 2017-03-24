@@ -19,7 +19,7 @@ class Scheduler
 
   def add
     volumes = volume_repo.changed_between(last_run_time, Time.now)
-    filter.filter(volumes)
+    volumes.select { |v| filter.matches?(v) }
       .map{|volume| [volume, src_path_resolver.path(volume)] }
       .map{|volume, src_path| CreateJob.new(volume, src_path, volume_writer) }
       .each{|job| job.enqueue }
@@ -27,7 +27,7 @@ class Scheduler
 
   def delete
     volumes = volume_repo.changed_between(last_run_time, Time.now)
-    filter.inverse_filter(volumes)
+    volumes.select { |v| !filter.matches?(v) }
       .map{|volume| DeleteJob.new(volume, volume_writer) }
       .each{|job| job.enqueue }
   end
