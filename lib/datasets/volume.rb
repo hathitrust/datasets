@@ -10,4 +10,13 @@ class Volume
     @right = right.to_sym
   end
 
+  def ==(other)
+    namespace == other.namespace &&
+      id == other.id &&
+      access_profile == other.access_profile &&
+      right == other.right
+  end
+
+  alias_method :eql?, :==
+
 end

@@ -1,0 +1,19 @@
+id,name,dscr
+1,bib,bibliographically-derived by automatic processes
+2,ncn,no printed copyright notice
+3,con,contractual agreement with copyright holder on file
+4,ddd,due diligence documentation on file
+5,man,manual access control override; see note for details
+6,pvt,private personal information visible
+7,ren,copyright renewal research was conducted
+8,nfi,"needs further investigation (copyright research partially complete, and an ambiguous, unclear, or other time-consuming situation was encountered)"
+9,cdpp,title page or verso contain copyright date and/or place of publication information not in bib record
+10,ipma,in-print and market availability research was conducted
+11,unp,unpublished work
+12,gfv,Google viewability set at VIEW_FULL
+13,crms,derived from multiple reviews in the Copyright Review Management System (CRMS) via an internal resolution policy; consult CRMS records for details
+14,add,author death date research was conducted or notification was received from authoritative source
+15,exp,expiration of copyright term for non-US work with corporate author
+16,del,deleted from the repository; see note for details
+17,gatt,non-US public domain work restored to in-copyright in the US by GATT
+18,supp,suppressed from view; see note for details
