@@ -15,6 +15,8 @@ RSpec.describe ZipWriter do
     end
   end
 
+  # pass a block that does awful things to the output zip and/or raises an
+  # error. ZipWriter should not leave a broken output zip.
   def expect_no_zip
     Dir.mktmpdir('datasets_test') do |dir|
       dest_path = Pathname.new(dir) + 'out.zip'
