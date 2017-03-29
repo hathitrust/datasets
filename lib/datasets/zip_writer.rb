@@ -12,26 +12,19 @@ class ZipWriter
   # from input zip to output zip. By default gets all txt files in input zip
   # and copies them to output zip.
   def write(src_path, dest_path, &block)
-    Tempfile.open(['dataset', '.zip'], dest_path.dirname) do |temp_zip|
-      Zip::File.open(src_path) do |input_zip|
-        Zip::File.open(temp_zip.path, Zip::File::CREATE) do |output_zip|
-          (block || copy_text).call input_zip, output_zip
-        end
+    tmp_path = dest_path.dirname.join(Dir::Tmpname.make_tmpname('dataset', '.zip'))
+    Zip::File.open(src_path) do |input_zip|
+      Zip::File.open(tmp_path, Zip::File::CREATE) do |output_zip|
+        (block || copy_text).call input_zip, output_zip
       end
-
-      atomic_cp(temp_zip, dest_path)
     end
+
+    # rename should be atomic since we have guaranteed tmp_path is in the same
+    # directory as dest_path
+    tmp_path.rename(dest_path)
+  ensure
+    tmp_path.unlink if tmp_path.exist?
   end
-
-  class ChecksumMismatchError < IOError; end
-
-  def atomic_cp(src_path, dest_path)
-    src_checksum = Digest::MD5.file src_path
-    FileUtils.cp src_path, dest_path
-    dest_checksum = Digest::MD5.file dest_path
-    raise ChecksumMismatchError unless src_checksum == dest_checksum
-  end
-
 
   private
 
@@ -46,5 +39,4 @@ class ZipWriter
       end
     end
   end
-
 end

@@ -26,13 +26,13 @@ RSpec.describe ZipWriter do
         # don't care if there are weird errors, just need to make sure the temp
         # zip is cleaned up properly
       end
-      expect(dest_path.exist?).to be false
+      expect(dest_path).not_to exist
     end
   end
 
   it 'creates a file at the specified destination path' do
     create_output_zip do |output|
-      expect(output.exist?).to be true
+      expect(output).to exist
     end
   end
 
@@ -46,7 +46,7 @@ RSpec.describe ZipWriter do
     create_output_zip do |output|
       texts = Zip::File.open(output) do |z|
         z.glob('**/*.txt')
-          .map{|entry| File.basename(entry.name)}
+         .map { |entry| File.basename(entry.name) }
       end
       expect(texts).to contain_exactly('00000001.txt', '00000002.txt')
     end
@@ -56,8 +56,8 @@ RSpec.describe ZipWriter do
     create_output_zip do |output|
       expect(
         Zip::File.open(output) do |z|
-          z.map{|entry| Pathname.new(entry.name)}
-            .reject{|path| path.extname == ".txt" }
+          z.map { |entry| Pathname.new(entry.name) }
+            .reject { |path| path.extname == '.txt' }
         end
       ).to be_empty
     end
@@ -72,7 +72,7 @@ RSpec.describe ZipWriter do
   end
 
   it 'when copying process raises Zip::Error, does not leave a broken zip file' do
-    expect_no_zip do |_,_|
+    expect_no_zip do |_, _|
       raise Zip::Error
     end
   end
