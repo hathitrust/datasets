@@ -1,0 +1,3 @@
+class DeleteJob
+
+end
