@@ -1,8 +1,9 @@
 require 'thor'
 require 'config'
 require 'pp'
-require 'pry'
+require 'sequel'
 
+require_relative '../lib/datasets/repository/feed_backend'
 require 'datasets'
 
 Signal.trap("INT"){
@@ -27,8 +28,8 @@ class DatasetsCLI < Thor
 
     # Get List of Changes
     connection = Sequel.sqlite
-    feed = Repository::FeedBackend.new(connection)
-    changes = feed.changed_between(last_completed_date, Date.today)
+    feed = ::Repository::FeedBackend.new(connection)
+    changes = feed.changed_between(last_run_date, Date.today)
     
     # Apply Filters and Create Schduler(s)
 
