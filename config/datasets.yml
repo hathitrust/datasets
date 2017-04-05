@@ -1,0 +1,6 @@
+---
+destination_root:  'spec/integration/datasets'
+source_repository: 'spec/integration/source_repo'
+sequel:
+  db: sqlite
+  file: spec/integration/demo.db

@@ -27,6 +27,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "oj"
   spec.add_runtime_dependency "sequel"
   spec.add_runtime_dependency "rubyzip"
+  spec.add_runtime_dependency "thor"
+  spec.add_runtime_dependency "config"
 
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "bundler", "~> 1.13"
