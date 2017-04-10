@@ -19,4 +19,11 @@ class Volume
 
   alias_method :eql?, :==
 
+  def to_h
+    {
+      namespace: namespace, id: id,
+      access_profile: access_profile, right: right
+    }
+  end
+
 end
