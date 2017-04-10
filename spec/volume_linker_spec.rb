@@ -11,9 +11,16 @@ RSpec.describe VolumeLinker do
       rm_empty_tree: nil
     )
   end
+  let(:id) { :some_id }
   let(:dest_path) { Pathname.new("/dest/path/to/volume") }
   let(:dest_path_resolver) { double(:dpr, path: dest_path) }
-  let(:volume_linker) { described_class.new(dest_path_resolver: dest_path_resolver, fs: fs) }
+  let(:volume_linker) { described_class.new(id: id, dest_path_resolver: dest_path_resolver, fs: fs) }
+
+  describe "#id" do
+    it "has an id" do
+      expect(volume_linker.id).to_not be_nil
+    end
+  end
 
   describe "#save" do
     let(:volume) { double(:volume) }

@@ -1,6 +1,9 @@
 # Writes and deletes volumes within the superset.
 class VolumeWriter
 
+  # The id of this writer, generally a symbol or number.
+  def id; end
+
   # Save a volume to the filesystem.  This is
   # an idempotent operation.
   # @param [Volume] volume

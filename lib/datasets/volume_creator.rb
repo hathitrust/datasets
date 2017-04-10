@@ -6,11 +6,14 @@ class VolumeCreator < VolumeWriter
   # @param [PathResolver] dest_path_resolver
   # @param [ZipWriter] writer
   # @param [Filesystem] fs
-  def initialize(dest_path_resolver:, writer:, fs:)
+  def initialize(id:, dest_path_resolver:, writer:, fs:)
+    @id = id
     @dest_path_resolver = dest_path_resolver
     @writer = writer
     @fs = fs
   end
+
+  attr_reader :id
 
   def save(volume, src_path)
     dest_path = dest_path_resolver.path(volume)

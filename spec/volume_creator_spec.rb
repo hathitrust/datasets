@@ -19,15 +19,21 @@ RSpec.describe VolumeCreator do
       rm_empty_tree: nil
     )
   end
+  let(:id) { :some_id }
   let(:dest_path_resolver) { double(:dpr, path: dest_path) }
   let(:writer) { double(:writer, write: nil) }
   let(:volume_creator) do
     described_class.new(
+      id: id,
       dest_path_resolver: dest_path_resolver,
       writer: writer, fs: fs)
   end
 
-
+  describe "#id" do
+    it "has an id" do
+      expect(volume_creator.id).to_not be_nil
+    end
+  end
 
   describe "#save" do
     let(:src_path) { Pathname.new("/src/path/to/volume") }

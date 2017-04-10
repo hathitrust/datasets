@@ -4,10 +4,13 @@ class VolumeLinker
 
   # @param [PathResolver] dest_path_resolver
   # @param [Filesystem] fs
-  def initialize(dest_path_resolver:, fs:)
+  def initialize(id:, dest_path_resolver:, fs:)
+    @id = id
     @dest_path_resolver = dest_path_resolver
     @fs = fs
   end
+
+  attr_reader :id
 
   # Create a link for the volume within the subset
   # defined by the dest_path_resolver.
