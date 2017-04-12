@@ -1,0 +1,23 @@
+---
+
+# This is the config.yml to use when using the
+# Datasets::Hathitrust::Configuration.
+
+src_parent_dir:
+  full: full/src/path
+  pd: pd/src/path
+
+dest_parent_dir:
+  full: full/dest/path
+  pd: full/dest/path
+
+db:
+  rights:
+    adapter: mysql2
+    host: blah
+    etc: etc
+  feed:
+    adapter: mysql
+    host: blah
+    etc: etc
+
