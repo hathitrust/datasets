@@ -3,4 +3,4 @@ destination_root:  'spec/integration/datasets'
 source_repository: 'spec/integration/source_repo'
 sequel:
   adapter: sqlite
-  file: spec/integration/demo.db
+  database: spec/integration/demo.db

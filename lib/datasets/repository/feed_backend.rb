@@ -20,7 +20,7 @@ module Datasets
       def changed_between(start_time, end_time)
         connection[table_name]
           .where(zip_date: start_time..end_time)
-          .exclude_where(zipcheck_ok: false)
+          .exclude_where(md5check_ok: false)
           .select(:namespace, :id)
           .to_set
       end

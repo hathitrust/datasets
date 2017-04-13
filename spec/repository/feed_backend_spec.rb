@@ -28,7 +28,7 @@ module Datasets
         namespace: "mdp", id: "123098120312",
         zip_size: 3013480, zip_date: Time.new(2001, 3, 27),
         mets_size: 3232, mets_date: Time.new(2000, 9, 29),
-        lastchecked: Time.new(2017, 1, 1), zipcheck_ok: true
+        lastchecked: Time.new(2017, 1, 1), md5check_ok: true
       }
     end
     let(:t2) do
@@ -36,7 +36,7 @@ module Datasets
         namespace: "inu", id: "300000312",
         zip_size: 10398103, zip_date: Time.new(2011, 2, 22),
         mets_size: 1111, mets_date: Time.new(2001, 1, 15),
-        lastchecked: Time.new(2016, 5, 15), zipcheck_ok: nil
+        lastchecked: Time.new(2016, 5, 15), md5check_ok: nil
       }
     end
     let(:t3) do
@@ -44,7 +44,7 @@ module Datasets
         namespace: "mdp", id: "asldfasdfasdf",
         zip_size: 99999, zip_date: Time.new(2005, 1, 14),
         mets_size: 3232, mets_date: Time.new(2000, 2, 29),
-        lastchecked: Time.new(2016, 2, 23), zipcheck_ok: true
+        lastchecked: Time.new(2016, 2, 23), md5check_ok: true
       }
     end
 
@@ -69,14 +69,14 @@ module Datasets
         expect(tuples).to contain_exactly(t2.slice(:namespace, :id))
       end
 
-      it "does not return volumes with zipcheck_ok: false" do
-        table.insert t1.merge(zipcheck_ok: false, zip_date: Time.now)
+      it "does not return volumes with md5check_ok: false" do
+        table.insert t1.merge(md5check_ok: false, zip_date: Time.now)
         expect(repo.changed_between(1.day.ago, 1.day.from_now)).to eql Set.new
       end
 
-      it "does return volumes with zipcheck_ok: true or null" do
-        table.insert t1.merge(zipcheck_ok: true, zip_date: Time.now)
-        table.insert t2.merge(zipcheck_ok: nil, zip_date: Time.now)
+      it "does return volumes with md5check_ok: true or null" do
+        table.insert t1.merge(md5check_ok: true, zip_date: Time.now)
+        table.insert t2.merge(md5check_ok: nil, zip_date: Time.now)
         expect(repo.changed_between( 1.day.ago, 1.day.from_now))
           .to contain_exactly(t1.slice(:namespace, :id), t2.slice(:namespace, :id))
       end

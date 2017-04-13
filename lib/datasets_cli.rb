@@ -63,7 +63,7 @@ module Datasets
 
       puts "Done."
     end
-    
+
     desc "print", "Print configuration."
     def print
       configure unless configured?
@@ -92,7 +92,7 @@ module Datasets
 
 
     # Functions that should be in a testable orchestration object eventually
-    
+
     def make_connection(db_info)
       Sequel.connect(db_info)
     end
@@ -102,7 +102,7 @@ module Datasets
     end
 
     def last_run_date
-      Date.today-1
+      (Date.today-1).to_time
     end
 
   end
