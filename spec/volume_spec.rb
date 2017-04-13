@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative "./spec_helper.rb"
 require "datasets/volume"
 
@@ -20,7 +21,7 @@ module Datasets
     context "given string parameters" do
       let(:volume_params) do
         { namespace: "mdp", id: "12356",
-          access_profile: "open", right: "pd"}
+          access_profile: "open", right: "pd" }
       end
       include_examples "coerces parameters"
     end
@@ -28,21 +29,29 @@ module Datasets
     context "given symbol parameters" do
       let(:volume_params) do
         { namespace: :mdp, id: :"8675309",
-          access_profile: :closed, right: :nobody}
+          access_profile: :closed, right: :nobody }
       end
       include_examples "coerces parameters"
     end
 
-    describe "#to_h" do
+    context "given common volume" do
       let(:volume_params) do
-        { namespace: "mdp", id: "8675309",
-          access_profile: :closed, right: :nobody}
+        { namespace: "mdp", id: "12356",
+          access_profile: :open, right: :pd }
       end
       let(:volume) { described_class.new(volume_params) }
-      it "returns a hash representing the volume" do
-        expect(volume.to_h).to eql(volume_params)
+
+      describe "#to_h" do
+        it "returns a hash representing the volume" do
+          expect(volume.to_h).to eql(volume_params)
+        end
+      end
+
+      describe "#to_s" do
+        it "returns a string with the volume ID and the rights" do
+          expect(volume.to_s).to eql("mdp.12356 pd open")
+        end
       end
     end
-
   end
 end
