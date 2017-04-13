@@ -32,4 +32,15 @@ RSpec.describe Volume do
     include_examples "coerces parameters"
   end
 
+  describe "#to_h" do
+    let(:volume_params) do
+      { namespace: "mdp", id: "8675309",
+        access_profile: :closed, right: :nobody}
+    end
+    let(:volume) { described_class.new(volume_params) }
+    it "returns a hash representing the volume" do
+      expect(volume.to_h).to eql(volume_params)
+    end
+  end
+
 end
