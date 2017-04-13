@@ -1,6 +1,7 @@
 require "datasets/version"
 
 require "datasets/configuration"
+require "datasets/job"
 require "datasets/filter"
 require "datasets/filesystem"
 require "datasets/pairtree_path_resolver"

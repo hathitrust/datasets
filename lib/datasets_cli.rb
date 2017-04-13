@@ -2,8 +2,6 @@ require 'thor'
 require 'config'
 require 'pp'
 require 'sequel'
-
-require_relative '../lib/datasets/repository/feed_backend'
 require 'datasets'
 
 Signal.trap("INT"){
@@ -26,16 +24,41 @@ class DatasetsCLI < Thor
       return
     end
 
-    # Get List of Changes
-    connection = Sequel.sqlite
-    feed = ::Repository::FeedBackend.new(connection)
-    changes = feed.changed_between(last_run_date, Date.today)
-    
-    # Apply Filters and Create Schduler(s)
+    # Make connections to backend
+    connection = make_connection(Settings.sequel.to_h)
 
+    feed_backend   = ::Datasets::Repository::FeedBackend.new(connection)
+    rights_backend = ::Datasets::Repository::RightsVolumeRepo.new(connection) 
+    volume_repo    = ::Datasets::Repository::RightsFeedVolumeRepo.new(rights_backend, feed_backend)
+
+    # Make filesystem machinery
+    source_path_resolver = ::Datasets::PairTreePathResolver.new(Settings.source_repository)
+    volume_writer= ::Datasets::VolumeWriter
+
+    # Create Filters
+    filters = [
+      FullSetFilter.new,
+      PdFilter.new,
+      PdOpenFilter.new,
+      PdWorldFilter.new,
+      PdWorldOpenFilter.new
+    ]
+
+    # Create Schduler for each filter
+    schedulers = filters.each do |filter|
+      ::Datasets::Scheduler.new(
+        volume_repo: volume_repo,
+        src_path_resolver: source_path_resolver,
+        volume_writer: volume_writer,
+        filter: filter, 
+        last_run_time: last_run_date)
+    end
 
     # QueueJobs
-
+    schedulers.each do |scheduler|
+      scheduler.add
+      scheduler.delete
+    end
 
     puts "Done."
   end
@@ -66,7 +89,13 @@ class DatasetsCLI < Thor
     Config.load_and_set_settings(config_path)
   end
 
+
   # Functions that should be in a testable orchestration object eventually
+  
+  def make_connection(db_info)
+    Sequel.connect(db_info)
+  end
+
   def job_queue_empty?
     return true
   end
