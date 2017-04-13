@@ -11,4 +11,4 @@ require "bundler/setup"
 # Project specific code
 require_relative '../lib/datasets_cli.rb'
 
-DatasetsCLI.start(ARGV)
+Datasets::CLI.start(ARGV)
