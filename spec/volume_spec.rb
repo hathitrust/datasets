@@ -39,7 +39,15 @@ module Datasets
         { namespace: "mdp", id: "12356",
           access_profile: :open, right: :pd }
       end
+
+      let(:other_volume_params) do
+        { namespace: "test", id: "1234",
+          access_profile: :open, right: :pd }
+      end
+
       let(:volume) { described_class.new(volume_params) }
+      let(:same_volume) { described_class.new(volume_params) }
+      let(:other_volume) { described_class.new(other_volume_params) }
 
       describe "#to_h" do
         it "returns a hash representing the volume" do
@@ -52,6 +60,27 @@ module Datasets
           expect(volume.to_s).to eql("mdp.12356 pd open")
         end
       end
+
+      describe "#eql?" do
+        it "returns true for two volumes constructed from the same params" do
+          expect(volume.eql?(same_volume)).to be true
+        end
+
+        it "returns false for two volumes constructed from different params" do
+          expect(volume.eql?(other_volume)).to be false
+        end
+      end
+
+      describe "#hash" do
+        it "returns the same value for two volumes constructed from the same params" do
+          expect(volume.hash).to eql(same_volume.hash)
+        end
+
+        it "returns a different value for two volumes constructed from different params" do
+          expect(volume.hash).not_to eql(other_volume.hash)
+        end
+      end
+
     end
   end
 end

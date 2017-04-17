@@ -32,5 +32,9 @@ module Datasets
       "#{namespace}.#{id} #{right} #{access_profile}"
     end
 
+    def hash
+      to_s.hash
+    end
+
   end
 end
