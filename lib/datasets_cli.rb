@@ -52,7 +52,8 @@ module Datasets
           src_path_resolver: source_path_resolver,
           volume_writer: volume_writer,
           filter: filter, 
-          last_run_time: last_run_date)
+          last_run_time: last_run_date,
+          logger: nil)
       end
 
       # QueueJobs
