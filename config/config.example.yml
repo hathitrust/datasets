@@ -3,21 +3,16 @@
 # This is the config.yml to use when using the
 # Datasets::Hathitrust::Configuration.
 
-src_parent_dir:
-  full: full/src/path
-  pd: pd/src/path
+src_parent_dir: '/somewhere/repo'
 
 dest_parent_dir:
-  full: full/dest/path
-  pd: full/dest/path
+  full: '/somewhere/datasets/ht_text'
+  pd: '/somewhere/datasets/ht_text_pd'
+  pd_open: '/somewhere/datasets/ht_text_pd_open_access'
+  pd_world: '/somewhere/datasets/ht_text_pd_world'
+  pd_world_open_access: '/somewhere/datasets/ht_text_pd_world_open_access'
 
 db:
-  rights:
-    adapter: mysql2
-    host: blah
-    etc: etc
-  feed:
-    adapter: mysql
-    host: blah
-    etc: etc
-
+  adapter: mysql2
+  host: blah
+  etc: etc

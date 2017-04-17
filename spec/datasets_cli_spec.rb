@@ -12,7 +12,7 @@ module Datasets
     INTEGRATION_HOME = File.join(File.dirname(__FILE__),"integration")
     DATASET_ROOT = File.join(INTEGRATION_HOME,"datasets")
     REPO_ROOT = File.join(INTEGRATION_HOME,"repo")
-    SUBSETS = [%w(ht_text_pd
+    DATASETS = [%w(ht_text_pd
                   ht_text_pd_open_access
                   ht_text_pd_world
                   ht_text_pd_world_open_access)].freeze
@@ -72,35 +72,51 @@ module Datasets
 
     end
 
-    def reset_dataset_output_paths(root_path,subsets)
+    def reset_dataset_output_paths(root_path,dataset)
       FileUtils.rmtree(root_path)
-      subsets.each do |subset|
-        FileUtils.mkdir_p(File.join(root_path, subset, "obj"))
+      dataset.each do |dataset|
+        FileUtils.mkdir_p(File.join(root_path, dataset, "obj"))
       end
+    end
+    
+    def expect_correct_zip_file(subset, path_in_subset)
+      zipfile = File.join(DATASET_ROOT,subset,path_in_subset)
+      files = Zip::File.open(zipfile) do |z|
+        z.map { |entry| File.basename(entry.name) }
+      end
+      expect(files).to contain_exactly('00000001.txt', '00000002.txt')
     end
 
     let(:database) { Sequel.connect(adapter: 'sqlite', 
                                     database: INTEGRATION_DB_PATH) }
 
     before(:each) do
+      Resque.inline = true
       reset_database(database)
       add_test_data(database)
       reset_repository_timestamps(REPO_ROOT)
-      reset_dataset_output_paths(DATASET_ROOT,SUBSETS)
+      reset_dataset_output_paths(DATASET_ROOT,DATASETS)
     end
 
     after(:each) do 
       reset_database(database)
+      reset_dataset_output_paths(DATASET_ROOT,DATASETS)
     end
 
 
-    it "creates a volume" do
+    it "creates zips containing the expected files" do
       run_cli
-      # volume one should be a valid zip
-      # volume two should be a valid zip
-      # creates should be logged
-      skip
+
+      pairtree_prefix = File.join("obj/test/pairtree_root/00")
+      old_vol_file = File.join(pairtree_prefix,"1","001","001.zip")
+      new_vol_file = File.join(pairtree_prefix,"2","002","002.zip")
+
+      # volume one should be a valid zip with the right files
+      expect_correct_zip_file("ht_text",old_vol_file)
+      expect_correct_zip_file("ht_text",new_vol_file)
     end
+
+    it "logs creates"
 
     context "with volumes in the dataset" do
       # put zips in dataset for both vols

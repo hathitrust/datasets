@@ -1,6 +1,0 @@
----
-destination_root:  'spec/integration/datasets'
-source_repository: 'spec/integration/source_repo'
-sequel:
-  adapter: sqlite
-  database: spec/integration/demo.db
