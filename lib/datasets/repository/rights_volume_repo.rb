@@ -1,5 +1,5 @@
-require "volume_repo"
-require "volume"
+require "datasets/volume_repo"
+require "datasets/volume"
 require "set"
 require "sequel"
 

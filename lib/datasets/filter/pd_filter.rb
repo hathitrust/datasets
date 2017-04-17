@@ -1,4 +1,4 @@
-require 'filter'
+require 'datasets/filter'
 
 module Datasets
   class PdFilter < Filter
