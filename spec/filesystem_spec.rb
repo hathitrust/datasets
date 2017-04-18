@@ -44,6 +44,15 @@ module Datasets
         end
       end
 
+      describe "#write" do
+        let(:path) { TMPPATH + "somefile.txt" }
+        let(:contents) { "some\ncontents\n\n\n\nmore"}
+        it "writes a file" do
+          fs.write(path, contents)
+          expect(File.read(path)).to eql(contents)
+        end
+      end
+
       describe "#children" do
         let(:files) { [TMPPATH + "one_file.txt", TMPPATH + ".hidden.yml"] }
         let(:dirs) { [TMPPATH + "some_dir", TMPPATH + ".hidden_dir"] }

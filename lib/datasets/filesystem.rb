@@ -64,5 +64,13 @@ module Datasets
       raise ArgumentError, "path cannot be a non-directory file" if path.file?
       FileUtils.rmdir path, parents: true
     end
+
+    # Write contents to a file
+    # @param [Pathname] path
+    # @param [String] contents
+    def write(path, contents)
+      File.write(path, contents)
+    end
+
   end
 end
