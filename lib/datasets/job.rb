@@ -13,12 +13,12 @@ module Datasets
     @expire_retry_key_after = @backoff_strategy.last + 3600
     @retry_limit = 10
 
-    def self.perform(*args)
-      new(*deserialize(*args)).perform
+    def self.perform(args)
+      self.deserialize(*args).perform
     end
 
     def enqueue
-      Resque.enqueue(self.class, *serialize)
+      Resque.enqueue(self.class, serialize)
     end
 
     def serialize
@@ -27,6 +27,18 @@ module Datasets
 
     def self.deserialize(*args)
       raise NotImplementedError
+    end
+
+    private
+
+    # Reinvent HashWithIndifferentAccess
+    def self.deserialize_volume(hash)
+      Volume.new(
+        namespace: hash[:namespace] || hash["namespace"],
+        id: hash[:id] || hash["id"],
+        access_profile: hash[:access_profile] || hash["access_profile"],
+        right: hash[:right] || hash["right"]
+      )
     end
 
   end
