@@ -5,6 +5,12 @@ require "fileutils"
 module Datasets
   class Filesystem
 
+    # @param [Pathname] dir
+    # @return [Array<Pathname>]
+    def children(dir)
+      dir.children
+    end
+
     # @param [Pathname] path
     # @return [Time]
     def creation_time(path)
@@ -33,6 +39,13 @@ module Datasets
     # @param [Pathname] path
     def mkdir_p(path)
       path.mkpath
+    end
+
+    # Read a file, returning a string.
+    # @param [Pathname] path
+    # @return [String]
+    def read(path)
+      File.read(path)
     end
 
     # rm -rf #path. Idempotent.

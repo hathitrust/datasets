@@ -35,6 +35,27 @@ module Datasets
       end
       after(:all) { FileUtils.remove_entry_secure TMPPATH }
 
+      describe "#read" do
+        let(:file) { TMPPATH + "somefile.txt" }
+        let(:contents) { "some\ncontents\n\n\n\nmore"}
+        it "returns the contents of a file" do
+          File.write(file, contents)
+          expect(fs.read(file)).to eql(contents)
+        end
+      end
+
+      describe "#children" do
+        let(:files) { [TMPPATH + "one_file.txt", TMPPATH + ".hidden.yml"] }
+        let(:dirs) { [TMPPATH + "some_dir", TMPPATH + ".hidden_dir"] }
+        before(:each) do
+          files.each {|f| File.write(f, "dummy_contents") }
+          dirs.each {|d| FileUtils.mkpath d}
+        end
+        it "returns the entries in the dir as pathnames" do
+          expect(fs.children(TMPPATH)).to match_array( (files + dirs))
+        end
+      end
+
       describe "#ln_s" do
         let(:src_file_path) { TMPPATH + "src.txt" }
         let(:src_dir_path) { TMPPATH + "src_dir" }
