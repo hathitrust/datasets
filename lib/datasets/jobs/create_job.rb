@@ -1,3 +1,0 @@
-class CreateJob
-
-end
