@@ -15,6 +15,12 @@ module Datasets
         manager = described_class.new(fixtures_dir + "report_test", Filesystem.new)
         expect(manager.last_range).to eql last_range
       end
+      it "returns a time range ending in epoch when no reports are present" do
+        Dir.mktmpdir do |dir|
+          manager = described_class.new(Pathname.new(dir), Filesystem.new)
+          expect(manager.last_range.last).to eql(Time.at(0))
+        end
+      end
     end
 
     # We mock #last_range here because it is convenient and should

@@ -21,7 +21,11 @@ module Datasets
     # The period of the last completed report
     # @return [Range<Time>]
     def last_range
-      last_summary.time_range
+      if last_summary_path.exist?
+        read_summary(last_summary_path).time_range
+      else
+        Time.at(-1)..Time.at(0)
+      end
     end
 
     # Finds the most recent report in the parent directory, then
@@ -49,19 +53,18 @@ module Datasets
       parent_dir + "#{range.first.strftime(TIME_FORMAT)}-#{range.last.strftime(TIME_FORMAT)}"
     end
 
-    def last_summary
-      @last_summary ||= find_last_summary
-    end
-
     # Find the alpha-numerically last directory that contains
     # a saved report, then open and return the summary.
     # @return [ReportSummary]
-    def find_last_summary
-      path = fs.children(parent_dir)
+    def last_summary_path
+      @last_summary_path ||= fs.children(parent_dir)
         .map{|dir| dir + "summary.yml" }
         .select {|path| fs.exists?(path) }
         .sort
-        .last
+        .last || Pathname.new("")
+    end
+
+    def read_summary(path)
       hash = YAML.load(fs.read(path))
       ReportSummary.new(hash["saved"], hash["deleted"], hash["start_time"]..hash["end_time"], fs)
     end
