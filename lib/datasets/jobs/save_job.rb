@@ -24,7 +24,7 @@ module Datasets
 
     def self.deserialize(volume, src_path, writer_id)
       new(
-        Volume.new(volume),
+        deserialize_volume(volume),
         Pathname.new(src_path),
         Datasets.config.volume_writer_repo.find(writer_id)
       )

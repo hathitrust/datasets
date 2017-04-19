@@ -19,7 +19,7 @@ module Datasets
 
     def self.deserialize(volume, writer_id)
       new(
-        Volume.new(volume),
+        deserialize_volume(volume),
         Datasets.config.volume_writer_repo.find(writer_id)
       )
     end
