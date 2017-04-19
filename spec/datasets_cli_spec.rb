@@ -2,6 +2,7 @@
 require "spec_helper"
 require "datasets_cli"
 require "fileutils"
+require "find"
 
 module Datasets
   RSpec.describe CLI, integration: true do
@@ -87,6 +88,13 @@ module Datasets
       expect(files).to contain_exactly('00000001.txt', '00000002.txt')
     end
 
+    def expect_only_files(subset,expected_files)
+      found_files = Find.find(File.join(DATASET_ROOT,subset))
+        .reject { |f| FileTest.directory?(f) }
+        .map { |f| File.basename(f) }
+      expect(found_files).to match_array(expected_files)
+    end
+
     let(:database) { Sequel.connect(adapter: 'sqlite', 
                                     database: INTEGRATION_DB_PATH) }
 
@@ -111,9 +119,13 @@ module Datasets
       old_vol_file = File.join(pairtree_prefix,"1","001","001.zip")
       new_vol_file = File.join(pairtree_prefix,"2","002","002.zip")
 
-      # volume one should be a valid zip with the right files
+      require "pry"
+      # volumes should be a valid zip with the right files
       expect_correct_zip_file("ht_text",old_vol_file)
       expect_correct_zip_file("ht_text",new_vol_file)
+
+      # those should be the only files in the dataset tree
+      expect_only_files("ht_text",["001.zip","002.zip","001.mets.xml","002.mets.xml"])
     end
 
     it "logs creates"

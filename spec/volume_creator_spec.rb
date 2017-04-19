@@ -40,8 +40,8 @@ module Datasets
       let(:src_path) { Pathname.new("/src/path/to/volume") }
       let(:src_zip) { src_path + "#{volume.id}.zip" }
       let(:dest_zip) { dest_path + "#{volume.id}.zip" }
-      let(:src_mets) { src_path + "#{volume.id}.mets" }
-      let(:dest_mets) { dest_path + "#{volume.id}.mets" }
+      let(:src_mets) { src_path + "#{volume.id}.mets.xml" }
+      let(:dest_mets) { dest_path + "#{volume.id}.mets.xml" }
 
 
       context "destination zip not present" do

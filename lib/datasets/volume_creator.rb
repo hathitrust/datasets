@@ -42,7 +42,7 @@ module Datasets
     # @param [Pathname] path
     # @return [Pathname]
     def mets_path(volume, path)
-      path + "#{volume.id}.mets"
+      path + "#{volume.id}.mets.xml"
     end
 
     private
