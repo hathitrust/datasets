@@ -1,9 +1,7 @@
 require 'thor'
-require 'config'
 require 'pp'
 require 'sequel'
 require 'datasets'
-require 'pry'
 require_relative '../config/hathitrust_config'
 
 Signal.trap("INT"){
@@ -20,7 +18,7 @@ module Datasets
     desc "all", "Do all the dataset operations."
     def all
       # TODO: take config yml as a cmdline option
-      config = Datasets::HathiTrust::Configuration.from_yaml(File.join(APP_ROOT,"config/integration.yml"))
+      config = Datasets::HathiTrust::Configuration.from_yaml(File.join(APP_ROOT,"config/config.example.yml"))
       Datasets.config = config
 
       # Check that job queue is empty
