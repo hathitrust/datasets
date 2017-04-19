@@ -1,8 +1,8 @@
 require 'thor'
-require 'config'
 require 'pp'
 require 'sequel'
 require 'datasets'
+require_relative '../config/hathitrust_config'
 
 Signal.trap("INT"){
   puts "Interrupt.  Exiting."
@@ -17,7 +17,9 @@ module Datasets
     # Tasks
     desc "all", "Do all the dataset operations."
     def all
-      configure unless configured?
+      # TODO: take config yml as a cmdline option
+      config = Datasets::HathiTrust::Configuration.from_yaml(File.join(APP_ROOT,"config/config.example.yml"))
+      Datasets.config = config
 
       # Check that job queue is empty
       unless job_queue_empty?
@@ -25,34 +27,14 @@ module Datasets
         return
       end
 
-      # Make connections to backend
-      connection = make_connection(Settings.sequel.to_h)
-
-      feed_backend   = Repository::FeedBackend.new(connection)
-      rights_backend = Repository::RightsVolumeRepo.new(connection) 
-      volume_repo    = Repository::RightsFeedVolumeRepo.new(rights_backend: rights_backend, feed_backend: feed_backend)
-
-      # Make filesystem machinery
-      source_path_resolver = PairtreePathResolver.new(Settings.source_repository)
-      volume_writer= VolumeWriter
-
-      # Create Filters
-      filters = [
-        FullSetFilter.new,
-        PdFilter.new,
-        PdOpenFilter.new,
-        PdWorldFilter.new,
-        PdWorldOpenFilter.new
-      ]
-
-      # Create Schduler for each filter
-      schedulers = filters.map do |filter|
+      schedulers = config.profiles.map do |profile|
         Scheduler.new(
-          volume_repo: volume_repo,
-          src_path_resolver: source_path_resolver,
-          volume_writer: volume_writer,
-          filter: filter, 
-          last_run_time: last_run_date)
+          volume_repo: config.volume_repo[profile],
+          src_path_resolver: config.src_path_resolver,
+          volume_writer: config.volume_writer[profile],
+          filter: config.filter[profile],
+          last_run_time: last_run_date,
+          logger: VolumeActionLogger.new(File.open("#{profile}_#{Date.today.to_s}.txt","w")))
       end
 
       # QueueJobs
@@ -73,36 +55,16 @@ module Datasets
     # Non-task cli functions 
     private 
 
-    def configured?
-      defined?(Settings) ? true : false
-    end
-
-    def configure(config_path=nil)
-      unless config_path
-        config_path = File.join(APP_ROOT,'config/datasets.yml')
-      end
-
-      unless File.exist? config_path
-        puts "Unable to read config: #{config_path}"
-        exit
-      end
-
-      Config.load_and_set_settings(config_path)
-    end
-
-
     # Functions that should be in a testable orchestration object eventually
-
-    def make_connection(db_info)
-      Sequel.connect(db_info)
-    end
 
     def job_queue_empty?
       return true
     end
 
+    # TODO: allow injection
     def last_run_date
-      (Date.today-1).to_time
+#      (Date.today-1).to_time
+      Date.new(1970,01,01).to_time
     end
 
   end

@@ -26,7 +26,7 @@ module Datasets
       new(
         deserialize_volume(volume),
         Pathname.new(src_path),
-        Datasets.config.volume_writer_repo.find(writer_id)
+        Datasets.config.volume_writer[writer_id.to_sym]
       )
     end
 
