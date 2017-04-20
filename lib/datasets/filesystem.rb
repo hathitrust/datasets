@@ -5,6 +5,12 @@ require "fileutils"
 module Datasets
   class Filesystem
 
+    # @param [Pathname] dir
+    # @return [Array<Pathname>]
+    def children(dir)
+      dir.children
+    end
+
     # @param [Pathname] path
     # @return [Time]
     def creation_time(path)
@@ -35,6 +41,13 @@ module Datasets
       path.mkpath
     end
 
+    # Read a file, returning a string.
+    # @param [Pathname] path
+    # @return [String]
+    def read(path)
+      File.read(path)
+    end
+
     # rm -rf #path. Idempotent.
     # @param [Pathname] path
     def remove(path)
@@ -51,5 +64,13 @@ module Datasets
       raise ArgumentError, "path cannot be a non-directory file" if path.file?
       FileUtils.rmdir path, parents: true
     end
+
+    # Write contents to a file
+    # @param [Pathname] path
+    # @param [String] contents
+    def write(path, contents)
+      File.write(path, contents)
+    end
+
   end
 end

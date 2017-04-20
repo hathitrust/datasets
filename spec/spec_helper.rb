@@ -20,3 +20,7 @@ RSpec.configure do |config|
   end
 
 end
+
+def fixtures_dir
+  Pathname.new(__FILE__).dirname + "fixtures"
+end
