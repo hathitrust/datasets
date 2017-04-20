@@ -20,7 +20,6 @@ require "datasets/zip_writer"
 require "datasets/repository/feed_backend"
 require "datasets/repository/rights_feed_volume_repo"
 require "datasets/repository/rights_volume_repo"
-require "datasets/volume_action_logger"
 
 module Datasets
   class << self
