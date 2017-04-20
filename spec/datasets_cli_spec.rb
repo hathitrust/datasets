@@ -79,7 +79,7 @@ module Datasets
         FileUtils.mkdir_p(File.join(root_path, dataset, "obj"))
       end
     end
-    
+
     def expect_correct_zip_file(subset, path_in_subset)
       zipfile = File.join(DATASET_ROOT,subset,path_in_subset)
       files = Zip::File.open(zipfile) do |z|
@@ -95,7 +95,7 @@ module Datasets
       expect(found_files).to match_array(expected_files)
     end
 
-    let(:database) { Sequel.connect(adapter: 'sqlite', 
+    let(:database) { Sequel.connect(adapter: 'sqlite',
                                     database: INTEGRATION_DB_PATH) }
 
     before(:each) do
@@ -106,13 +106,13 @@ module Datasets
       reset_dataset_output_paths(DATASET_ROOT,DATASETS)
     end
 
-    after(:each) do 
+    after(:each) do
       reset_database(database)
       reset_dataset_output_paths(DATASET_ROOT,DATASETS)
     end
 
 
-    it "creates zips containing the expected files" do
+    xit "creates zips containing the expected files" do
       run_cli
 
       pairtree_prefix = File.join("obj/test/pairtree_root/00")
@@ -133,30 +133,27 @@ module Datasets
     context "with volumes in the dataset" do
       # put zips in dataset for both vols
 
-      it "updates an existing volume" do
+      xit "updates an existing volume" do
         # set timestamp on one zip to be old
         run_cli
-        skip
         # old zip should be updated
         # other volume should be untouched
         # both should be logged
       end
 
-      it "removes a volume that has updated rights" do
+      xit "removes a volume that has updated rights" do
         # put zips in dataset for both vols
         # update rights for one to nobody/del
         run_cli
-        skip
         # nobody/del volume should be gone
         # other volume should be untouched
         # delete should be logged
       end
 
       context "with recent last run date" do
-        it "updates the out-of-date volume" do
+        xit "updates the out-of-date volume" do
           # set timestamp on one zip to be old
           run_cli
-          skip
           # old zip should be updated
           # other volume should be untouched
           # only old one should be logged
