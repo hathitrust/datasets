@@ -3,15 +3,21 @@
 # This is the config.yml to use when using the
 # Datasets::Hathitrust::Configuration.
 
-src_parent_dir:  full/src/path
-
-dest_parent_dir:
-  full: full/dest/path
-  pd: pd/dest/path
+src_parent_dir: 'spec/integration/repo'
 
 report_dir:
-  full: full/dest/path/history
-  pd: pd/dest/path/history
+  :full: 'spec/integration/datasets/ht_text/history'
+    :pd: 'spec/integration/datasets/ht_text_pd/history'
+    :pd_open: 'spec/integration/datasets/ht_text_pd_open_access/history'
+    :pd_world: 'spec/integration/datasets/ht_text_pd_world/history'
+    :pd_world_open: 'spec/integration/datasets/ht_text_pd_world_open_access/history'
+
+dest_parent_dir:
+  :full: 'spec/integration/datasets/ht_text'
+  :pd: 'spec/integration/datasets/ht_text_pd'
+  :pd_open: 'spec/integration/datasets/ht_text_pd_open_access'
+  :pd_world: 'spec/integration/datasets/ht_text_pd_world'
+  :pd_world_open: 'spec/integration/datasets/ht_text_pd_world_open_access'
 
 db:
   adapter: sqlite
