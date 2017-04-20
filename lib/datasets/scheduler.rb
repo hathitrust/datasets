@@ -19,18 +19,22 @@ module Datasets
     end
 
     def add
-      volume_repo.changed_between(time_range.first, time_range.last)
+      volumes = volume_repo.changed_between(time_range.first, time_range.last)
         .select {|volume| filter.matches?(volume) }
+      volumes
         .map {|volume| [volume, src_path_resolver.path(volume)] }
         .map {|volume, src_path| SaveJob.new(volume, src_path, volume_writer) }
         .each {|job| job.enqueue}
+      return volumes
     end
 
     def delete
-      volume_repo.changed_between(time_range.first, time_range.last)
+      volumes = volume_repo.changed_between(time_range.first, time_range.last)
         .reject {|volume| filter.matches?(volume) }
+      volumes
         .map {|volume| DeleteJob.new(volume, volume_writer) }
         .each {|job| job.enqueue}
+      return volumes
     end
 
     private

@@ -62,6 +62,10 @@ module Datasets
         scheduler.add
       end
 
+      it "returns the enqueued volumes" do
+        expect(scheduler.add).to eql(in_volumes)
+      end
+
     end
 
     describe "#delete" do
@@ -85,6 +89,10 @@ module Datasets
           .exactly(out_volumes.count).times
 
         scheduler.delete
+      end
+
+      it "returns the enqueued volumes" do
+        expect(scheduler.delete).to eql(out_volumes)
       end
 
     end
