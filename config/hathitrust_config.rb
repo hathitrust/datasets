@@ -77,10 +77,6 @@ module Datasets
         )
       end
 
-      def profiles
-        subsets + [superset]
-      end
-
       def subsets
         [:pd, :pd_open, :pd_world, :pd_world_open]
       end
