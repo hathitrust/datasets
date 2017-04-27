@@ -11,6 +11,9 @@ require "datasets/filter/pd_world_open_filter"
 require "datasets/filesystem"
 require "datasets/pairtree_path_resolver"
 require "datasets/path_resolver"
+require "datasets/report"
+require "datasets/report_summary"
+require "datasets/report_manager"
 require "datasets/scheduler"
 require "datasets/volume"
 require "datasets/volume_creator"
@@ -20,7 +23,6 @@ require "datasets/zip_writer"
 require "datasets/repository/feed_backend"
 require "datasets/repository/rights_feed_volume_repo"
 require "datasets/repository/rights_volume_repo"
-require "datasets/volume_action_logger"
 
 module Datasets
   class << self

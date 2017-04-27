@@ -60,10 +60,10 @@ module Datasets
         )
       end
 
-      def subset_volume_writer(subset)
+      def subset_volume_writer(profile)
         VolumeLinker.new(
-          id: subset,
-          dest_path_resolver: PairtreePathResolver.new(dest_parent_dir[subset]),
+          id: profile,
+          dest_path_resolver: PairtreePathResolver.new(dest_parent_dir[profile]),
           fs: Filesystem.new
         )
       end

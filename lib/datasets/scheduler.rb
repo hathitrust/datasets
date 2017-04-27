@@ -9,39 +9,37 @@ module Datasets
     # @param [PathResolver] src_path_resolver
     # @param [VolumeWriter] volume_writer
     # @param [Filter] filter
-    # @param [Time] last_run_time
-    # @param [VolumeActionLogger] logger
-    def initialize(volume_repo:, src_path_resolver:, volume_writer:, filter:, last_run_time:, logger:)
+    # @param [Range<Time>] time_range
+    def initialize(volume_repo:, src_path_resolver:, volume_writer:, filter:, time_range:)
       @volume_repo = volume_repo
       @src_path_resolver = src_path_resolver
       @volume_writer = volume_writer
       @filter = filter
-      @last_run_time = last_run_time
-      @logger = logger
+      @time_range = time_range
     end
 
     def add
-      volume_repo.changed_between(last_run_time, Time.now)
-        .select {|v| filter.matches?(v) }
+      volumes = volume_repo.changed_between(time_range.first, time_range.last)
+        .select {|volume| filter.matches?(volume) }
+      volumes
         .map {|volume| [volume, src_path_resolver.path(volume)] }
-        .each do |volume, src_path|
-        SaveJob.new(volume, src_path, volume_writer).enqueue
-        logger.log("save", volume, src_path)
-      end
+        .map {|volume, src_path| SaveJob.new(volume, src_path, volume_writer) }
+        .each {|job| job.enqueue}
+      return volumes
     end
 
     def delete
-      volume_repo.changed_between(last_run_time, Time.now)
-        .select {|v| !filter.matches?(v) }
-        .each do |volume|
-        DeleteJob.new(volume, volume_writer).enqueue
-        logger.log("delete", volume, src_path_resolver.path(volume))
-      end
+      volumes = volume_repo.changed_between(time_range.first, time_range.last)
+        .reject {|volume| filter.matches?(volume) }
+      volumes
+        .map {|volume| DeleteJob.new(volume, volume_writer) }
+        .each {|job| job.enqueue}
+      return volumes
     end
 
     private
 
     attr_reader :volume_repo, :src_path_resolver,
-      :volume_writer, :filter, :last_run_time, :logger
+      :volume_writer, :filter, :time_range
   end
 end

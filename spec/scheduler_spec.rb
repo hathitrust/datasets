@@ -11,13 +11,11 @@ module Datasets
     let(:start_time) { Time.local(2017, 1, 12) }
     let(:end_time) { Time.now }
     let(:log) { StringIO.new }
-    let(:logger) { double(:logger) }
     let(:scheduler) do
       described_class.new(
         volume_repo: repo, src_path_resolver: src,
         volume_writer: writer, filter: filter,
-        last_run_time: start_time,
-        logger: logger
+        time_range: start_time..end_time
       )
     end
     let(:in_volumes) { [double(:v1), double(:v2), double(:v3)] }
@@ -36,8 +34,6 @@ module Datasets
 
       allow(delete_job).to receive(:enqueue)
       allow(Datasets::DeleteJob).to receive(:new).and_return(delete_job)
-
-      allow(logger).to receive(:log)
 
       in_volumes.each {|v| allow(filter).to receive(:matches?).with(v).and_return(true) }
       out_volumes.each {|v| allow(filter).to receive(:matches?).with(v).and_return(false) }
@@ -66,13 +62,10 @@ module Datasets
         scheduler.add
       end
 
-      it "logs each volume that satisfies the filter" do
-        in_volumes.zip(src_paths).each do |volume, path|
-          expect(logger).to receive(:log).with("save", volume, path)
-        end
-
-        scheduler.add
+      it "returns the enqueued volumes" do
+        expect(scheduler.add).to eql(in_volumes)
       end
+
     end
 
     describe "#delete" do
@@ -98,13 +91,10 @@ module Datasets
         scheduler.delete
       end
 
-      it "logs each volume that satisfies the filter" do
-        out_volumes.each do |volume|
-          expect(logger).to receive(:log).with("delete", volume, anything)
-        end
-
-        scheduler.delete
+      it "returns the enqueued volumes" do
+        expect(scheduler.delete).to eql(out_volumes)
       end
+
     end
   end
 end
