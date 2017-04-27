@@ -3,7 +3,6 @@ require "pathname"
 
 module Datasets
   class SaveJob < Job
-    @queue = :all
 
     # @param volume [Volume]
     # @param src_path [Pathname]

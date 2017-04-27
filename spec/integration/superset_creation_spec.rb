@@ -20,7 +20,8 @@ module Datasets
             src_path_resolver: Datasets.config.src_path_resolver[:full],
             volume_writer: Datasets.config.volume_writer[:full],
             filter: Datasets.config.filter[:full],
-            time_range: time_range
+            time_range: time_range,
+            queue: :test
           )
           [scheduler.add, scheduler.delete]
         end

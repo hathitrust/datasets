@@ -20,7 +20,8 @@ module Datasets
             src_path_resolver: Datasets.config.src_path_resolver[:pd_world_open],
             volume_writer: Datasets.config.volume_writer[:pd_world_open],
             filter: Datasets.config.filter[:pd_world_open],
-            time_range: time_range
+            time_range: time_range,
+            queue: :test
           )
           [scheduler.add, scheduler.delete]
         end
