@@ -58,7 +58,7 @@ module Datasets
     end
 
     def should_write_zip?(src_path, dest_path)
-      !fs.exists?(dest_path) || fs.creation_time(src_path) > fs.creation_time(dest_path)
+      !fs.exists?(dest_path) || fs.modify_time(src_path) > fs.modify_time(dest_path)
     end
 
   end

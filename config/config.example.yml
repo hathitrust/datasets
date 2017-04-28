@@ -3,22 +3,27 @@
 # This is the config.yml to use when using the
 # Datasets::Hathitrust::Configuration.
 
-src_parent_dir: 'spec/integration/repo'
+src_parent_dir: '/sdr1'
 
 report_dir:
-  :full: 'spec/integration/datasets/ht_text/history'
-    :pd: 'spec/integration/datasets/ht_text_pd/history'
-    :pd_open: 'spec/integration/datasets/ht_text_pd_open_access/history'
-    :pd_world: 'spec/integration/datasets/ht_text_pd_world/history'
-    :pd_world_open: 'spec/integration/datasets/ht_text_pd_world_open_access/history'
+  :full: 'DATASETS_HOME/ht_text/history'
+  :pd: 'DATASETS_HOME/ht_text_pd/history'
+  :pd_open: 'DATASETS_HOME/ht_text_pd_open_access/history'
+  :pd_world: 'DATASETS_HOME/ht_text_pd_world/history'
+  :pd_world_open: 'DATASETS_HOME/ht_text_pd_world_open_access/history'
 
 dest_parent_dir:
-  :full: 'spec/integration/datasets/ht_text'
-  :pd: 'spec/integration/datasets/ht_text_pd'
-  :pd_open: 'spec/integration/datasets/ht_text_pd_open_access'
-  :pd_world: 'spec/integration/datasets/ht_text_pd_world'
-  :pd_world_open: 'spec/integration/datasets/ht_text_pd_world_open_access'
+  :full: 'DATASETS_HOME/ht_text'
+  :pd: 'DATASETS_HOME/ht_text_pd'
+  :pd_open: 'DATASETS_HOME/ht_text_pd_open_access'
+  :pd_world: 'DATASETS_HOME/ht_text_pd_world'
+  :pd_world_open: 'DATASETS_HOME/ht_text_pd_world_open_access'
 
-db:
-  adapter: sqlite
-  database: spec/integration/demo.db
+feed_db: &db_config
+  adapter: mysql
+  database: ht
+  host: mysql.example.com
+  user: YOUR_USERNAME
+  password: YOUR_PASSWORD
+
+rights_db: *db_config

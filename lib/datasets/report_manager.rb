@@ -15,6 +15,7 @@ module Datasets
 
     def initialize(parent_dir, fs)
       @parent_dir = Pathname.new parent_dir
+      raise ArgumentError, "The parent_dir #{parent_dir} must exist" unless fs.exists?(@parent_dir)
       @fs = fs
     end
 

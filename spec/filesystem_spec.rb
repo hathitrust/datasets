@@ -8,9 +8,9 @@ module Datasets
     let(:fs) { described_class.new }
 
     describe "stat methods" do
-      describe "#creation_time" do
-        it "returns ctime as a Time object" do
-          expect(fs.creation_time(Pathname.new("/tmp"))).to be < Time.now
+      describe "#modify_time" do
+        it "returns mtime as a Time object" do
+          expect(fs.modify_time(Pathname.new("/tmp"))).to be < Time.now
         end
       end
       describe "#exists?" do

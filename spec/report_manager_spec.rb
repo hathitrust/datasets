@@ -6,7 +6,7 @@ module Datasets
 
   RSpec.describe ReportManager do
     let(:parent_dir) { Pathname.new("some/dir") }
-    let(:fs) { double(:fs, mkdir_p: nil, read: nil, write: nil) }
+    let(:fs) { double(:fs, mkdir_p: nil, read: nil, write: nil, exists?: true) }
     let(:mgr) { described_class.new(parent_dir, fs) }
 
     describe "#last_range" do
