@@ -13,8 +13,8 @@ module Datasets
 
     # @param [Pathname] path
     # @return [Time]
-    def creation_time(path)
-      path.ctime
+    def modify_time(path)
+      path.mtime
     end
 
     # @param [Pathname] path

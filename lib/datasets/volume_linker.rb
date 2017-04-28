@@ -21,7 +21,7 @@ module Datasets
     def save(volume, src_path)
       dest_path = dest_path_resolver.path(volume)
       fs.mkdir_p dest_path.parent
-      fs.ln_s src_path, dest_path
+      fs.ln_s src_path.relative_path_from(dest_path.parent), dest_path
     end
 
     # Delete a link for the volume within the

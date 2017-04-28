@@ -17,24 +17,43 @@ module Datasets
     end
 
     def access_profile(id)
-      @connection.from(:access_profiles).where(id: id).first
+      find(:access_profiles, id)
+    end
+    def access_profile_id(name)
+      find_id(:access_profiles, name)
     end
 
     def attribute(id)
-      @connection.from(:attributes).where(id: id).first
+      find(:attributes, id)
+    end
+    def attribute_id(name)
+      find_id(:attributes, name)
     end
 
     def reason(id)
-      @connection.from(:reasons).where(id: id).first
+      find(:reasons, id)
+    end
+    def reason_id(name)
+      find_id(:reasons, name)
     end
 
     def source(id)
-      @connection.from(:sources).where(id: id).first
+      find(:sources, id)
+    end
+    def source_id(name)
+      find_id(:sources, name)
     end
 
     private
 
     attr_reader :connection
+
+    def find(table, id)
+      @connection.from(table).where(id: id).first
+    end
+    def find_id(table, name)
+      @connection.from(table).where(name: name.to_s).first&.fetch(:id, nil)
+    end
 
     def config_file(filename)
       @dir ||= File.dirname(File.expand_path(__FILE__))

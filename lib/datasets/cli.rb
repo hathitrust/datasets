@@ -2,7 +2,7 @@ require 'thor'
 require 'pp'
 require 'sequel'
 require 'datasets'
-require_relative '../config/hathitrust_config'
+require_relative '../../config/hathitrust_config'
 
 Signal.trap("INT"){
   puts "Interrupt.  Exiting."
@@ -12,7 +12,7 @@ Signal.trap("INT"){
 module Datasets
   class CLI < Thor
 
-    APP_ROOT = Pathname.new File.expand_path('../../',  __FILE__)
+    APP_ROOT = Pathname.new(__FILE__).expand_path.parent.parent.dirname
 
     # Tasks
     desc "all", "Do all the dataset operations."
@@ -21,7 +21,6 @@ module Datasets
       config = Datasets::HathiTrust::Configuration.from_yaml(File.join(APP_ROOT,"config/config.example.yml"))
       Datasets.config = config
 
-      # Check that job queue is empty
       unless job_queue_empty?
         puts "Jobs still enqueued."
         return
@@ -38,12 +37,16 @@ module Datasets
       end
 
       # QueueJobs
+      queue_jobs(schedulers)
+
+      puts "Done."
+    end
+
+    def queue_jobs(schedulers)
       schedulers.each do |scheduler|
         scheduler.add
         scheduler.delete
       end
-
-      puts "Done."
     end
 
     desc "print", "Print configuration."
@@ -52,8 +55,8 @@ module Datasets
       pp Settings.to_hash
     end
 
-    # Non-task cli functions 
-    private 
+    # Non-task cli functions
+    private
 
     # Functions that should be in a testable orchestration object eventually
 
@@ -64,7 +67,7 @@ module Datasets
     # TODO: allow injection
     def last_run_date
 #      (Date.today-1).to_time
-      Date.new(1970,01,01).to_time
+      Time.at(0)
     end
 
   end

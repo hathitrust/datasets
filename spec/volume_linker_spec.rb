@@ -26,12 +26,13 @@ module Datasets
     describe "#save" do
       let(:volume) { double(:volume) }
       let(:src_path) { Pathname.new("/src/path/to/volume") }
+      let(:path_from_dest_to_src) { Pathname.new "../../../src/path/to/volume" }
       before(:each) { volume_linker.save(volume, src_path) }
       it "creates the directory tree of the parent dir" do
         expect(fs).to have_received(:mkdir_p).with(dest_path.parent)
       end
       it "creates a link from src to dest" do
-        expect(fs).to have_received(:ln_s).with(src_path, dest_path)
+        expect(fs).to have_received(:ln_s).with(path_from_dest_to_src, dest_path)
       end
     end
 

@@ -62,8 +62,8 @@ module Datasets
       context "destination zip present and newer than src" do
         before(:each) do
           allow(fs).to receive(:exists?).with(dest_zip).and_return(true)
-          allow(fs).to receive(:creation_time).with(src_zip).and_return(Time.at(0))
-          allow(fs).to receive(:creation_time).with(dest_zip).and_return(Time.at(9999))
+          allow(fs).to receive(:modify_time).with(src_zip).and_return(Time.at(0))
+          allow(fs).to receive(:modify_time).with(dest_zip).and_return(Time.at(9999))
           volume_creator.save(volume, src_path)
         end
         it "creates the directory tree including final dir" do
@@ -79,8 +79,8 @@ module Datasets
       context "destination zip present and older than src" do
         before(:each) do
           allow(fs).to receive(:exists?).with(dest_zip).and_return(true)
-          allow(fs).to receive(:creation_time).with(src_zip).and_return(Time.at(9999))
-          allow(fs).to receive(:creation_time).with(dest_zip).and_return(Time.at(0))
+          allow(fs).to receive(:modify_time).with(src_zip).and_return(Time.at(9999))
+          allow(fs).to receive(:modify_time).with(dest_zip).and_return(Time.at(0))
           volume_creator.save(volume, src_path)
         end
         it "creates the directory tree including final dir" do

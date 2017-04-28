@@ -16,8 +16,13 @@ module Datasets
       end
 
       def src_path_resolver
-        @src_path_resolver ||=
-          PairtreePathResolver.new(Pathname.new(src_parent_dir))
+        @src_path_resolver ||= {
+          superset => PairtreePathResolver.new(Pathname.new(src_parent_dir)),
+          pd: subset_src_path_resolver,
+          pd_open: subset_src_path_resolver,
+          pd_world: subset_src_path_resolver,
+          pd_world_open: subset_src_path_resolver
+        }
       end
 
       def volume_repo
@@ -27,10 +32,15 @@ module Datasets
           end
           .concat([[superset, superset_volume_repo]])
           .to_h
+        @volume_repo
       end
 
-      def db_connection
-        @db_connection ||= Sequel.connect(db)
+      def rights_db_connection
+        @rights_db_connection ||= Sequel.connect(rights_db)
+      end
+
+      def feed_db_connection
+        @feed_db_connection ||= Sequel.connect(feed_db)
       end
 
       def filter
@@ -49,14 +59,18 @@ module Datasets
 
       private
 
+      def subset_src_path_resolver
+        @subset_src_path_resolver ||= PairtreePathResolver.new(dest_parent_dir[superset])
+      end
+
       def subset_volume_repo
-        @rights_volume_repo ||= Repository::RightsVolumeRepo.new(db_connection)
+        @rights_volume_repo ||= Repository::RightsVolumeRepo.new(rights_db_connection)
       end
 
       def superset_volume_repo
         @superset_volume_repo ||= Repository::RightsFeedVolumeRepo.new(
-          rights_backend: Repository::RightsVolumeRepo.new(db_connection),
-          feed_backend: Repository::FeedBackend.new(db_connection)
+          rights_backend: Repository::RightsVolumeRepo.new(rights_db_connection),
+          feed_backend: Repository::FeedBackend.new(feed_db_connection)
         )
       end
 
