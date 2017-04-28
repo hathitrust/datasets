@@ -65,8 +65,10 @@ module Datasets
     end
 
     def insert_from_csv(name)
-      csv(config_file("#{name}.csv")).each do |row|
-        connection[name.to_sym].insert(row.to_h)
+      connection.transaction do 
+        csv(config_file("#{name}.csv")).each do |row|
+          connection[name.to_sym].insert(row.to_h)
+        end
       end
     end
 
