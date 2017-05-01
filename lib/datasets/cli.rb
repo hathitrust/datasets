@@ -1,73 +1,82 @@
-require 'thor'
-require 'pp'
-require 'sequel'
-require 'datasets'
-require_relative '../../config/hathitrust_config'
+# frozen_string_literal: true
+require "thor"
+require "pp"
+require "sequel"
+require "datasets"
+require_relative "../../config/hathitrust_config"
+require "pry"
 
-Signal.trap("INT"){
+Signal.trap("INT") do
   puts "Interrupt.  Exiting."
   exit
-}
+end
 
 module Datasets
   class CLI < Thor
+    package_name "datasets"
 
     APP_ROOT = Pathname.new(__FILE__).expand_path.parent.parent.dirname
 
     # Tasks
+    option :config,
+      type: :string,
+      default: "#{APP_ROOT}/config/config.yml",
+      aliases: "-c",
+      desc: "Path to the configuration file to use."
+
+    option :start_time,
+      type: :string,
+      aliases: "-s",
+      desc: "Run from this start time; must also specify end time"
+
+    option :end_time,
+      type: :string,
+      aliases: "-e",
+      desc: "Run to this end time; must also specify start time"
+
     desc "all", "Do all the dataset operations."
     def all
-      # TODO: take config yml as a cmdline option
-      config = Datasets::HathiTrust::Configuration.from_yaml(File.join(APP_ROOT,"config/config.example.yml"))
-      Datasets.config = config
+      Datasets.config = load_config(options[:config])
 
-      unless job_queue_empty?
-        puts "Jobs still enqueued."
-        return
+      check_time_args
+
+      if options[:start_time] && options[:end_time]
+        time_range = Time.new(options[:start_time])..Time.new(options[:end_time])
+        update_time_range(time_range)
+      else
+        incremental_update
       end
-
-      schedulers = config.profiles.map do |profile|
-        Scheduler.new(
-          volume_repo: config.volume_repo[profile],
-          src_path_resolver: config.src_path_resolver,
-          volume_writer: config.volume_writer[profile],
-          filter: config.filter[profile],
-          last_run_time: last_run_date,
-          logger: VolumeActionLogger.new(File.open("#{profile}_#{Date.today.to_s}.txt","w")))
-      end
-
-      # QueueJobs
-      queue_jobs(schedulers)
 
       puts "Done."
     end
 
-    def queue_jobs(schedulers)
-      schedulers.each do |scheduler|
-        scheduler.add
-        scheduler.delete
-      end
-    end
-
-    desc "print", "Print configuration."
-    def print
-      configure unless configured?
-      pp Settings.to_hash
-    end
+    default_task :all
 
     # Non-task cli functions
     private
 
-    # Functions that should be in a testable orchestration object eventually
-
-    def job_queue_empty?
-      return true
+    def check_time_args
+      if (options[:start_time] || options[:end_time]) &&
+          !(options[:start_time] && options[:end_time])
+        raise RequiredArgumentMissingError,
+          "if one of start and end time is given, both must be"
+      end
     end
 
-    # TODO: allow injection
-    def last_run_date
-#      (Date.today-1).to_time
-      Time.at(0)
+    def incremental_update
+      Datasets.config.profiles.each do |profile|
+        ManagedSafeRun.new(profile).execute
+      end
+    end
+
+    def update_time_range(time_range)
+      Datasets.config.profiles.each do |profile|
+        UnmanagedSafeRun.new(time_range, profile).execute
+      end
+    end
+
+    def load_config(config)
+      Datasets::HathiTrust::Configuration.from_yaml(config)
     end
 
   end
