@@ -2,7 +2,6 @@ require "datasets"
 
 module Datasets
   class DeleteJob < Job
-    @queue = :all
 
     def initialize(volume, writer)
       @volume = volume

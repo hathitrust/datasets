@@ -17,8 +17,8 @@ module Datasets
       self.deserialize(*args).perform
     end
 
-    def enqueue
-      Resque.enqueue(self.class, serialize)
+    def enqueue(queue)
+      Resque::Job.create(queue.to_sym, self.class, serialize)
     end
 
     def serialize

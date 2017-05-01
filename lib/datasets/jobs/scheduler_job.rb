@@ -1,25 +1,19 @@
-require "datasets"
+require "datasets/job"
+require "datasets/safe_run"
 
 module Datasets
   class SchedulerJob < Job
-    @queue = :all
 
-    def initialize(profile, report_dir = nil)
+    def initialize(profile)
       @profile = profile
     end
 
+    def enqueue(queue = :schedule)
+      super(queue)
+    end
+
     def perform
-      report_manager = Datasets::ReportManager.new(Datasets.config.report_dir[profile], Filesystem.new)
-      report_manager.build_next_report do |time_range|
-        scheduler = Scheduler.new(
-          volume_repo: Datasets.config.volume_repo[profile],
-          src_path_resolver: Datasets.config.src_path_resolver[profile],
-          volume_writer: Datasets.config.volume_writer[profile],
-          filter: Datasets.config.filter[profile],
-          time_range: time_range
-        )
-        [scheduler.add, scheduler.delete]
-      end
+      SafeRun.new(profile).execute
     end
 
     def serialize

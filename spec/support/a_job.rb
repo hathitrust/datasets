@@ -5,6 +5,7 @@ require "datasets/job"
 module Datasets
 
   shared_examples "a job" do
+    let(:queue) { :test }
     it "#serialize returns an array" do
       expect(job.serialize).to be_an Array
     end
@@ -17,7 +18,7 @@ module Datasets
     end
     it "survives being enqueued" do
       expect_any_instance_of(described_class).to receive(:perform).once
-      job.enqueue
+      job.enqueue(queue)
     end
     it "survives jsonification" do
       json = JSON.dump(job.serialize)
@@ -25,8 +26,8 @@ module Datasets
       expect(reified_instance.serialize).to eql(job.serialize)
     end
     it "can be enqueued with #enqueue" do
-      expect(Resque).to receive(:enqueue).with(described_class, job.serialize)
-      job.enqueue
+      expect(Resque::Job).to receive(:create).with(queue, described_class, job.serialize)
+      job.enqueue(queue)
     end
   end
 
