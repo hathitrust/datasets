@@ -12,7 +12,7 @@ module Datasets
       old_timestamp = Time.at(55)
       new_timestamp = Time.at(9999)
 
-      subject { SafeRun.new(:full).execute }
+      subject { ManagedSafeRun.new(:full).execute }
 
       context "no previous report exists" do
         context "a volume has mismatched rights" do

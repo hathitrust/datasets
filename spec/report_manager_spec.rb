@@ -1,5 +1,6 @@
 require_relative "./spec_helper"
 require "report_manager"
+require "filesystem"
 require "pathname"
 
 module Datasets
@@ -22,6 +23,15 @@ module Datasets
         end
       end
     end
+
+    describe "#save_path" do
+      let(:time_range) { Time.new(2001, 1, 1, 0, 0, 0)..Time.new(2002, 12, 31, 11, 59, 59) }
+
+      it "returns parent_dir/YYYYMMDDHHMMSS-YYYMMDDHHMMSS/" do
+        expect(mgr.save_path(time_range)).to eql(Pathname.new("some/dir/20010101000000-20021231115959"))
+      end
+    end
+      
 
     # We mock #last_range here because it is convenient and should
     # help to isolate errors.
