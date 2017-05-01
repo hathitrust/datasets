@@ -12,20 +12,7 @@ module Datasets
       old_timestamp = Time.at(55)
       new_timestamp = Time.at(9999)
 
-      let(:report_manager) { ReportManager.new(Datasets.config.report_dir[:full], Filesystem.new) }
-      subject do
-        report_manager.build_next_report do |time_range|
-          scheduler = Scheduler.new(
-            volume_repo: Datasets.config.volume_repo[:full],
-            src_path_resolver: Datasets.config.src_path_resolver[:full],
-            volume_writer: Datasets.config.volume_writer[:full],
-            filter: Datasets.config.filter[:full],
-            time_range: time_range,
-            queue: :test
-          )
-          [scheduler.add, scheduler.delete]
-        end
-      end
+      subject { SafeRun.new(:full).execute }
 
       context "no previous report exists" do
         context "a volume has mismatched rights" do
