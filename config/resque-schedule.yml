@@ -1,25 +1,25 @@
-superset:
-  class: "Datasets::SchedulerJob"
-  cron: "0 0 * * *"
-  args: :full
-
-pd:
-  class: "Datasets::SchedulerJob"
-  cron: "0 4 * * *"
-  args: :pd
-
-pd_open:
-  class: "Datasets::SchedulerJob"
-  cron: "0 8 * * *"
-  args: :pd_open
-
-pd_world:
-  class: "Datasets::SchedulerJob"
-  cron: "0 12 * * *"
-  args: :pd_world
-
-pd_world_open:
-  class: "Datasets::SchedulerJob"
-  cron: "0 16 * * *"
-  args: :pd_world_open
-
+#superset:
+#  class: "Datasets::SchedulerJob"
+#  cron: "0 0 * * *"
+#  args: :full
+#
+#pd:
+#  class: "Datasets::SchedulerJob"
+#  cron: "0 4 * * *"
+#  args: :pd
+#
+#pd_open:
+#  class: "Datasets::SchedulerJob"
+#  cron: "0 8 * * *"
+#  args: :pd_open
+#
+#pd_world:
+#  class: "Datasets::SchedulerJob"
+#  cron: "0 12 * * *"
+#  args: :pd_world
+#
+#pd_world_open:
+#  class: "Datasets::SchedulerJob"
+#  cron: "0 16 * * *"
+#  args: :pd_world_open
+#
