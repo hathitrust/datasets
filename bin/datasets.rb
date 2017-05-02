@@ -9,6 +9,6 @@ require "rubygems"
 require "bundler/setup"
 
 # Project specific code
-require_relative '../lib/datasets_cli.rb'
+require_relative '../lib/datasets/cli.rb'
 
 Datasets::CLI.start(ARGV)

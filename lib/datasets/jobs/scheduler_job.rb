@@ -1,5 +1,5 @@
 require "datasets/job"
-require "datasets/safe_run"
+require "datasets/managed_safe_run"
 
 module Datasets
   class SchedulerJob < Job
@@ -13,7 +13,7 @@ module Datasets
     end
 
     def perform
-      SafeRun.new(profile).execute
+      ManagedSafeRun.new(profile).execute
     end
 
     def serialize

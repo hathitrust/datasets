@@ -12,7 +12,7 @@ module Datasets
       old_timestamp = Time.at(55)
       new_timestamp = Time.at(9999)
 
-      subject { SafeRun.new(:pd_world_open).execute }
+      subject { ManagedSafeRun.new(:pd_world_open).execute }
 
       context "no previous report exists" do
         context "volumes match rights profile" do
