@@ -1,4 +1,4 @@
-require "datasets"
+require "datasets/job"
 require "pathname"
 
 module Datasets

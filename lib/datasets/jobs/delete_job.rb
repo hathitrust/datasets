@@ -1,4 +1,4 @@
-require "datasets"
+require "datasets/job"
 
 module Datasets
   class DeleteJob < Job

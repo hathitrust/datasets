@@ -6,33 +6,29 @@ require "resque/scheduler/tasks"
 
 RSpec::Core::RakeTask.new(:spec)
 
-task :environment do
-  require "datasets"
-end
-
 
 namespace :resque do
+  task :setup => :server_setup do
+    require "datasets"
+  end
 
-  task :setup => :environment do
-    require "resque"
-    Resque.redis = 'localhost:6379'
+  task :server_setup do
+    require "resque/server"
+    require "resque-retry"
+    require "resque-retry/server"
+    require "resque-scheduler"
+    require "resque/scheduler/server"
   end
 
   namespace :pool do
     task :setup => "resque:setup" do
-      require "resque/pool"
-      Resque::Pool.after_prefork do |job|
+      Resque::Pool.after_prefork do |_|
         Resque.redis.client.reconnect
       end
     end
   end
 
-  task :setup_schedule => :setup do
-    require "resque-scheduler"
-    require "resque/scheduler/server"
-    # Resque::Scheduler.dynamic = true
-    Resque.schedule = YAML.load(File.read('config/resque-schedule.yml'))
-  end
-  task :scheduler => :setup_schedule
+  task :scheduler => :setup
+
 
 end

@@ -1,18 +1,7 @@
-require "resque"
-require "resque-retry"
-require "resque/failure/redis"
-
-Resque::Failure::MultipleWithRetrySuppression.classes = [Resque::Failure::Redis]
-Resque::Failure.backend = Resque::Failure::MultipleWithRetrySuppression
+require "datasets/volume"
 
 module Datasets
   class Job
-    extend Resque::Plugins::Retry
-    extend Resque::Plugins::ExponentialBackoff
-    @backoff_strategy = [60, 300, 600, 3600, 7200]
-    @expire_retry_key_after = @backoff_strategy.last + 3600
-    @retry_limit = 10
-
     def self.perform(args)
       self.deserialize(*args).perform
     end
