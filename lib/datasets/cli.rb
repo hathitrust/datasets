@@ -41,7 +41,7 @@ module Datasets
       check_time_args
 
       if options[:start_time] && options[:end_time]
-        time_range = Time.new(options[:start_time])..Time.new(options[:end_time])
+        time_range = DateTime.parse(options[:start_time]).to_time..DateTime.parse(options[:end_time]).to_time
         update_time_range(time_range)
       else
         incremental_update
@@ -71,7 +71,7 @@ module Datasets
 
     def update_time_range(time_range)
       Datasets.config.profiles.each do |profile|
-        UnmanagedSafeRun.new(time_range, profile).execute
+        UnmanagedSafeRun.new(profile, time_range).execute
       end
     end
 

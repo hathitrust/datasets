@@ -7,7 +7,7 @@ module Datasets
     let(:config) { double("config") }
     let(:start_date) { "1970-01-01" }
     let(:end_date) { "1970-01-02" }
-    let(:time_range) { Time.new(start_date)..Time.new(end_date) }
+    let(:time_range) { DateTime.parse(start_date).to_time..DateTime.parse(end_date).to_time }
 
     before(:each) do
       allow(Datasets::HathiTrust::Configuration).to receive(:from_yaml)
@@ -68,7 +68,7 @@ module Datasets
 
         profiles.each do |profile|
           expect(UnmanagedSafeRun).to receive(:new)
-            .with(time_range, profile).and_return(unmanaged_run)
+            .with(profile, time_range).and_return(unmanaged_run)
         end
         expect(unmanaged_run).to receive(:execute).exactly(profiles.count).times
 
