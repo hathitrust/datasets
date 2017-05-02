@@ -19,7 +19,7 @@ module Datasets
   class Job
     extend Resque::Plugins::Retry
     extend Resque::Plugins::ExponentialBackoff
-    @backoff_strategy = [60, 300, 600, 3600, 7200]
+    @backoff_strategy = [1, 5, 10, 60, 1200]
     @expire_retry_key_after = @backoff_strategy.last + 3600
     @retry_limit = 10
   end
