@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_runtime_dependency "mysql2"
   spec.add_runtime_dependency "rpairtree"
   spec.add_runtime_dependency "resque"
   spec.add_runtime_dependency "resque-retry"
