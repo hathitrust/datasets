@@ -3,6 +3,7 @@ require "datasets/managed_safe_run"
 
 module Datasets
   class SchedulerJob < Job
+    @queue = :scheduling
 
     def initialize(profile)
       @profile = profile
