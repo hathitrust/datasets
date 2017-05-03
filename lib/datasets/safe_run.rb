@@ -12,7 +12,7 @@ module Datasets
   class SafeRun
     def execute
       if queue_empty?
-        Datasets.config.filter.keys.each do |profile|
+        Datasets.config.profiles.each do |profile|
           queue_and_report(profile.to_sym)
         end
       end

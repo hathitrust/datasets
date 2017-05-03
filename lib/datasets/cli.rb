@@ -64,15 +64,11 @@ module Datasets
     end
 
     def incremental_update
-      Datasets.config.profiles.each do |profile|
-        ManagedSafeRun.new(profile).execute
-      end
+      ManagedSafeRun.new.execute
     end
 
     def update_time_range(time_range)
-      Datasets.config.profiles.each do |profile|
-        UnmanagedSafeRun.new(profile, time_range).execute
-      end
+      UnmanagedSafeRun.new(time_range).execute
     end
 
     def load_config(config)

@@ -53,24 +53,20 @@ module Datasets
 
       it "runs a managed safe run with each profile in the config" do
         managed_run = double("managed run")
+        allow(ManagedSafeRun).to receive(:new).and_return(managed_run)
 
-        profiles.each do |profile|
-          expect(ManagedSafeRun).to receive(:new)
-            .with(profile).and_return(managed_run)
-        end
-        expect(managed_run).to receive(:execute).exactly(profiles.count).times
+        expect(ManagedSafeRun).to receive(:new).once
+        expect(managed_run).to receive(:execute).once
 
         described_class.start([])
       end
 
       it "runs an unmanaged safe run with the given time range for each profile in the config" do
         unmanaged_run = double("unmanaged run")
+        allow(UnmanagedSafeRun).to receive(:new).and_return(unmanaged_run)
 
-        profiles.each do |profile|
-          expect(UnmanagedSafeRun).to receive(:new)
-            .with(profile, time_range).and_return(unmanaged_run)
-        end
-        expect(unmanaged_run).to receive(:execute).exactly(profiles.count).times
+        expect(UnmanagedSafeRun).to receive(:new).with(time_range).once
+        expect(unmanaged_run).to receive(:execute).once
 
         described_class.start(["--start-time", start_date, "--end-time", end_date])
       end
