@@ -1,13 +1,28 @@
 require "datasets/volume"
+require "resque"
 
 module Datasets
   class Job
+    @queue = :work
+
+    def self.queue
+      @queue
+    end
+
+    def self.set_queue(name)
+      @queue = name
+    end
+
+    def self.inherited(subclass)
+      subclass.set_queue(@queue)
+    end
+
     def self.perform(args)
       self.deserialize(*args).perform
     end
 
-    def enqueue(queue)
-      Resque::Job.create(queue.to_sym, self.class, serialize)
+    def enqueue
+      ::Resque.enqueue(self.class, serialize)
     end
 
     def serialize

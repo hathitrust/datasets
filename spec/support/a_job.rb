@@ -18,7 +18,7 @@ module Datasets
     end
     it "survives being enqueued" do
       expect_any_instance_of(described_class).to receive(:perform).once
-      job.enqueue(queue)
+      job.enqueue
     end
     it "survives jsonification" do
       json = JSON.dump(job.serialize)
@@ -26,8 +26,8 @@ module Datasets
       expect(reified_instance.serialize).to eql(job.serialize)
     end
     it "can be enqueued with #enqueue" do
-      expect(Resque::Job).to receive(:create).with(queue, described_class, job.serialize)
-      job.enqueue(queue)
+      expect(Resque).to receive(:enqueue).with(described_class, job.serialize)
+      job.enqueue
     end
   end
 

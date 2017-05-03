@@ -15,8 +15,7 @@ module Datasets
       described_class.new(
         volume_repo: repo, src_path_resolver: src,
         volume_writer: writer, filter: filter,
-        time_range: start_time..end_time,
-        queue: :testqueue
+        time_range: start_time..end_time
       )
     end
     let(:in_volumes) { [double(:v1), double(:v2), double(:v3)] }

@@ -10,13 +10,12 @@ module Datasets
     # @param [VolumeWriter] volume_writer
     # @param [Filter] filter
     # @param [Range<Time>] time_range
-    def initialize(volume_repo:, src_path_resolver:, volume_writer:, filter:, time_range:, queue:)
+    def initialize(volume_repo:, src_path_resolver:, volume_writer:, filter:, time_range:)
       @volume_repo = volume_repo
       @src_path_resolver = src_path_resolver
       @volume_writer = volume_writer
       @filter = filter
       @time_range = time_range
-      @queue = queue
     end
 
     def add
@@ -25,7 +24,7 @@ module Datasets
       volumes
         .map {|volume| [volume, src_path_resolver.path(volume)] }
         .map {|volume, src_path| SaveJob.new(volume, src_path, volume_writer) }
-        .each {|job| job.enqueue(queue) }
+        .each {|job| job.enqueue }
       return volumes
     end
 
@@ -34,13 +33,13 @@ module Datasets
         .reject {|volume| filter.matches?(volume) }
       volumes
         .map {|volume| DeleteJob.new(volume, volume_writer) }
-        .each {|job| job.enqueue(queue) }
+        .each {|job| job.enqueue }
       return volumes
     end
 
     private
 
     attr_reader :volume_repo, :src_path_resolver,
-      :volume_writer, :filter, :time_range, :queue
+      :volume_writer, :filter, :time_range
   end
 end

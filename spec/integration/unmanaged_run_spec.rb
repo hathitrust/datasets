@@ -13,7 +13,7 @@ module Datasets
       new_timestamp = Time.at(9999)
       time_range = Time.at(0)..Time.at(1000)
 
-      subject { UnmanagedSafeRun.new(:full,time_range).execute }
+      subject { UnmanagedSafeRun.new(time_range).execute }
 
       context "no previous report exists" do
         context "volumes match rights profile" do

@@ -1,4 +1,5 @@
 require "datasets/safe_run"
+require "datasets/report_manager"
 
 module Datasets
 
@@ -7,11 +8,23 @@ module Datasets
   # reports and generation of a new report (if an action is taken).
   class ManagedSafeRun < SafeRun
 
-    private
-    def queue_and_report
-      report_manager.build_next_report do |time_range|
-        queue_jobs(scheduler_for(time_range))
+    def initialize(fs = Filesystem.new)
+      @fs = fs
+    end
+
+    def queue_and_report(profile)
+      report_manager(profile).build_next_report do |time_range|
+        scheduler = scheduler_for(profile, time_range)
+        [scheduler.add, scheduler.delete]
       end
     end
+
+    private
+    attr_reader :fs
+
+    def report_manager(profile)
+      ReportManager.new(report_dir(profile), fs)
+    end
+
   end
 end

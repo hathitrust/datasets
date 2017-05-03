@@ -9,10 +9,6 @@ module Datasets
       @profile = profile
     end
 
-    def enqueue(queue = :schedule)
-      super(queue)
-    end
-
     def perform
       ManagedSafeRun.new(profile).execute
     end

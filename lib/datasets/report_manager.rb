@@ -46,14 +46,13 @@ module Datasets
       report.save(save_path(new_range))
       report
     end
-    
+
     # Save according to the range as dir/YYYYMMDDHHMMSS-YYYMMDDHHMMSS/
     def save_path(range)
       parent_dir + "#{range.first.strftime(TIME_FORMAT)}-#{range.last.strftime(TIME_FORMAT)}"
     end
 
     private
-
 
     # Find the alpha-numerically last directory that contains
     # a saved report, then open and return the summary.

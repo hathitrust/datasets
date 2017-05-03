@@ -1,4 +1,3 @@
-require "datasets/report_manager"
 require "datasets/scheduler"
 require "datasets/filesystem"
 require "resque"
@@ -10,23 +9,27 @@ module Datasets
   # for the updates directly.
   
   class UnmanagedSafeRun < SafeRun
-    # @param profile [Symbol]
-    # @param report_dir [Pathname] parent directory of the reports; must exist.
-    #   If not specified, will be discovered from the configuration.
-    def initialize(profile, time_range, report_dir = nil, filesystem = Filesystem.new)
-      super(profile,report_dir,filesystem)
+    # @param report_path [Pathname]
+    def initialize(time_range, fs = Filesystem.new)
       @time_range = time_range
+      @fs = fs
     end
 
+    def queue_and_report(profile)
+      scheduler = scheduler_for(profile, time_range)
+      Report.new(scheduler.add, scheduler.delete, time_range, fs)
+        .save(save_path(profile))
+    end
 
     private
-    def queue_and_report
-      saved, deleted = queue_jobs(scheduler_for(time_range))
-      Report.new(saved, deleted, time_range, filesystem)
-        .save(report_manager.save_path(time_range))
+    attr_reader :time_range, :fs
+
+    TIME_FORMAT = "%Y%m%d%H%M%S"
+
+    def save_path(profile)
+      report_dir(profile) + "#{time_range.first.strftime(TIME_FORMAT)}-#{time_range.last.strftime(TIME_FORMAT)}"
     end
 
-    attr_reader :time_range
 
   end
 end
