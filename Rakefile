@@ -10,6 +10,9 @@ RSpec::Core::RakeTask.new(:spec)
 namespace :resque do
   task :setup => :server_setup do
     require "datasets"
+    require_relative "config/hathitrust_config.rb"
+    config_yml = Pathname.new(__FILE__).expand_path.dirname + "config" + "config.yml"
+    Datasets.config = Datasets::HathiTrust::Configuration.from_yaml(config_yml)
   end
 
   task :server_setup do
