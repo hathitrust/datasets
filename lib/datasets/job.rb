@@ -9,12 +9,10 @@ module Datasets
       @queue
     end
 
-    def self.set_queue(name)
-      @queue = name
-    end
-
     def self.inherited(subclass)
-      subclass.set_queue(@queue)
+      instance_variables.each do |var|
+        subclass.instance_variable_set(var, self.instance_variable_get(var))
+      end
     end
 
     def self.perform(args)
