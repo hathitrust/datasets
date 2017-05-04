@@ -65,7 +65,7 @@ module Datasets
     end
 
     shared_examples_for 'a filter that matches in-copyright and google material' do
-      [:ic, :icus, :op].each do |attr|
+      [:ic, :icus, :und, :op].each do |attr|
         [:google, :open].each do |access_profile|
           it_matches(attr, access_profile, true)
         end
@@ -73,7 +73,7 @@ module Datasets
     end
 
     shared_examples_for 'a filter that does not match in-copyright material' do
-      [:ic, :icus, :op].each do |attr|
+      [:ic, :icus, :und, :op].each do |attr|
         [:google, :open].each do |access_profile|
           it_matches(attr, access_profile, false)
         end

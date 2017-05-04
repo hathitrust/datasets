@@ -19,7 +19,7 @@ module Datasets
                  :pdus,
                  :"und-world"].to_set
 
-    IC_RIGHTS = [:ic, :icus, :op].to_set
+    IC_RIGHTS = [:ic, :icus, :und, :op].to_set
 
     ACCESS_PROFILES = [:google, :open].to_set
     OPEN_ACCESS_PROFILES = [:open].to_set
