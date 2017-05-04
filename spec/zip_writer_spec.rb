@@ -38,11 +38,10 @@ module Datasets
       # Strings but aren't due to internal use of is_a?. This test ensures
       # we're following rubyzip's implicit interface contract.
       expect(Zip::File).to receive(:open).with(instance_of(String)).and_yield(double(:input_zip))
-      # don't bother yielding anything here, just make sure it's being used correctly
-      expect(Zip::File).to receive(:open).with(instance_of(String),Zip::File::CREATE)
 
       begin
-        create_output_zip
+        # don't actually try to put anything in output zip
+        ZipWriter.new.write(src_path, Pathname.new("whatever.zip")) { |_, _| }
       rescue Errno::ENOENT
         # won't actually create an output zip, don't care
       end
@@ -97,10 +96,10 @@ module Datasets
     end
 
     it 'when copying process raises Zip::Error in the middle of creating a file in the output zip, does not leave a broken zip file' do
-      expect_no_zip do |_, output_zip|
-        f = output_zip.get_output_stream('foo')
+      expect_no_zip do |_, output_zip_stream|
+        output_zip_stream.put_next_entry('foo')
         # write some junk, don't close the output stream, raise an error...
-        f.write('garbage' * 200)
+        output_zip_stream.write('garbage' * 200)
         raise Zip::Error
       end
     end
