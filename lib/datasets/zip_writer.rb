@@ -5,19 +5,26 @@ require 'digest'
 # to a destination path.
 module Datasets
   class ZipWriter
-    # Write the dataset from src_path to
-    # the directory at dest_path.
+    # Write the dataset from src_path to the directory at dest_path. Constructs the output
+    # zip in memory, writes it to a temporary path, and then moves it into the
+    # given dest_path.
+    #
     # @param [Pathname] src_path
     # @param [Pathname] dest_path
-    # @yield [input_zip, output_zip] optional block for implementation of copying
-    # from input zip to output zip. By default gets all txt files in input zip
+    # @yield [input_zip, output_zip_stream] optional block for implementation of copying
+    # from input Zip::File to a Zip::OutputStream. By default gets all txt files in input zip
     # and copies them to output zip.
     def write(src_path, dest_path, &block)
       tmp_path = dest_path.dirname.join(Dir::Tmpname.make_tmpname('dataset', '.zip'))
-      Zip::File.open(src_path.to_s) do |input_zip|
-        Zip::File.open(tmp_path.to_s, Zip::File::CREATE) do |output_zip|
-          (block || copy_text).call input_zip, output_zip
+      stringio = Zip::OutputStream.write_buffer do |output_zip_stream|
+        Zip::File.open(src_path.to_s) do |input_zip|
+          (block || copy_text).call input_zip, output_zip_stream
         end
+      end
+
+      File.open(tmp_path,"w") do |output_zip|
+        stringio.rewind
+        IO.copy_stream(stringio,output_zip)
       end
 
       # rename should be atomic since we have guaranteed tmp_path is in the same
@@ -30,12 +37,11 @@ module Datasets
     private
 
     def copy_text
-      @copy_text_proc ||= proc do |input_zip, output_zip|
+      @copy_text_proc ||= proc do |input_zip, output_zip_stream|
         input_zip.glob('**/*.txt').each do |txt|
+          output_zip_stream.put_next_entry(txt.name)
           txt.get_input_stream do |txt_input_stream|
-            output_zip.get_output_stream(txt.name) do |txt_output_stream|
-              IO.copy_stream(txt_input_stream, txt_output_stream)
-            end
+            IO.copy_stream(txt_input_stream, output_zip_stream)
           end
         end
       end
