@@ -90,6 +90,12 @@ module Datasets
             fs.ln_s(src_file_path, dest_path)
           }.to_not raise_error
         end
+        it "is idempotent if src does not exist" do
+          expect {
+            fs.ln_s(src_file_path, dest_path)
+            fs.ln_s(src_file_path, dest_path)
+          }.to_not raise_error
+        end
         it "is successful if dest is already a file" do
           File.write(src_file_path, "contents")
           File.write(dest_path, "other contents")

@@ -23,13 +23,19 @@ module Datasets
       path.exist?
     end
 
+    # @param [Pathname] path
+    # @return [Boolean]
+    def symlink?(path)
+      path.symlink?
+    end
+
     # Create a symlink at #dest_path to #src_path.
     # If the file already exists, whether it is a
     # link or a normal file, we return success.
     # @param [Pathname] src_path
     # @param [Pathname] dest_path
     def ln_s(src_path, dest_path)
-      unless exists?(dest_path)
+      unless exists?(dest_path) or symlink?(dest_path)
         dest_path.make_symlink src_path
       end
     end
