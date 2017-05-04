@@ -33,6 +33,22 @@ module Datasets
       end
     end
 
+    it 'passes a string to Zip::File' do
+      # rubzip can have unexpected behavior with things that behave like
+      # Strings but aren't due to internal use of is_a?. This test ensures
+      # we're following rubyzip's implicit interface contract.
+      expect(Zip::File).to receive(:open).with(instance_of(String)).and_yield(double(:input_zip))
+      # don't bother yielding anything here, just make sure it's being used correctly
+      expect(Zip::File).to receive(:open).with(instance_of(String),Zip::File::CREATE)
+
+      begin
+        create_output_zip
+      rescue Errno::ENOENT
+        # won't actually create an output zip, don't care
+      end
+
+    end
+
     it 'creates a file at the specified destination path' do
       create_output_zip do |output|
         expect(output).to exist
@@ -41,13 +57,13 @@ module Datasets
 
     it 'creates an openable zip file' do
       create_output_zip do |output|
-        expect { Zip::File.open(output) {} }.to_not raise_error
+        expect { Zip::File.open(output.to_s) {} }.to_not raise_error
       end
     end
 
     it 'creates a zip containing all the text files in the source zip' do
       create_output_zip do |output|
-        texts = Zip::File.open(output) do |z|
+        texts = Zip::File.open(output.to_s) do |z|
           z.glob('**/*.txt')
            .map { |entry| File.basename(entry.name) }
         end
@@ -58,7 +74,7 @@ module Datasets
     it 'creates a zip without non-text files in the source zip' do
       create_output_zip do |output|
         expect(
-          Zip::File.open(output) do |z|
+          Zip::File.open(output.to_s) do |z|
             z.map { |entry| Pathname.new(entry.name) }
               .reject { |path| path.extname == '.txt' }
           end
@@ -68,8 +84,8 @@ module Datasets
 
     it 'creates a zip that has a text file whose content matches the text in the source zip' do
       create_output_zip do |output|
-        src_text = Zip::File.open(src_path) { |z| z.get_input_stream('test_volume/00000002.txt').read }
-        dest_text = Zip::File.open(output) { |z| z.get_input_stream('test_volume/00000002.txt').read }
+        src_text = Zip::File.open(src_path.to_s) { |z| z.get_input_stream('test_volume/00000002.txt').read }
+        dest_text = Zip::File.open(output.to_s) { |z| z.get_input_stream('test_volume/00000002.txt').read }
         expect(src_text).to eq(dest_text)
       end
     end

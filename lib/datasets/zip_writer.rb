@@ -14,8 +14,8 @@ module Datasets
     # and copies them to output zip.
     def write(src_path, dest_path, &block)
       tmp_path = dest_path.dirname.join(Dir::Tmpname.make_tmpname('dataset', '.zip'))
-      Zip::File.open(src_path) do |input_zip|
-        Zip::File.open(tmp_path, Zip::File::CREATE) do |output_zip|
+      Zip::File.open(src_path.to_s) do |input_zip|
+        Zip::File.open(tmp_path.to_s, Zip::File::CREATE) do |output_zip|
           (block || copy_text).call input_zip, output_zip
         end
       end
