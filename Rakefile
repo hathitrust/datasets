@@ -25,13 +25,16 @@ namespace :resque do
 
   namespace :pool do
     task :setup => "resque:setup" do
-      Resque::Pool.after_prefork do |_|
+      Resque::Pool.after_prefork do |worker|
+        # ensure workers don't share parent redis connection
         Resque.redis.client.reconnect
+        # don't fork a new process for every job - in particular this prevents
+        # using a new connection to redis for every job
+        worker.fork_per_job = false
       end
     end
   end
 
   task :scheduler => :setup
-
 
 end
