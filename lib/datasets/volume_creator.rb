@@ -1,4 +1,5 @@
 require "datasets/volume_writer"
+require "pairtree"
 
 # Writes and deletes volumes within the superset.
 module Datasets
@@ -34,7 +35,7 @@ module Datasets
     # @param [Pathname] path
     # @return [Pathname]
     def zip_path(volume, path)
-      path + "#{volume.id}.zip"
+      path + "#{pt_id(volume)}.zip"
     end
 
     # Path of the mets for the volume at path
@@ -42,7 +43,7 @@ module Datasets
     # @param [Pathname] path
     # @return [Pathname]
     def mets_path(volume, path)
-      path + "#{volume.id}.mets.xml"
+      path + "#{pt_id(volume)}.mets.xml"
     end
 
     private
@@ -59,6 +60,10 @@ module Datasets
 
     def should_write_zip?(src_path, dest_path)
       !fs.exists?(dest_path) || fs.modify_time(src_path) > fs.modify_time(dest_path)
+    end
+
+    def pt_id(volume)
+      Pairtree::Identifier.encode(volume.id)
     end
 
   end
