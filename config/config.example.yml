@@ -19,11 +19,9 @@ dest_parent_dir:
   :pd_world: 'DATASETS_HOME/ht_text_pd_world'
   :pd_world_open: 'DATASETS_HOME/ht_text_pd_world_open_access'
 
-feed_db: &db_config
+db:
   adapter: mysql
   database: ht
   host: mysql.example.com
   user: YOUR_USERNAME
   password: YOUR_PASSWORD
-
-rights_db: *db_config

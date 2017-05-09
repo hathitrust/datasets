@@ -8,7 +8,7 @@
 # @param timestamp [Time] The timestamp of the volume's database entry
 RSpec.shared_context "with volume2 as" do |right, access_profile, timestamp|
   let(:rights_schema) do
-    Datasets::RightsSchemaBuilder.new(Datasets.config.rights_db_connection)
+    Datasets::SchemaBuilder.new(Datasets.config.db_connection)
   end
 
   let(:volume2) do

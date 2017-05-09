@@ -17,10 +17,7 @@ dest_parent_dir:
   :pd_world: 'spec/integration/datasets/ht_text_pd_world'
   :pd_world_open: 'spec/integration/datasets/ht_text_pd_world_open_access'
 
-feed_db:
+db:
   adapter: sqlite
-  database: spec/integration/feed.db
+  database: spec/integration/test.db
 
-rights_db:
-  adapter: sqlite
-  database: spec/integration/rights.db
