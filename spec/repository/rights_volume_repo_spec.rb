@@ -13,7 +13,7 @@ module Datasets
   RSpec.describe Repository::RightsVolumeRepo do
     before(:all) do
       @connection = Sequel.sqlite
-      @schema_builder = RightsSchemaBuilder.new(@connection)
+      @schema_builder = SchemaBuilder.new(@connection)
       @schema_builder.create!
     end
 
@@ -54,31 +54,6 @@ module Datasets
       )
     end
 
-    describe "#in" do
-      it "returns Volume objects" do
-        table.insert(tuple_1)
-        volumes = repo.in([tuple_1.slice(:namespace, :id)])
-        expect(volumes.first).to be_an_instance_of Volume
-      end
-
-      it "finds the selected volumes" do
-        table.insert tuple_1
-        table.insert tuple_2
-        table.insert tuple_3
-        volumes = repo.in([
-          tuple_1.slice(:namespace, :id),
-          tuple_2.slice(:namespace, :id)
-        ])
-        expect(volumes).to contain_exactly(volume_from(tuple_1), volume_from(tuple_2))
-      end
-
-      it "returns empty set when there are no volumes to find" do
-        table.insert tuple_1
-        expect(repo.in [{namespace: "nope", id: "notgonnahappen"}]).to eql Set.new
-      end
-
-    end
-
     describe "#rights_changed_between" do
       it "returns Volume objects" do
         table.insert(tuple_1)
@@ -96,7 +71,7 @@ module Datasets
 
       it "returns empty set when there are no volumes to find" do
         table.insert(tuple_1.merge(time: Time.new(2017)))
-        expect(repo.changed_between(Time.new(2015), Time.new(2016))).to eql Set.new
+        expect(repo.changed_between(Time.new(2015), Time.new(2016))).to be_empty
       end
     end
 

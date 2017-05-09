@@ -35,13 +35,12 @@ module Datasets
         @volume_repo
       end
 
-      def rights_db_connection
-        @rights_db_connection ||= Sequel.connect(rights_db)
+      def db_connection
+        # Example with logging enabled
+        # @db_connection ||= Sequel.connect(db.merge({loggers: [Logger.new($stdout)]}))
+        @db_connection ||= Sequel.connect(db)
       end
 
-      def feed_db_connection
-        @feed_db_connection ||= Sequel.connect(feed_db)
-      end
 
       def filter
         @filter ||= {
@@ -64,14 +63,11 @@ module Datasets
       end
 
       def subset_volume_repo
-        @rights_volume_repo ||= Repository::RightsVolumeRepo.new(rights_db_connection)
+        @rights_volume_repo ||= Repository::RightsVolumeRepo.new(db_connection)
       end
 
       def superset_volume_repo
-        @superset_volume_repo ||= Repository::RightsFeedVolumeRepo.new(
-          rights_backend: Repository::RightsVolumeRepo.new(rights_db_connection),
-          feed_backend: Repository::FeedBackend.new(feed_db_connection)
-        )
+        @superset_volume_repo ||= Repository::RightsFeedVolumeRepo.new(db_connection)
       end
 
       def subset_volume_writer(profile)

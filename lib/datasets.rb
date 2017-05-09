@@ -28,7 +28,6 @@ require "datasets/volume_creator"
 require "datasets/volume_linker"
 require "datasets/volume_writer"
 require "datasets/zip_writer"
-require "datasets/repository/feed_backend"
 require "datasets/repository/rights_feed_volume_repo"
 require "datasets/repository/rights_volume_repo"
 
