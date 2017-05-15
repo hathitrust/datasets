@@ -6,6 +6,7 @@ require "pathname"
 module Datasets
 
   RSpec.describe SchedulerJob do
+    include_context "with mocked resque logger"
     let(:profile) { :pd }
 
     it_behaves_like "a job" do
