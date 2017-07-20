@@ -4,6 +4,7 @@
 # Datasets::Hathitrust::Configuration.
 
 src_parent_dir: '/sdr1'
+worker_log_path: 'DATASETS_HOME/log'
 
 report_dir:
   :full: 'DATASETS_HOME/ht_text/history'

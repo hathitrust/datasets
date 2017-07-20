@@ -29,7 +29,7 @@ module Datasets
     end
 
     def to_s
-      "#{namespace}.#{id} #{right} #{access_profile}"
+      "#{namespace}.#{id} (#{right} #{access_profile})"
     end
 
     def hash

@@ -34,9 +34,13 @@ module Datasets
     # link or a normal file, we return success.
     # @param [Pathname] src_path
     # @param [Pathname] dest_path
+    # @return [Boolean] true if link was created; false otherwise.
     def ln_s(src_path, dest_path)
       unless exists?(dest_path) or symlink?(dest_path)
         dest_path.make_symlink src_path
+        true
+      else
+        false
       end
     end
 
@@ -55,10 +59,15 @@ module Datasets
     end
 
     # rm -rf #path. Idempotent.
+    #
+    # @return [Boolean] true if something changed; false otherwise.
     # @param [Pathname] path
     def remove(path)
       if exists?(path)
         FileUtils.remove_entry_secure path
+        true
+      else
+        false
       end
     end
 

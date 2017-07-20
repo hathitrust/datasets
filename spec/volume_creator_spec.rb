@@ -6,18 +6,22 @@ require "pathname"
 module Datasets
   RSpec.describe VolumeCreator do
     shared_examples_for "a volume creator" do |namespace, volume_id, pt_volume_id, pt_path|
+      include_context "with mocked resque logger"
+
+      LOG_PREFIX = "profile: some_id, volume: mocked_volume"
+
       let(:fs) do
         double(:fs,
           mkdir_p: nil,
           ln_s: nil,
-          remove: nil,
           rm_empty_tree: nil)
       end
 
       let(:volume) do
         double(:volume,
           namespace: namespace,
-          id: volume_id)
+          id: volume_id,
+          to_s: "mocked_volume")
       end
 
       let(:dest_path) { Pathname.new("/dest/#{pt_path}/#{volume_id}") }
@@ -30,10 +34,10 @@ module Datasets
       let(:dest_path_resolver) { double(:dpr, path: dest_path) }
 
       let(:writer) { double(:writer, write: nil) }
-      let(:vol_creator_id) { :some_id }
+      let(:some_id) { :some_id }
       let(:volume_creator) do
         described_class.new(
-          id: vol_creator_id,
+          id: some_id,
           dest_path_resolver: dest_path_resolver,
           writer: writer, fs: fs
         )
@@ -60,6 +64,9 @@ module Datasets
           it "creates the zip" do
             expect(writer).to have_received(:write).with(src_zip, dest_zip)
           end
+          it "logs creating the zip" do
+            expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: updated")
+          end
         end
         context "destination zip present and newer than src" do
           before(:each) do
@@ -76,6 +83,9 @@ module Datasets
           end
           it "does not create the zip" do
             expect(writer).to_not have_received(:write)
+          end
+          it "logs that destination zip was newer than src" do
+            expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: up to date")
           end
         end
         context "destination zip present and older than src" do
@@ -94,16 +104,37 @@ module Datasets
           it "creates the zip" do
             expect(writer).to have_received(:write).with(src_zip, dest_zip)
           end
+          it "logs the update" do
+            expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: updated")
+          end
         end
       end
 
       describe "#delete" do
-        before(:each) { volume_creator.delete(volume) }
-        it "deletes the directory (and contents)" do
-          expect(fs).to have_received(:remove).with(dest_path)
+        context "destination zip present at removal time" do
+          before(:each) do
+            allow(fs).to receive(:remove).with(dest_path).and_return(true)
+            volume_creator.delete(volume)
+          end
+          it "logs the removal" do
+            expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: removed")
+          end
+          it "deletes the directory (and contents)" do
+            expect(fs).to have_received(:remove).with(dest_path)
+          end
+          it "deletes empty directory tree branches" do
+            expect(fs).to have_received(:rm_empty_tree).with(dest_path.parent)
+          end
         end
-        it "deletes empty directory tree branches" do
-          expect(fs).to have_received(:rm_empty_tree).with(dest_path.parent)
+
+        context "destination zip not present at removal time" do
+          before(:each) do
+            allow(fs).to receive(:remove).with(dest_path).and_return(false)
+            volume_creator.delete(volume)
+          end
+          it "logs that it was already removed" do
+            expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: not present")
+          end
         end
       end
     end

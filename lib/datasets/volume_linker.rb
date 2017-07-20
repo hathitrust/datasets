@@ -1,7 +1,7 @@
 # Writes and deletes symlinks within the subsets
 # to the superset.
 module Datasets
-  class VolumeLinker
+  class VolumeLinker < VolumeWriter
 
     # @param [PathResolver] dest_path_resolver
     # @param [Filesystem] fs
@@ -21,7 +21,8 @@ module Datasets
     def save(volume, src_path)
       dest_path = dest_path_resolver.path(volume)
       fs.mkdir_p dest_path.parent
-      fs.ln_s src_path.relative_path_from(dest_path.parent), dest_path
+      linked = fs.ln_s src_path.relative_path_from(dest_path.parent), dest_path
+      log(volume, linked ? 'added' : 'already present')
     end
 
     # Delete a link for the volume within the
@@ -32,7 +33,8 @@ module Datasets
     # @param [Volume] volume
     def delete(volume)
       dest_path = dest_path_resolver.path(volume)
-      fs.remove(dest_path)
+      removed = fs.remove(dest_path)
+      log(volume, removed ? 'removed' : 'not present')
       fs.rm_empty_tree(dest_path.parent)
     end
 

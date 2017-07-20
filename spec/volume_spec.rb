@@ -57,7 +57,7 @@ module Datasets
 
       describe "#to_s" do
         it "returns a string with the volume ID and the rights" do
-          expect(volume.to_s).to eql("mdp.12356 pd open")
+          expect(volume.to_s).to eql("mdp.12356 (pd open)")
         end
       end
 

@@ -26,7 +26,8 @@ module Datasets
 
     def delete(volume)
       dest_path = dest_path_resolver.path(volume)
-      fs.remove(dest_path)
+      removed = fs.remove(dest_path)
+      log(volume,removed ? 'removed' : 'not present')
       fs.rm_empty_tree(dest_path.parent)
     end
 
@@ -55,6 +56,9 @@ module Datasets
       dest_zip = zip_path(volume, dest_path)
       if should_write_zip?(src_zip, dest_zip)
         writer.write(src_zip, dest_zip)
+        log(volume,'updated')
+      else
+        log(volume,'up to date')
       end
     end
 

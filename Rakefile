@@ -3,6 +3,7 @@ require "rspec/core/rake_task"
 require "resque/tasks"
 require "resque/pool/tasks"
 require "resque/scheduler/tasks"
+require "socket"
 
 RSpec::Core::RakeTask.new(:spec)
 
@@ -26,6 +27,10 @@ namespace :resque do
   namespace :pool do
     task :setup => "resque:setup" do
       Resque::Pool.after_prefork do |worker|
+        log_basename = [Socket.gethostname,Process.pid,Time.now.strftime("%Y%m%d%H%M%S")].join('-')
+        log_full_path = File.join(Datasets.config.worker_log_path,"#{log_basename}.log")
+        Resque.logger = Logger.new(File.open(log_full_path,"w"))
+        Resque.logger.level = Logger::INFO
         # ensure workers don't share parent redis connection
         Resque.redis.client.reconnect
         # don't fork a new process for every job - in particular this prevents

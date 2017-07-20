@@ -16,5 +16,9 @@ module Datasets
     # @param [Volume] volume
     def delete(volume); end
 
+    def log(volume,action)
+      Resque.logger.info("profile: #{id}, volume: #{volume}: #{action}")
+    end
+
   end
 end

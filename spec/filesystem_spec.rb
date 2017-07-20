@@ -109,6 +109,13 @@ module Datasets
           File.write(src_file_path, "contents")
           expect(File.read(dest_path)).to eql("contents")
         end
+        it "returns true when it creates a symlink" do
+          expect(fs.ln_s(src_file_path, dest_path)).to be true
+        end
+        it "returns false when destination already exists" do
+          fs.ln_s(src_file_path, dest_path)
+          expect(fs.ln_s(src_file_path, dest_path)).to be false
+        end
       end
 
       describe "#mkdir_p" do
@@ -151,6 +158,13 @@ module Datasets
           expect{
             fs.remove(file_path)
           }.to_not raise_error
+        end
+        it "returns true when something was removed" do
+          File.write(file_path, "contents")
+          expect(fs.remove(file_path)).to be true
+        end
+        it "returns false when nothing was removed" do
+          expect(fs.remove(file_path)).to be false
         end
       end
       describe "#rm_empty_tree" do
