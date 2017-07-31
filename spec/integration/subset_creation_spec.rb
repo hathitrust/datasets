@@ -55,7 +55,7 @@ module Datasets
               )
             end
 
-            it "writes a correct report from epoch until now" do
+            it "writes a correct report from epoch until yesterday" do
               subject
               expect(File.read(pd_world_open_root + saved_report).split("\n"))
                 .to match_array [
@@ -67,7 +67,7 @@ module Datasets
               expect(YAML.load_file(pd_world_open_root + summary_report))
                 .to eql(
                   { saved: 2, deleted: 0,
-                    start_time: Time.at(0), end_time: Time.now
+                    start_time: Time.at(0), end_time: yesterday
                   }
                 )
             end
