@@ -18,4 +18,4 @@ egrep '^full	' $DELETELOG | cut -f 2 > $FULL_SET_LOGS/full_set_deletes_$DATE.txt
 cat $LOGDIR/*-$DATE.log | bzip2 -9 > $LOGDIR/dataset-$DATE.log.bz2 && rm $LOGDIR/*-$DATE.log
 
 # email deletes; move delete log to 'sent' if success
-# notify.rb $LOGDIR/deletelog* && mv $LOGDIR/deletelog* $LOGDIR/delete_notifications_sent/
+/htapps/babel/datasets/bin/notify.rb $LOGDIR/deletelog* && mv $LOGDIR/deletelog* $LOGDIR/delete_notifications_sent/
