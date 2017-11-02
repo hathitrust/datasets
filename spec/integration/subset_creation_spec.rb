@@ -16,11 +16,12 @@ module Datasets
       subject do
         report_manager.build_next_report do |time_range|
           scheduler = Scheduler.new(
-            volume_repo: Datasets.config.volume_repo[:pd_world_open],
             src_path_resolver: Datasets.config.src_path_resolver[:pd_world_open],
             volume_writer: Datasets.config.volume_writer[:pd_world_open],
             filter: Datasets.config.filter[:pd_world_open],
-            time_range: time_range
+            retriever: TimeRangeRetriever.new(
+              time_range: time_range,
+              repository: Datasets.config.volume_repo[:pd_world_open])
           )
           [scheduler.add, scheduler.delete]
         end

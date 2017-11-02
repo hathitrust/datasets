@@ -14,7 +14,7 @@ module Datasets
 
     def queue_and_report(profile)
       report_manager(profile).build_next_report do |time_range|
-        scheduler = scheduler_for(profile, time_range)
+        scheduler = time_scheduler_for(profile, time_range)
         [scheduler.add, scheduler.delete]
       end
     end

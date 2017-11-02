@@ -24,6 +24,13 @@ module Datasets
         )
       end
 
+      def volumes(ids)
+        ids.map do |id|
+          (namespace,id) = id.split(".",2)
+          project(joined_tables.where(namespace: namespace, Sequel.qualify(table_name,"id") => id)).first
+        end
+      end
+
       private
 
       attr_reader :connection, :table_name

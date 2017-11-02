@@ -4,28 +4,27 @@ require "scheduler"
 
 module Datasets
   RSpec.describe Scheduler do
-    let(:repo) { double(:repo) }
+
     let(:src) { double(:src_path_resovler) }
     let(:writer) { double(:writer) }
     let(:filter) { double(:filter) }
-    let(:start_time) { Time.local(2017, 1, 12) }
-    let(:end_time) { Time.now }
     let(:log) { StringIO.new }
     let(:scheduler) do
       described_class.new(
-        volume_repo: repo, src_path_resolver: src,
+        src_path_resolver: src,
         volume_writer: writer, filter: filter,
-        time_range: start_time..end_time
+        retriever: retriever
       )
     end
     let(:in_volumes) { [double(:v1), double(:v2), double(:v3)] }
     let(:src_paths) { [:path1, :path2, :path3] }
     let(:out_volumes) { [double(:v4), double(:v5)] }
+    let(:retriever) { double(:retriever) }
     let(:create_job) { double(:create_job) }
     let(:delete_job) { double(:delete_job) }
 
     before(:each) do
-      allow(repo).to receive(:changed_between).with(start_time, anything)
+      allow(retriever).to receive(:retrieve)
         .and_return(in_volumes + out_volumes)
 
       allow(src).to receive(:path).and_return(*src_paths)

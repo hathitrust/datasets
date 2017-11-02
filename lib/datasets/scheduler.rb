@@ -5,41 +5,40 @@ require "datasets/jobs/delete_job"
 # Adds volumes to a dataset
 module Datasets
   class Scheduler
-    # @param [VolumeRepo] volume_repo
     # @param [PathResolver] src_path_resolver
     # @param [VolumeWriter] volume_writer
     # @param [Filter] filter
-    # @param [Range<Time>] time_range
-    def initialize(volume_repo:, src_path_resolver:, volume_writer:, filter:, time_range:)
-      @volume_repo = volume_repo
+    # @param [Retriever] retriever
+    def initialize(src_path_resolver:, volume_writer:, filter:, retriever:, save_job: SaveJob, delete_job: DeleteJob )
       @src_path_resolver = src_path_resolver
       @volume_writer = volume_writer
       @filter = filter
-      @time_range = time_range
+      @retriever = retriever
+      @save_job = save_job
+      @delete_job = delete_job
     end
 
     def add
-      volumes = volume_repo.changed_between(time_range.first, time_range.last)
-        .select {|volume| filter.matches?(volume) }
-      volumes
-        .map {|volume| [volume, src_path_resolver.path(volume)] }
-        .map {|volume, src_path| SaveJob.new(volume, src_path, volume_writer) }
-        .each {|job| job.enqueue }
-      return volumes
+      retriever.retrieve
+        .select {|volume| filter.matches?(volume) }.tap do |volumes|
+        volumes
+          .map {|volume| [volume, src_path_resolver.path(volume)] }
+          .map {|volume, src_path| save_job.new(volume, src_path, volume_writer) }
+          .each {|job| job.enqueue }
+      end 
     end
 
     def delete
-      volumes = volume_repo.changed_between(time_range.first, time_range.last)
-        .reject {|volume| filter.matches?(volume) }
-      volumes
-        .map {|volume| DeleteJob.new(volume, volume_writer) }
-        .each {|job| job.enqueue }
-      return volumes
+      retriever.retrieve
+        .reject {|volume| filter.matches?(volume) }.tap do |volumes|
+        volumes
+          .map {|volume| delete_job.new(volume, volume_writer) }
+          .each {|job| job.enqueue }
+      end
     end
 
     private
 
-    attr_reader :volume_repo, :src_path_resolver,
-      :volume_writer, :filter, :time_range
+    attr_reader :src_path_resolver, :volume_writer, :filter, :retriever, :save_job, :delete_job
   end
 end

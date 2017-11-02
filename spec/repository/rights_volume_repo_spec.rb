@@ -44,6 +44,14 @@ module Datasets
         user: "someuser", time: Time.new(2017, 1, 1)
       }
     end
+    let(:tuple_miun) do
+      {
+        namespace: "miun", id: "agd9059.0001.001",
+        attr: 1, reason: 1, source: 1, access_profile: 1,
+        user: "someuser", time: Time.new(2017, 1, 1)
+      }
+    end
+
 
     def volume_from(hash)
       Volume.new(
@@ -72,6 +80,40 @@ module Datasets
       it "returns empty set when there are no volumes to find" do
         table.insert(tuple_1.merge(time: Time.new(2017)))
         expect(repo.changed_between(Time.new(2015), Time.new(2016))).to be_empty
+      end
+    end
+
+    describe "#volumes" do
+      before(:each) do
+        [tuple_1,tuple_2,tuple_3,tuple_miun].each do |tuple|
+          table.insert(tuple)
+        end
+      end
+
+      it "returns Volume objects" do
+        volumes = repo.volumes(["mdp.120398120938"])
+        expect(volumes.first).to be_an_instance_of Volume
+      end
+
+      it "returns the correct volume" do
+        volumes = repo.volumes(["mdp.120398120938"])
+        expect(volumes).to contain_exactly(volume_from(tuple_1))
+      end
+
+      it "returns the correct volume" do
+        volumes = repo.volumes(["mdp.22222222"])
+        expect(volumes).to contain_exactly(volume_from(tuple_2))
+      end
+
+      it "returns a volume with more than one '.' in the id" do
+        volumes = repo.volumes(["miun.agd9059.0001.001"])
+        expect(volumes).to contain_exactly(volume_from(tuple_miun))
+      end
+
+
+      it "returns only those volumes that were requested" do
+        volumes = repo.volumes(["mdp.120398120938","mdp.22222222"])
+        expect(volumes).to contain_exactly(volume_from(tuple_1),volume_from(tuple_2))
       end
     end
 
