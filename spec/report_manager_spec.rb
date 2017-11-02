@@ -39,14 +39,15 @@ module Datasets
       let(:saved_volumes) { [1,2] }
       let(:deleted_volumes) { [3,4,5] }
       let(:last_range) { Time.new(2001, 1, 1)..Time.new(2001, 1, 3, 6, 30, 25) }
-      let(:new_range) { last_range.last..Time.new(2001, 1, 5, 14, 21, 0) }
+      let(:new_range) { last_range.last..Time.new(2001, 1, 4, 0, 0, 0) }
+      let(:fake_today) { Date.parse('2001-01-05') }
       let(:report) { double(:report, save: nil) }
       before(:each) do
         allow(Report).to receive(:new).and_return(report)
         allow(mgr).to receive(:last_range).and_return(last_range)
-        allow(Time).to receive(:now).and_return(new_range.last)
+        allow(Date).to receive(:today).and_return(fake_today)
       end
-      it "yields a period of last_range.last..Time.now" do
+      it "yields a period of last_range.last..yesterday_at_midnight" do
         expect{|spy|
           mgr.build_next_report(&spy)
         }.to yield_with_args(new_range)
@@ -56,7 +57,7 @@ module Datasets
         mgr.build_next_report { [saved_volumes, deleted_volumes] }
       end
       it "saves the report at parent_dir/YYYYMMDDHHMMSS-YYYMMDDHHMMSS/" do
-        expect(report).to receive(:save).with(parent_dir + "20010103063025-20010105142100")
+        expect(report).to receive(:save).with(parent_dir + "20010103063025-20010104000000")
         mgr.build_next_report { [saved_volumes, deleted_volumes] }
       end
     end

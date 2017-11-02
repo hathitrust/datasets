@@ -40,7 +40,7 @@ module Datasets
     #   were removed.
     # @return [Report]
     def build_next_report(&block)
-      new_range = last_range.last..Time.now
+      new_range = last_range.last..Date.today.prev_day.to_time
       saved, deleted = yield new_range
       report = Report.new(saved, deleted, new_range, fs)
       report.save(save_path(new_range))
@@ -67,7 +67,7 @@ module Datasets
 
     def read_summary(path)
       hash = YAML.load(fs.read(path))
-      ReportSummary.new(hash["saved"], hash["deleted"], hash["start_time"]..hash["end_time"], fs)
+      ReportSummary.new(hash[:saved], hash[:deleted], hash[:start_time]..hash[:end_time], fs)
     end
 
     attr_reader :parent_dir, :fs

@@ -37,7 +37,7 @@ module Datasets
     end
 
     def queue_empty?
-      Resque.size(Job.queue) == 0
+      Resque.size(Job.queue) == 0 && Resque::Failure.count == 0 && Resque.count_all_scheduled_jobs == 0
     end
 
   end
