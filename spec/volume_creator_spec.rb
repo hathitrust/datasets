@@ -6,42 +6,14 @@ require "pathname"
 module Datasets
   RSpec.describe VolumeCreator do
     shared_examples_for "a volume creator" do |namespace, volume_id, pt_volume_id, pt_path|
+      # needed to pass through to shared context
+      let(:namespace) { namespace }
+      let(:volume_id) { volume_id }
+      let(:pt_volume_id) { pt_volume_id }
+      let(:pt_path) { pt_path }
+
       include_context "with mocked resque logger"
-
-      LOG_PREFIX = "profile: some_id, volume: mocked_volume"
-
-      let(:fs) do
-        double(:fs,
-          mkdir_p: nil,
-          ln_s: nil,
-          rm_empty_tree: nil)
-      end
-
-      let(:volume) do
-        double(:volume,
-          namespace: namespace,
-          id: volume_id,
-          to_s: "mocked_volume")
-      end
-
-      let(:dest_path) { Pathname.new("/dest/#{pt_path}/#{volume_id}") }
-      let(:src_path) { Pathname.new("/src/#{pt_path}/#{volume_id}") }
-      let(:src_zip) { src_path + "#{pt_volume_id}.zip" }
-      let(:dest_zip) { dest_path + "#{pt_volume_id}.zip" }
-      let(:src_mets) { src_path + "#{pt_volume_id}.mets.xml" }
-      let(:dest_mets) { dest_path + "#{pt_volume_id}.mets.xml" }
-
-      let(:dest_path_resolver) { double(:dpr, path: dest_path) }
-
-      let(:writer) { double(:writer, write: nil) }
-      let(:some_id) { :some_id }
-      let(:volume_creator) do
-        described_class.new(
-          id: some_id,
-          dest_path_resolver: dest_path_resolver,
-          writer: writer, fs: fs
-        )
-      end
+      include_context "with volume creator fixtures"
 
       describe "#id" do
         it "has an id" do
@@ -65,7 +37,7 @@ module Datasets
             expect(writer).to have_received(:write).with(src_zip, dest_zip)
           end
           it "logs creating the zip" do
-            expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: updated")
+            expect(Resque.logger).to have_received(:info).with("#{log_prefix}: updated")
           end
         end
         context "destination zip present and newer than src" do
@@ -85,7 +57,7 @@ module Datasets
             expect(writer).to_not have_received(:write)
           end
           it "logs that destination zip was newer than src" do
-            expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: up to date")
+            expect(Resque.logger).to have_received(:info).with("#{log_prefix}: up to date")
           end
         end
         context "destination zip present and older than src" do
@@ -105,7 +77,7 @@ module Datasets
             expect(writer).to have_received(:write).with(src_zip, dest_zip)
           end
           it "logs the update" do
-            expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: updated")
+            expect(Resque.logger).to have_received(:info).with("#{log_prefix}: updated")
           end
         end
       end
@@ -117,7 +89,7 @@ module Datasets
             volume_creator.delete(volume)
           end
           it "logs the removal" do
-            expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: removed")
+            expect(Resque.logger).to have_received(:info).with("#{log_prefix}: removed")
           end
           it "deletes the directory (and contents)" do
             expect(fs).to have_received(:remove).with(dest_path)
@@ -133,7 +105,7 @@ module Datasets
             volume_creator.delete(volume)
           end
           it "logs that it was already removed" do
-            expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: not present")
+            expect(Resque.logger).to have_received(:info).with("#{log_prefix}: not present")
           end
         end
       end

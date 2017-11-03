@@ -1,8 +1,10 @@
 require "datasets/scheduler"
+require "datasets/retriever/time_range_retriever"
 require "datasets/filesystem"
 require "datasets/job"
 require "resque"
 require "pathname"
+require "pry"
 
 module Datasets
 
@@ -26,13 +28,14 @@ module Datasets
       raise RuntimeError, "Not implemented."
     end
 
-    def scheduler_for(profile, time_range)
+    def time_scheduler_for(profile, time_range)
       Scheduler.new(
-        volume_repo: Datasets.config.volume_repo[profile],
         src_path_resolver: Datasets.config.src_path_resolver[profile],
         volume_writer: Datasets.config.volume_writer[profile],
         filter: Datasets.config.filter[profile],
-        time_range: time_range
+        retriever: TimeRangeRetriever.new(
+          time_range: time_range,
+          repository: Datasets.config.volume_repo[profile])
       )
     end
 
