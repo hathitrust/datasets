@@ -12,17 +12,8 @@ module Datasets
       old_timestamp = Time.at(55)
       new_timestamp = Time.at(9999)
 
-      subject do
-        scheduler = Scheduler.new(
-          src_path_resolver: Datasets.config.src_path_resolver[:force_full],
-          volume_writer: Datasets.config.volume_writer[:force_full],
-          filter: Datasets.config.filter[:force_full],
-          retriever: HtidRetriever.new(
-            htids: ['test.001','test.002'],
-            repository: Datasets.config.volume_repo[:force_full])
-        )
-        [scheduler.add, scheduler.delete]
-      end
+      let(:htids) { ['test.001','test.002' ] }
+      subject { HTIDSafeRun.new(htids).queue_and_report(:force_full) }
       
       context "dest contains up-to-date zip and outdated zip" do
         include_context "with volume1 as", :ic, :open , new_timestamp

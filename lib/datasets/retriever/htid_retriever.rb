@@ -1,4 +1,4 @@
-class HtidRetriever
+class HTIDRetriever
   def initialize(repository:, htids:)
     @htids = htids
     @repository = repository

@@ -3,6 +3,7 @@
 src_parent_dir: 'spec/integration/src'
 
 report_dir:
+  :force_full: 'spec/integration/datasets/ht_text/history'
   :full: 'spec/integration/datasets/ht_text/history'
   :pd: 'spec/integration/datasets/ht_text_pd/history'
   :pd_open: 'spec/integration/datasets/ht_text_pd_open_access/history'
@@ -11,6 +12,7 @@ report_dir:
 
 
 dest_parent_dir:
+  :force_full: 'spec/integration/datasets/ht_text'
   :full: 'spec/integration/datasets/ht_text'
   :pd: 'spec/integration/datasets/ht_text_pd'
   :pd_open: 'spec/integration/datasets/ht_text_pd_open_access'

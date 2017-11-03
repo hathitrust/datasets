@@ -13,16 +13,20 @@ end
 
 module Datasets
   class CLI < Thor
+    def self.option_config
+      option :config,
+        type: :string,
+        default: "#{APP_ROOT}/config/config.yml",
+        aliases: "-c",
+        desc: "Path to the configuration file to use."
+    end
+
     package_name "datasets"
 
     APP_ROOT = Pathname.new(__FILE__).expand_path.parent.parent.dirname
 
     # Tasks
-    option :config,
-      type: :string,
-      default: "#{APP_ROOT}/config/config.yml",
-      aliases: "-c",
-      desc: "Path to the configuration file to use."
+    option_config
 
     option :start_time,
       type: :string,
@@ -33,6 +37,7 @@ module Datasets
       type: :string,
       aliases: "-e",
       desc: "Run to this end time; must also specify start time"
+
 
     desc "all", "Do all the dataset operations."
     def all
@@ -51,6 +56,18 @@ module Datasets
     end
 
     default_task :all
+
+    option_config
+
+    desc "force", "Force update of a list of volumes."
+    def force
+      Datasets.config = load_config(options[:config])
+
+      htids = $stdin.readlines.map { |l| l.strip }
+      HTIDSafeRun.new(htids).queue_and_report(:force_full)
+    end
+
+
 
     # Non-task cli functions
     private
@@ -74,6 +91,7 @@ module Datasets
     def load_config(config)
       Datasets::HathiTrust::Configuration.from_yaml(config)
     end
+
 
   end
 end

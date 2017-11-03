@@ -1,4 +1,4 @@
-require "datasets/volume_writer"
+require "datasets/volume_creator"
 require "pairtree"
 
 # Writes and deletes volumes within the superset.
