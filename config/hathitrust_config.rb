@@ -10,14 +10,16 @@ module Datasets
         @volume_writer ||=
           subsets.map do |subset|
             [subset, subset_volume_writer(subset)]
-          end
-          .concat([[superset, superset_volume_writer]])
-          .to_h
+          end.to_h.merge({
+            superset => superset_volume_writer,
+            force_superset => force_superset_volume_writer
+          })
       end
 
       def src_path_resolver
         @src_path_resolver ||= {
-          superset => PairtreePathResolver.new(Pathname.new(src_parent_dir)),
+          superset => superset_src_path_resolver,
+          force_superset => superset_src_path_resolver,
           pd: subset_src_path_resolver,
           pd_open: subset_src_path_resolver,
           pd_world: subset_src_path_resolver,
@@ -29,9 +31,10 @@ module Datasets
         @volume_repo ||=
           subsets.map do |subset|
             [subset, subset_volume_repo]
-          end
-          .concat([[superset, superset_volume_repo]])
-          .to_h
+          end.to_h.merge({
+            superset => superset_volume_repo,
+            force_superset => force_superset_volume_repo
+          })
         @volume_repo
       end
 
@@ -44,6 +47,7 @@ module Datasets
 
       def filter
         @filter ||= {
+          force_superset => FullSetFilter.new,
           superset => FullSetFilter.new,
           pd: PdFilter.new,
           pd_open: PdOpenFilter.new,
@@ -62,12 +66,22 @@ module Datasets
         @subset_src_path_resolver ||= PairtreePathResolver.new(dest_parent_dir[superset])
       end
 
+      def superset_src_path_resolver
+        @superset_src_path_resolver ||= PairtreePathResolver.new(Pathname.new(src_parent_dir))
+      end
+
       def subset_volume_repo
         @rights_volume_repo ||= Repository::RightsVolumeRepo.new(db_connection)
       end
 
       def superset_volume_repo
         @superset_volume_repo ||= Repository::RightsFeedVolumeRepo.new(db_connection)
+      end
+
+      def force_superset_volume_repo
+        # only need to consult rights, not rights + feed_audit when forcing
+        # updates from a list of volumes
+        subset_volume_repo
       end
 
       def subset_volume_writer(profile)
@@ -87,6 +101,15 @@ module Datasets
         )
       end
 
+      def force_superset_volume_writer
+        ForceVolumeCreator.new(
+          id: force_superset,
+          dest_path_resolver: PairtreePathResolver.new(dest_parent_dir[superset]),
+          writer: ZipWriter.new,
+          fs: Filesystem.new
+        )
+      end
+
       def subsets
         [:pd, :pd_open, :pd_world, :pd_world_open]
       end
@@ -94,6 +117,11 @@ module Datasets
       def superset
         :full
       end
+
+      def force_superset
+        :force_full
+      end
+
     end
 
   end

@@ -27,7 +27,10 @@ module Datasets
       def volumes(ids)
         ids.map do |id|
           (namespace,id) = id.split(".",2)
-          project(joined_tables.where(namespace: namespace, Sequel.qualify(table_name,"id") => id)).first
+          project(joined_tables.where(
+            Sequel.qualify(table_name, "namespace") => namespace, 
+            Sequel.qualify(table_name,"id") => id))
+            .first
         end
       end
 

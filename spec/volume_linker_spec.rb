@@ -7,7 +7,7 @@ module Datasets
   RSpec.describe VolumeLinker do
     include_context "with mocked resque logger"
 
-    LOG_PREFIX = "profile: some_id, volume: mocked_volume"
+    let(:log_prefix) { "profile: some_id, volume: mocked_volume" }
 
     let(:fs) do
       double(:fs,
@@ -44,7 +44,7 @@ module Datasets
           expect(fs).to have_received(:ln_s).with(path_from_dest_to_src, dest_path)
         end
         it "logs the link creation" do
-          expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: added")
+          expect(Resque.logger).to have_received(:info).with("#{log_prefix}: added")
         end
       end
 
@@ -55,7 +55,7 @@ module Datasets
         end
 
         it "logs the no-op" do
-          expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: already present")
+          expect(Resque.logger).to have_received(:info).with("#{log_prefix}: already present")
         end
       end
     end
@@ -74,7 +74,7 @@ module Datasets
           expect(fs).to have_received(:rm_empty_tree).with(dest_path.parent)
         end
         it "logs the deletion" do
-          expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: removed")
+          expect(Resque.logger).to have_received(:info).with("#{log_prefix}: removed")
         end
       end
 
@@ -85,7 +85,7 @@ module Datasets
         end
 
         it "logs the no-op" do
-          expect(Resque.logger).to have_received(:info).with("#{LOG_PREFIX}: not present")
+          expect(Resque.logger).to have_received(:info).with("#{log_prefix}: not present")
         end
       end
     end
