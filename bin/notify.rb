@@ -1,4 +1,4 @@
-#!ruby
+#!/usr/bin/env ruby
 
 # notify.rb
 # notify.rb [--urgent-only] [--dry-run]

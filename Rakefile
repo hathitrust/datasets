@@ -31,7 +31,7 @@ namespace :resque do
         # set up pipe to rotatelogs
         log_basename = [Socket.gethostname,Process.pid,"%Y%m%d"].join('-')
         log_template = File.join(Datasets.config.worker_log_path,"#{log_basename}.log")
-        rotatelogs_cmd = "/usr/sbin/rotatelogs -l #{log_template} 86400"
+        rotatelogs_cmd = "/usr/sbin/rotatelogs -f -l #{log_template} 86400"
         log_io = IO.popen(rotatelogs_cmd,"w")
         log_io.sync = false
 
