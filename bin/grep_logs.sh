@@ -4,7 +4,7 @@ DATE=$(date -d "yesterday 13:00" '+%Y%m%d')
 LOGDIR=/htprep/datasets/logs
 DELETELOG=$LOGDIR/deletelog_$DATE.txt
 FULL_SET_LOGS=/htprep/datasets/ht_text/obj/ingest_log
-egrep 'profile: full,.*: updated$' $LOGDIR/*-$DATE.log | perl -pi -e 's/.*volume: (\S+) .*/$1/' > $FULL_SET_LOGS/full_set_updates_$DATE.txt
+egrep 'profile: (force_)?full,.*: updated$' $LOGDIR/*-$DATE.log | perl -pi -e 's/.*volume: (\S+) .*/$1/' > $FULL_SET_LOGS/full_set_updates_$DATE.txt
 
 egrep ': removed$' $LOGDIR/*-$DATE.log | perl -pi -e 's/.*profile: (\S+), volume: (\S+) .*/$1\t$2/' > $DELETELOG
 
