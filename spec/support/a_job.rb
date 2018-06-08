@@ -1,6 +1,7 @@
 require_relative "../spec_helper"
 require_relative "../job_helper"
 require "datasets/job"
+require "json"
 
 module Datasets
 
