@@ -58,7 +58,7 @@ module Datasets
               expect(YAML.load_file(full_root + summary_report))
                 .to eql(
                   { saved: 2, deleted: 0,
-                    start_time: Time.at(0), end_time: yesterday
+                    start_time: Time.at(0), end_time: two_days_ago
                   }
                 )
             end
@@ -88,7 +88,7 @@ module Datasets
               expect(up_to_date_zip.size).to eql(0)
             end
 
-            it "writes a correct report from epoch until yesterday" do
+            it "writes a correct report from epoch until two days ago" do
               subject
               expect(File.read(full_root + saved_report).split("\n"))
                 .to match_array [
@@ -100,7 +100,7 @@ module Datasets
               expect(YAML.load_file(full_root + summary_report))
                 .to eql(
                   { saved: 2, deleted: 0,
-                    start_time: Time.at(0), end_time: yesterday
+                    start_time: Time.at(0), end_time: two_days_ago
                   }
                 )
             end

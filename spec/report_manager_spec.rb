@@ -40,14 +40,14 @@ module Datasets
       let(:deleted_volumes) { [3,4,5] }
       let(:last_range) { Time.new(2001, 1, 1)..Time.new(2001, 1, 3, 6, 30, 25) }
       let(:new_range) { last_range.last..Time.new(2001, 1, 4, 0, 0, 0) }
-      let(:fake_today) { Date.parse('2001-01-05') }
+      let(:fake_today) { Date.parse('2001-01-06') }
       let(:report) { double(:report, save: nil) }
       before(:each) do
         allow(Report).to receive(:new).and_return(report)
         allow(mgr).to receive(:last_range).and_return(last_range)
         allow(Date).to receive(:today).and_return(fake_today)
       end
-      it "yields a period of last_range.last..yesterday_at_midnight" do
+      it "yields a period of last_range.last..two_days_ago_at_midnight" do
         expect{|spy|
           mgr.build_next_report(&spy)
         }.to yield_with_args(new_range)

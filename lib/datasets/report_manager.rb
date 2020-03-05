@@ -31,8 +31,8 @@ module Datasets
 
     # Finds the most recent report in the parent directory, then
     # yields a new time range from the time the last report ended
-    # until now.  It then creates and saves a new report with the
-    # result of the block.
+    # until the most recent time for which we can assume an item is present..
+    # It then creates and saves a new report with the result of the block.
     # @yieldparam new_range [Range<Time>] The period from when the last
     #   report started until now.
     # @yieldreturn [Array<Array<Volume>>] The block should return the
@@ -40,7 +40,7 @@ module Datasets
     #   were removed.
     # @return [Report]
     def build_next_report(&block)
-      new_range = last_range.last..Date.today.prev_day.to_time
+      new_range = last_range.last..(Date.today - 2).to_time
       saved, deleted = yield new_range
       report = Report.new(saved, deleted, new_range, fs)
       report.save(save_path(new_range))
