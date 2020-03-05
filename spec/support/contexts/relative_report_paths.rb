@@ -3,7 +3,7 @@
 # @param time_range [Range<Time>] The time period the report covers.
 RSpec.shared_context "relative report paths" do |time_range|
   let(:report_dirname) do
-    time_range ||= Time.at(0)..Date.today.prev_day.to_time
+    time_range ||= Time.at(0)..(Date.today - 2).to_time
     time_range.first.strftime("%Y%m%d%H%M%S") + "-" + time_range.last.strftime("%Y%m%d%H%M%S")
   end
 

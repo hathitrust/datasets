@@ -43,7 +43,7 @@ module Datasets
             expect(volume1_dest_dir.exist?).to be false
           end
 
-          it "writes a correct report from epoch until yesterday" do
+          it "writes a correct report from epoch until two days ago" do
             subject
             expect(File.read(pd_root + saved_report))
               .to be_empty
@@ -54,7 +54,7 @@ module Datasets
             expect(YAML.load_file(pd_root + summary_report))
               .to eql(
                 { saved: 0, deleted: 1,
-                  start_time: Time.at(0), end_time: yesterday
+                  start_time: Time.at(0), end_time: two_days_ago
                 }
               )
           end

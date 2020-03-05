@@ -14,7 +14,7 @@ module Datasets
 
       let(:htids) { ['test.001','test.002' ] }
       subject { HTIDSafeRun.new(htids).queue_and_report(:force_full) }
-      
+
       context "dest contains up-to-date zip and outdated zip" do
         include_context "with volume1 as", :ic, :open , new_timestamp
         include_context "with volume2 as", :pd, :google, new_timestamp
