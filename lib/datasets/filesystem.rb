@@ -72,12 +72,15 @@ module Datasets
     end
 
     # Remove the directory at #path, then recursively
-    # remove each empty parent directory.
-    # Idempotent.
+    # remove each empty parent directory. Do not throw errors if the directory
+    # doesn't exist or is nonempty.  Idempotent.
     # @param [Pathname] path
     def rm_empty_tree(path)
       raise ArgumentError, "path cannot be a non-directory file" if path.file?
-      FileUtils.rmdir path, parents: true
+      begin
+        FileUtils.rmdir path, parents: true
+      rescue Errno::ENOTEMPTY, Errno::EEXIST, Errno::ENOENT
+      end
     end
 
     # Write contents to a file

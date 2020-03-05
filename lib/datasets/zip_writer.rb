@@ -15,7 +15,7 @@ module Datasets
     # from input Zip::File to a Zip::OutputStream. By default gets all txt files in input zip
     # and copies them to output zip.
     def write(src_path, dest_path, &block)
-      tmp_path = dest_path.dirname.join(Dir::Tmpname.make_tmpname('dataset', '.zip'))
+      tmp_path = dest_path.dirname.join(tmpname)
       stringio = Zip::OutputStream.write_buffer do |output_zip_stream|
         Zip::File.open(src_path.to_s) do |input_zip|
           (block || copy_text).call input_zip, output_zip_stream
@@ -35,6 +35,11 @@ module Datasets
     end
 
     private
+
+    def tmpname
+      t = Time.now.strftime("%Y%m%d")
+      "dataset-#{t}-#{$$}-#{rand(0x100000000).to_s(36)}.zip"
+    end
 
     def copy_text
       @copy_text_proc ||= proc do |input_zip, output_zip_stream|
