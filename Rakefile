@@ -33,7 +33,7 @@ namespace :resque do
         log_template = File.join(Datasets.config.worker_log_path,"#{log_basename}.log")
         rotatelogs_cmd = "/usr/sbin/rotatelogs -f -l #{log_template} 86400"
         log_io = IO.popen(rotatelogs_cmd,"w")
-        log_io.sync = false
+        log_io.sync = true
 
         Resque.logger = Logger.new(log_io)
         Resque.logger.level = Logger::INFO
