@@ -19,11 +19,13 @@ Subject: Delete notifications for #{set_name} dataset
 
 Dear HathiTrust dataset recipient,
 
-What follows is a list of HathiTrust volumes formerly in the \"#{set_name}\" dataset that no longer meet the criteria for inclusion. In accordance with our terms of use, please delete all copies you retain of these volumes.
+This email is to notify you that volumes in the HathiTrust \"#{set_name}\" dataset, of which you have downloaded all or a subset of files, no longer meet the criteria for inclusion in the dataset, and you no longer are allowed to use them in your research.
+
+Please review the data you have synced from HathiTrust to check whether you have the volumes listed below. If so, delete all copies you retain of these volumes in accordance with our terms of use. Alternatively, you may delete your copy of the dataset and re-sync to the updated dataset.
 
 If you no longer possess HathiTrust datasets, or if you have other questions regarding datasets, then please email feedback@issues.hathitrust.org.
 
-Thank you.
+Thank you,
 
 HathiTrust
 
