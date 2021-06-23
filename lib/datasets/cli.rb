@@ -21,6 +21,12 @@ module Datasets
         desc: "Path to the configuration file to use."
     end
 
+    def self.exit_on_failure?
+      # If we fail we will raise an exception and Ruby will report the exit
+      # status (rather than Thor)
+      false
+    end
+
     package_name "datasets"
 
     APP_ROOT = Pathname.new(__FILE__).expand_path.parent.parent.dirname
@@ -68,7 +74,6 @@ module Datasets
     end
 
 
-
     # Non-task cli functions
     private
 
@@ -91,7 +96,6 @@ module Datasets
     def load_config(config)
       Datasets::HathiTrust::Configuration.from_yaml(config)
     end
-
 
   end
 end

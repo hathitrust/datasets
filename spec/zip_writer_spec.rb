@@ -99,6 +99,8 @@ module Datasets
       expect_no_zip do |_, output_zip_stream|
         output_zip_stream.put_next_entry('foo')
         # write some junk, don't close the output stream, raise an error...
+        # will provoke a warning:
+        #   zlib(finalizer): the stream was freed prematurely.
         output_zip_stream.write('garbage' * 200)
         raise Zip::Error
       end
