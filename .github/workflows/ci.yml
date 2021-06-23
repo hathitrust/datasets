@@ -16,6 +16,12 @@ jobs:
         run: |
           docker-compose build
           docker-compose run --rm test bundle install
+      - name: make coverage directory
+        run: mkdir -m 777 coverage
+
+        # we need to set some timestamps on these files during the tests
+      - name: make fixtures writable
+        run: chmod -R 777 spec/integration/src
 
       - name: Run tests
         run: docker-compose run --rm test

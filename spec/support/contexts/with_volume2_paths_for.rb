@@ -9,13 +9,14 @@
 # @param timestamp [Time] The timestamp of the volume's mtime.
 RSpec.shared_context "with volume2 paths for" do |profile, dirname, timestamp|
   # Setup paths
-  INTEGRATION_ROOT ||= Pathname.new(__FILE__).expand_path.dirname.parent.parent + "integration"
+  SPEC_HOME ||= Pathname.new(__FILE__).expand_path.dirname.parent.parent
+  INTEGRATION_ROOT ||= Pathname.new("/tmp/integration")
   DATASETS_ROOT ||= INTEGRATION_ROOT + "datasets"
   let(:root) { INTEGRATION_ROOT }
-  let(:src_root) { root + "src" }
+  let(:orig_src_root) { SPEC_HOME + "integration" + "src" }
+  let(:src_root) { INTEGRATION_ROOT + "src" }
   let(:datasets_root) { DATASETS_ROOT }
   let(:pairtree_prefix) { Pathname.new("obj/test/pairtree_root") }
-
 
   # Create paths we actually use
   let(:"#{profile}_root") { datasets_root + dirname }

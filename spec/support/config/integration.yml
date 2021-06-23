@@ -1,25 +1,25 @@
 ---
 
-src_parent_dir: 'spec/integration/src'
+src_parent_dir: '/tmp/integration/src'
 
 report_dir:
-  :force_full: 'spec/integration/datasets/ht_text/history'
-  :full: 'spec/integration/datasets/ht_text/history'
-  :pd: 'spec/integration/datasets/ht_text_pd/history'
-  :pd_open: 'spec/integration/datasets/ht_text_pd_open_access/history'
-  :pd_world: 'spec/integration/datasets/ht_text_pd_world/history'
-  :pd_world_open: 'spec/integration/datasets/ht_text_pd_world_open_access/history'
+  :force_full: '/tmp/integration/datasets/ht_text/history'
+  :full: '/tmp/integration/datasets/ht_text/history'
+  :pd: '/tmp/integration/datasets/ht_text_pd/history'
+  :pd_open: '/tmp/integration/datasets/ht_text_pd_open_access/history'
+  :pd_world: '/tmp/integration/datasets/ht_text_pd_world/history'
+  :pd_world_open: '/tmp/integration/datasets/ht_text_pd_world_open_access/history'
 
 
 dest_parent_dir:
-  :force_full: 'spec/integration/datasets/ht_text'
-  :full: 'spec/integration/datasets/ht_text'
-  :pd: 'spec/integration/datasets/ht_text_pd'
-  :pd_open: 'spec/integration/datasets/ht_text_pd_open_access'
-  :pd_world: 'spec/integration/datasets/ht_text_pd_world'
-  :pd_world_open: 'spec/integration/datasets/ht_text_pd_world_open_access'
+  :force_full: '/tmp/integration/datasets/ht_text'
+  :full: '/tmp/integration/datasets/ht_text'
+  :pd: '/tmp/integration/datasets/ht_text_pd'
+  :pd_open: '/tmp/integration/datasets/ht_text_pd_open_access'
+  :pd_world: '/tmp/integration/datasets/ht_text_pd_world'
+  :pd_world_open: '/tmp/integration/datasets/ht_text_pd_world_open_access'
 
 db:
   adapter: sqlite
-  database: spec/integration/test.db
+  database: /tmp/integration/test.db
 
