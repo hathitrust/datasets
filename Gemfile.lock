@@ -11,6 +11,7 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.1.9)
     diff-lcs (1.4.4)
+    docile (1.4.0)
     et-orbi (1.2.4)
       tzinfo
     fugit (1.5.0)
@@ -18,6 +19,7 @@ GEM
       raabro (~> 1.4)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    json (2.5.1)
     method_source (1.0.0)
     minitest (5.14.4)
     mono_logger (1.1.1)
@@ -72,6 +74,11 @@ GEM
     rufus-scheduler (3.7.0)
       fugit (~> 1.1, >= 1.1.6)
     sequel (5.45.0)
+    simplecov (0.16.1)
+      docile (~> 1.1)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.2)
     sinatra (2.1.0)
       mustermann (~> 1.0)
       rack (~> 2.2)
@@ -104,6 +111,7 @@ DEPENDENCIES
   rspec (~> 3.0)
   rubyzip
   sequel
+  simplecov
   sqlite3
   thor
   timecop
