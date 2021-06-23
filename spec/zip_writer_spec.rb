@@ -41,7 +41,9 @@ module Datasets
 
       begin
         # don't actually try to put anything in output zip
-        ZipWriter.new.write(src_path, Pathname.new("whatever.zip")) { |_, _| }
+        Dir.mktmpdir('datasets_test') do |dir|
+          ZipWriter.new.write(src_path, Pathname.new(dir) / "whatever.zip") { |_, _| }
+        end
       rescue Errno::ENOENT
         # won't actually create an output zip, don't care
       end
