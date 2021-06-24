@@ -13,7 +13,7 @@ module Datasets
         project(
           joined_tables.where(time: start_time..end_time)
           .or(zip_date: start_time..end_time)
-          .exclude_where(md5check_ok: false)
+          .exclude(md5check_ok: false)
         )
       end
 

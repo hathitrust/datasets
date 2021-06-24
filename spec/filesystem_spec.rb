@@ -28,15 +28,16 @@ module Datasets
     end
 
     describe "creation/deletion methods" do
-      TMPPATH = Pathname.new(File.join(File.dirname(__FILE__), "tmp"))
-      before(:each) do
-        FileUtils.mkpath TMPPATH
-        FileUtils.rm_rf("#{TMPPATH}/.", secure: true)
+
+      around(:each) do |example|
+        Dir.mktmpdir do |tmppath|
+          @tmppath = Pathname.new(tmppath)
+          example.run
+        end
       end
-      after(:all) { FileUtils.remove_entry_secure TMPPATH }
 
       describe "#read" do
-        let(:file) { TMPPATH + "somefile.txt" }
+        let(:file) { @tmppath + "somefile.txt" }
         let(:contents) { "some\ncontents\n\n\n\nmore"}
         it "returns the contents of a file" do
           File.write(file, contents)
@@ -45,7 +46,7 @@ module Datasets
       end
 
       describe "#write" do
-        let(:path) { TMPPATH + "somefile.txt" }
+        let(:path) { @tmppath + "somefile.txt" }
         let(:contents) { "some\ncontents\n\n\n\nmore"}
         it "writes a file" do
           fs.write(path, contents)
@@ -54,21 +55,21 @@ module Datasets
       end
 
       describe "#children" do
-        let(:files) { [TMPPATH + "one_file.txt", TMPPATH + ".hidden.yml"] }
-        let(:dirs) { [TMPPATH + "some_dir", TMPPATH + ".hidden_dir"] }
+        let(:files) { [@tmppath + "one_file.txt", @tmppath + ".hidden.yml"] }
+        let(:dirs) { [@tmppath + "some_dir", @tmppath + ".hidden_dir"] }
         before(:each) do
           files.each {|f| File.write(f, "dummy_contents") }
           dirs.each {|d| FileUtils.mkpath d}
         end
         it "returns the entries in the dir as pathnames" do
-          expect(fs.children(TMPPATH)).to match_array( (files + dirs))
+          expect(fs.children(@tmppath)).to match_array( (files + dirs))
         end
       end
 
       describe "#ln_s" do
-        let(:src_file_path) { TMPPATH + "src.txt" }
-        let(:src_dir_path) { TMPPATH + "src_dir" }
-        let(:dest_path) { TMPPATH + "dest" }
+        let(:src_file_path) { @tmppath + "src.txt" }
+        let(:src_dir_path) { @tmppath + "src_dir" }
+        let(:dest_path) { @tmppath + "dest" }
 
         it "creates a symlink dest to a src file" do
           File.write(src_file_path, "contents")
@@ -119,7 +120,7 @@ module Datasets
       end
 
       describe "#mkdir_p" do
-        let(:a_dir) { TMPPATH + "a" }
+        let(:a_dir) { @tmppath + "a" }
         let(:ab_dir) { a_dir + "b" }
         let(:abc_dir) { ab_dir + "c" }
         it "creates a directory tree" do
@@ -136,8 +137,8 @@ module Datasets
         end
       end
       describe "#remove" do
-        let(:file_path) { TMPPATH + "src.txt" }
-        let(:dir_path) { TMPPATH + "src_dir" }
+        let(:file_path) { @tmppath + "src.txt" }
+        let(:dir_path) { @tmppath + "src_dir" }
         it "removes a file" do
           File.write(file_path, "contents")
           fs.remove(file_path)
@@ -168,10 +169,12 @@ module Datasets
         end
       end
       describe "#rm_empty_tree" do
-        let(:a_dir) { TMPPATH + "a" }
+        let(:a_dir) { @tmppath + "a" }
         let(:ab_dir) { a_dir + "b" }
         let(:abc_dir) { ab_dir + "c" }
         it "removes empty directories starting at dest" do
+          # ensure we don't try to remove the base directory
+          File.write(@tmppath + "something", "contents")
           FileUtils.mkdir_p abc_dir
           fs.rm_empty_tree abc_dir
           expect(abc_dir.exist?).to be false

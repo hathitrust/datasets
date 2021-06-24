@@ -4,7 +4,7 @@ require "resque/pool"
 require "resque-retry"
 require "resque-scheduler"
 
-Resque.redis = "localhost:6379"
+Resque.redis = "redis:6379"
 Resque.redis.namespace = "datasets"
 RESQUE_PORT = 9231
 

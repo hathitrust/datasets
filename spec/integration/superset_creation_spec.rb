@@ -5,12 +5,13 @@ require "datasets"
 require_relative "../../config/hathitrust_config"
 require "yaml"
 require "fileutils"
+require "date"
 
 module Datasets
   RSpec.describe "superset creation", integration: true do
     include_context "integration" do
-      old_timestamp = Time.at(55)
-      new_timestamp = Time.at(9999)
+      old_timestamp = (Date.today - 7).to_time
+      new_timestamp = (Date.today - 3).to_time
 
       let(:report_manager) { ReportManager.new(Datasets.config.report_dir[:full], Filesystem.new) }
       subject do

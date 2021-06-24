@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  test:
+    build: .
+    volumes:
+      - .:/usr/src/app
+      - gem_cache:/gems
+    command: bundle exec rspec
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    volumes:
+      - .:/usr/src/app
+      - gem_cache:/gems
+    depends_on:
+      - redis
+
+  resque-web:
+    build: .
+    volumes:
+      - .:/usr/src/app
+      - gem_cache:/gems
+    depends_on:
+      - redis
+    command: bundle exec bin/resque_web.sh
+
+  redis:
+    image: redis
+    restart: always
+
+volumes:
+  gem_cache:

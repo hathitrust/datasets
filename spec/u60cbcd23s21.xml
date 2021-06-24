@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SubmissionPackage submission_id="u60cbcd23s21" xmlns="https://emma.lib.virginia.edu/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <emma_recordId>hathiTrust-inu.30000116535570-word</emma_recordId>
+  <emma_titleId>5cf02668-b20f-43f9-bb4f-45f5cfbf6a1b</emma_titleId>
+  <emma_repository>hathiTrust</emma_repository>
+  <emma_collection>
+    <xs:string>Indiana University</xs:string>
+  </emma_collection>
+  <emma_repositoryRecordId>inu.30000116535570</emma_repositoryRecordId>
+  <emma_lastRemediationDate>2019-07-15T21:13:00Z</emma_lastRemediationDate>
+  <emma_lastRemediationNote>converted to word from pdf.</emma_lastRemediationNote>
+  <emma_formatFeature>
+    <xs:string>human</xs:string>
+    <xs:string>literary</xs:string>
+  </emma_formatFeature>
+  <dc_title>Anthropology &amp; the Colonial Encounter</dc_title>
+  <dc_creator>
+    <xs:string>Talal Asad</xs:string>
+  </dc_creator>
+  <dc_identifier>
+    <xs:string>isbn: 978-157392-5896</xs:string>
+  </dc_identifier>
+  <dc_publisher>Humanity Books</dc_publisher>
+  <dc_language>
+    <xs:string>eng</xs:string>
+  </dc_language>
+  <dc_rights>copyright</dc_rights>
+  <dc_format>word</dc_format>
+  <dc_type>text</dc_type>
+  <dcterms_dateAccepted>06-17-2021</dcterms_dateAccepted>
+  <dcterms_dateCopyright>1973</dcterms_dateCopyright>
+  <s_accessibilityFeature>
+    <xs:string>annotations</xs:string>
+    <xs:string>printPageNumbers</xs:string>
+    <xs:string>tableOfContents</xs:string>
+  </s_accessibilityFeature>
+  <s_accessibilityHazard>
+    <xs:string>noFlashingHazard</xs:string>
+    <xs:string>noMotionSimulationHazard</xs:string>
+    <xs:string>noSoundHazard</xs:string>
+  </s_accessibilityHazard>
+  <s_accessMode>
+    <xs:string>auditory</xs:string>
+    <xs:string>textual</xs:string>
+    <xs:string>visual</xs:string>
+  </s_accessMode>
+  <s_accessModeSufficient>
+    <xs:string>auditory</xs:string>
+    <xs:string>textual</xs:string>
+    <xs:string>visual</xs:string>
+  </s_accessModeSufficient>
+  <s_accessibilitySummary>Ordered Headings, annotations, footnotes moved to end of chapter, if applicable</s_accessibilitySummary>
+  <rem_source>HathiTrust</rem_source>
+  <rem_metadataSource>
+    <xs:string>HathiTrust</xs:string>
+  </rem_metadataSource>
+  <rem_remediatedBy>
+    <xs:string>Univ of Illinois</xs:string>
+  </rem_remediatedBy>
+  <rem_complete>false</rem_complete>
+  <rem_coverage>
+    <xs:string>Front Matter</xs:string>
+  </rem_coverage>
+  <rem_remediation>
+    <xs:string>Ordered Headings, annotations, footnotes moved to end of chapter, if applicable</xs:string>
+  </rem_remediation>
+  <rem_quality>
+    <xs:string>cleaned_ocr</xs:string>
+    <xs:string>proofread</xs:string>
+  </rem_quality>
+  <rem_status>remediated</rem_status>
+</SubmissionPackage>

@@ -41,7 +41,9 @@ module Datasets
 
       begin
         # don't actually try to put anything in output zip
-        ZipWriter.new.write(src_path, Pathname.new("whatever.zip")) { |_, _| }
+        Dir.mktmpdir('datasets_test') do |dir|
+          ZipWriter.new.write(src_path, Pathname.new(dir) / "whatever.zip") { |_, _| }
+        end
       rescue Errno::ENOENT
         # won't actually create an output zip, don't care
       end
@@ -99,6 +101,8 @@ module Datasets
       expect_no_zip do |_, output_zip_stream|
         output_zip_stream.put_next_entry('foo')
         # write some junk, don't close the output stream, raise an error...
+        # will provoke a warning:
+        #   zlib(finalizer): the stream was freed prematurely.
         output_zip_stream.write('garbage' * 200)
         raise Zip::Error
       end

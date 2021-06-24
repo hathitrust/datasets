@@ -4,7 +4,6 @@ require "pp"
 require "sequel"
 require "datasets"
 require_relative "../../config/hathitrust_config"
-require "pry"
 
 Signal.trap("INT") do
   puts "Interrupt.  Exiting."
@@ -19,6 +18,12 @@ module Datasets
         default: "#{APP_ROOT}/config/config.yml",
         aliases: "-c",
         desc: "Path to the configuration file to use."
+    end
+
+    def self.exit_on_failure?
+      # If we fail we will raise an exception and Ruby will report the exit
+      # status (rather than Thor)
+      false
     end
 
     package_name "datasets"
@@ -68,7 +73,6 @@ module Datasets
     end
 
 
-
     # Non-task cli functions
     private
 
@@ -91,7 +95,6 @@ module Datasets
     def load_config(config)
       Datasets::HathiTrust::Configuration.from_yaml(config)
     end
-
 
   end
 end

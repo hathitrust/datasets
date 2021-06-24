@@ -5,7 +5,7 @@ require "datasets/volume"
 module Datasets
   RSpec.describe Volume do
     shared_examples "coerces parameters" do
-      let(:volume) { described_class.new(volume_params) }
+      let(:volume) { described_class.new(**volume_params) }
       [:namespace, :id].each do |field|
         it "##{field} is a string" do
           expect(volume.public_send(field)).to eql(volume_params[field].to_s)
@@ -45,9 +45,9 @@ module Datasets
           access_profile: :open, right: :pd }
       end
 
-      let(:volume) { described_class.new(volume_params) }
-      let(:same_volume) { described_class.new(volume_params) }
-      let(:other_volume) { described_class.new(other_volume_params) }
+      let(:volume) { described_class.new(**volume_params) }
+      let(:same_volume) { described_class.new(**volume_params) }
+      let(:other_volume) { described_class.new(**other_volume_params) }
 
       describe "#to_h" do
         it "returns a hash representing the volume" do
