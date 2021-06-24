@@ -10,7 +10,7 @@ gem "resque-scheduler"
 gem "sequel"
 gem "rubyzip"
 gem "thor"
-gem "rake", "~> 10.0"
+gem "rake", "~> 12.3"
 
 group :development, :test do
   gem "sqlite3"

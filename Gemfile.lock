@@ -34,7 +34,7 @@ GEM
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
-    rake (10.5.0)
+    rake (12.3.3)
     redis (4.3.1)
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
@@ -102,7 +102,7 @@ DEPENDENCIES
   byebug
   mysql2
   pry
-  rake (~> 10.0)
+  rake (~> 12.3)
   resque
   resque-pool
   resque-retry
