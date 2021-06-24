@@ -26,6 +26,8 @@ RSpec.shared_context "integration" do
   let(:rights_table) { Datasets.config.db_connection.from(:rights_current) }
   let(:feed_table) { Datasets.config.db_connection.from(:feed_audit) }
   let(:two_days_ago) { (Date.today - 2).to_time }
+  let(:three_days_ago) { (Date.today - 3).to_time }
+  let(:one_week_ago) { (Date.today - 7).to_time }
 
   after(:all) do
     Timecop.return

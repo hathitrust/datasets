@@ -4,7 +4,6 @@ require "datasets/filesystem"
 require "datasets/job"
 require "resque"
 require "pathname"
-require "pry"
 
 module Datasets
 

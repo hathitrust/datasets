@@ -11,6 +11,8 @@ module Datasets
       let(:volume_id) { volume_id }
       let(:pt_volume_id) { pt_volume_id }
       let(:pt_path) { pt_path }
+      let(:today) { Date.today.to_time }
+      let(:two_days_ago) { (Date.today - 2).to_time }
 
       include_context "with mocked resque logger"
       include_context "with volume creator fixtures"
@@ -43,8 +45,8 @@ module Datasets
         context "destination zip present and newer than src" do
           before(:each) do
             allow(fs).to receive(:exists?).with(dest_zip).and_return(true)
-            allow(fs).to receive(:modify_time).with(src_zip).and_return(Time.at(0))
-            allow(fs).to receive(:modify_time).with(dest_zip).and_return(Time.at(9999))
+            allow(fs).to receive(:modify_time).with(src_zip).and_return(two_days_ago)
+            allow(fs).to receive(:modify_time).with(dest_zip).and_return(today)
             volume_creator.save(volume, src_path)
           end
           it "creates the directory tree including final dir" do
@@ -63,8 +65,8 @@ module Datasets
         context "destination zip present and older than src" do
           before(:each) do
             allow(fs).to receive(:exists?).with(dest_zip).and_return(true)
-            allow(fs).to receive(:modify_time).with(src_zip).and_return(Time.at(9999))
-            allow(fs).to receive(:modify_time).with(dest_zip).and_return(Time.at(0))
+            allow(fs).to receive(:modify_time).with(src_zip).and_return(today)
+            allow(fs).to receive(:modify_time).with(dest_zip).and_return(two_days_ago)
             volume_creator.save(volume, src_path)
           end
           it "creates the directory tree including final dir" do

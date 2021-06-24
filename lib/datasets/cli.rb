@@ -4,7 +4,6 @@ require "pp"
 require "sequel"
 require "datasets"
 require_relative "../../config/hathitrust_config"
-require "pry"
 
 Signal.trap("INT") do
   puts "Interrupt.  Exiting."

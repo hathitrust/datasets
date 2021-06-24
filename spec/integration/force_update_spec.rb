@@ -9,8 +9,8 @@ require "fileutils"
 module Datasets
   RSpec.describe "force update", integration: true do
     include_context "integration" do
-      old_timestamp = Time.at(55)
-      new_timestamp = Time.at(9999)
+      old_timestamp = (Date.today - 7).to_time
+      new_timestamp = (Date.today - 3).to_time
 
       let(:htids) { ['test.001','test.002' ] }
       subject { HTIDSafeRun.new(htids).queue_and_report(:force_full) }

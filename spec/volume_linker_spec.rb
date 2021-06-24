@@ -1,7 +1,6 @@
 require_relative "./spec_helper"
 require "volume_linker"
 require "pathname"
-require "pry"
 
 module Datasets
   RSpec.describe VolumeLinker do
