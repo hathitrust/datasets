@@ -24,12 +24,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build image and push to DockerHub
+      - name: Build image and push to registry
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: 'ghcr.io/hathitrust/datasets-unstable:${{ github.sha }}, ghcr.io/hathitrust/datasets-unstable:latest'
-          file: Dockerfile.prod
+          file: Dockerfile
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
