@@ -1,0 +1,28 @@
+---
+
+# This is the config.yml to use when using the
+# Datasets::Hathitrust::Configuration.
+
+src_parent_dir: '/sdr1'
+worker_log_path: '/tmp/datasets/log'
+
+report_dir:
+  :full: '/tmp/datasets/ht_text/history'
+  :pd: '/tmp/datasets/ht_text_pd/history'
+  :pd_open: '/tmp/datasets/ht_text_pd_open_access/history'
+  :pd_world: '/tmp/datasets/ht_text_pd_world/history'
+  :pd_world_open: '/tmp/datasets/ht_text_pd_world_open_access/history'
+
+dest_parent_dir:
+  :full: '/tmp/datasets/ht_text'
+  :pd: '/tmp/datasets/ht_text_pd'
+  :pd_open: '/tmp/datasets/ht_text_pd_open_access'
+  :pd_world: '/tmp/datasets/ht_text_pd_world'
+  :pd_world_open: '/tmp/datasets/ht_text_pd_world_open_access'
+
+db:
+  adapter: mysql
+  database: ht
+  host: mysql
+  user: datasets
+  password: datasets

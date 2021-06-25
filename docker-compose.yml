@@ -16,6 +16,7 @@ services:
     volumes:
       - .:/usr/src/app
       - gem_cache:/gems
+    command: bundle exec rake resque:pool
     depends_on:
       - redis
 

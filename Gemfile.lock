@@ -106,7 +106,6 @@ DEPENDENCIES
   resque
   resque-pool
   resque-retry
-  resque-scheduler
   rpairtree
   rspec (~> 3.0)
   rubyzip

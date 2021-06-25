@@ -1,8 +1,9 @@
-require "bundler/gem_tasks"
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
 require "rspec/core/rake_task"
 require "resque/tasks"
 require "resque/pool/tasks"
-require "resque/scheduler/tasks"
 require "socket"
 
 RSpec::Core::RakeTask.new(:spec)
@@ -20,8 +21,6 @@ namespace :resque do
     require "resque/server"
     require "resque-retry"
     require "resque-retry/server"
-    require "resque-scheduler"
-    require "resque/scheduler/server"
   end
 
   namespace :pool do
@@ -30,8 +29,9 @@ namespace :resque do
 
         # set up pipe to rotatelogs
         log_basename = [Socket.gethostname,Process.pid,"%Y%m%d"].join('-')
+        FileUtils.mkdir_p Datasets.config.worker_log_path
         log_template = File.join(Datasets.config.worker_log_path,"#{log_basename}.log")
-        rotatelogs_cmd = "/usr/sbin/rotatelogs -f -l #{log_template} 86400"
+        rotatelogs_cmd = "/usr/bin/rotatelogs -f -l #{log_template} 86400"
         log_io = IO.popen(rotatelogs_cmd,"w")
         log_io.sync = true
 
@@ -46,6 +46,6 @@ namespace :resque do
     end
   end
 
-  task :scheduler => :setup
+#  task :scheduler => :setup
 
 end

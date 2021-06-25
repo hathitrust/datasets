@@ -3,6 +3,10 @@ ARG UNAME=app
 ARG UID=1000
 ARG GID=1000
 
+# for rotatelogs
+RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
+  apache2-utils
+
 RUN gem install bundler
 RUN groupadd -g $GID -o $UNAME
 RUN useradd -m -d /usr/src/app -u $UID -g $GID -o -s /bin/bash $UNAME
