@@ -11,10 +11,6 @@ RESQUE_PORT = 9231
 Resque::Failure::MultipleWithRetrySuppression.classes = [Resque::Failure::Redis]
 Resque::Failure.backend = Resque::Failure::MultipleWithRetrySuppression
 
-schedule_path = Pathname.new(__FILE__).dirname + "resque-schedule.yml"
-Resque.schedule = YAML.load_file(schedule_path) || {}
-
-
 module Datasets
   class Job
     extend Resque::Plugins::Retry
