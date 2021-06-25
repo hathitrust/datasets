@@ -13,6 +13,7 @@
       },
       redis: {
         name: 'redis',
+        port: 6379,
       },
       runAs: {
         runAsUser: 140052,

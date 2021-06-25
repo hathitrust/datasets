@@ -54,6 +54,8 @@
     },
 
     redis: {
+      local service_mixin = $.core.v1.service.mixin.spec,
+
       deployment: deploy.new(
         name=config.redis.name,
         replicas=1,
@@ -64,7 +66,11 @@
         ]
       )
       + deployTemplate.withVolumes([htprepRedisVolume])
-      + securityContext
+      + securityContext,
+
+      service: $.util.serviceFor(self.deployment) + 
+      service_mixin.withPorts(service_mixin.portsType.newNamed( name=config.redis.name, port=config.redis.port, targetPort=config.redis.port))
+
     },
   },
 }
