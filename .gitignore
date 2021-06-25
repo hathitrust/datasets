@@ -18,3 +18,5 @@ tags
 *~
 .*.sw?
 .vendor
+.bash_history
+.local
