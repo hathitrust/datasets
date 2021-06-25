@@ -7,6 +7,9 @@ ARG GID=1000
 RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
   apache2-utils
 
+# sdrN for volumes and symlinks
+RUN bash -c 'for i in $(seq 1 24); do ln -s /sdr/$i /sdr$i; done'
+
 RUN gem install bundler
 RUN groupadd -g $GID -o $UNAME
 RUN useradd -m -d /usr/src/app -u $UID -g $GID -o -s /bin/bash $UNAME
