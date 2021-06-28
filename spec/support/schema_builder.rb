@@ -80,7 +80,7 @@ module Datasets
     end
 
     def create_access_profiles
-      connection.create_table(:access_profiles) do
+      connection.create_table!(:access_profiles) do
         primary_key :id
         String :name, size: 16, null: false
         String :dscr, text: true, null: false
@@ -89,7 +89,7 @@ module Datasets
 
 
     def create_attributes
-      connection.create_table(:attributes) do
+      connection.create_table!(:attributes) do
         primary_key :id
         String :type, null: false, default: "access"
         String :name, size: 16, null: false, default: ""
@@ -98,7 +98,7 @@ module Datasets
     end
 
     def create_reasons
-      connection.create_table(:reasons) do
+      connection.create_table!(:reasons) do
         primary_key :id
         String :name, size: 16, null: false, default: ""
         String :dscr, text: true, null: false
@@ -106,7 +106,7 @@ module Datasets
     end
 
     def create_rights_current
-      connection.create_table(:rights_current) do
+      connection.create_table!(:rights_current) do
         String :namespace, size: 8, null: false
         String :id, size: 32, null: false, default: ""
         Integer :attr, null: false
@@ -120,7 +120,7 @@ module Datasets
     end
 
     def create_sources
-      connection.create_table(:sources) do
+      connection.create_table!(:sources) do
         primary_key :id
         String :name, size: 16, null: false, default: ""
         String :dscr, text: true, null: false
@@ -130,15 +130,15 @@ module Datasets
     end
 
     def create_feed_audit
-      connection.create_table(:feed_audit) do
+      connection.create_table!(:feed_audit) do
         String :namespace, size: 8, null: false
         String :id, size: 32, null: false
-        Number :sdr_partition, null: true
+        Tinyint :sdr_partition, size: 4, null: true
         Bignum :zip_size, size: 20, null: true
         Time :zip_date, null: true
         Bignum :mets_size, size: 20, null: true
         Time :mets_date, null: true
-        Number :page_count, null: true
+        Integer :page_count, null: true
         Time :lastchecked, null: false
         Time :lastmd5check, null: true
         TrueClass :md5check_ok, null: true

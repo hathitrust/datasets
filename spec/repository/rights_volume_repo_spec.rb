@@ -4,7 +4,6 @@ require "volume"
 
 require "set"
 require "sequel"
-require "sqlite3"
 require "active_support/core_ext/numeric/time"
 require "active_support/core_ext/hash/slice"
 
@@ -12,7 +11,11 @@ require "active_support/core_ext/hash/slice"
 module Datasets
   RSpec.describe Repository::RightsVolumeRepo do
     before(:all) do
-      @connection = Sequel.sqlite
+      @connection = Sequel.connect(adapter: 'mysql2',
+                                   database: 'ht',
+                                   host: 'mariadb-test',
+                                   user: 'datasets',
+                                   password: 'datasets')
       @schema_builder = SchemaBuilder.new(@connection)
       @schema_builder.create!
     end

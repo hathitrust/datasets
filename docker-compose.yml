@@ -4,21 +4,56 @@ services:
 
   test:
     build: .
+    restart: never
     volumes:
       - .:/usr/src/app
       - gem_cache:/gems
-    command: bundle exec rspec
+    command: bin/wait-for --timeout=300 mariadb-test:3306 redis:6379 -- bundle exec rspec
     depends_on:
       - redis
+      - mariadb-test
 
   worker:
     build: .
+    restart: always
     volumes:
       - .:/usr/src/app
       - gem_cache:/gems
+      - ./example/datasets:/tmp/datasets
     command: bundle exec rake resque:pool
     depends_on:
       - redis
+      - mariadb-dev
+
+  queuer:
+    build: .
+    restart: never
+    volumes:
+      - .:/usr/src/app
+      - gem_cache:/gems
+      - ./example/datasets:/tmp/datasets
+    command: bin/datasets.rb
+    depends_on:
+      - redis
+      - mariadb-dev
+
+  mariadb-test:
+    image: hathitrust/db-image
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqlroot
+      MYSQL_DATABASE: ht
+      MYSQL_USER: datasets
+      MYSQL_PASSWORD: datasets
+
+  mariadb-dev:
+    image: hathitrust/db-image
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqlroot
+      MYSQL_DATABASE: ht
+      MYSQL_USER: datasets
+      MYSQL_PASSWORD: datasets
 
   resque-web:
     build: .

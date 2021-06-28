@@ -1,13 +1,7 @@
 #!/usr/bin/env ruby
 
-# Bundler binstub boilerplate
-require "pathname"
-ENV["BUNDLE_GEMFILE"] ||= File.expand_path("../../Gemfile",
-  Pathname.new(__FILE__).realpath)
-
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 require "bundler/setup"
-
-# Project specific code
-require_relative '../lib/datasets/cli.rb'
+require "datasets/cli"
 
 Datasets::CLI.start(ARGV)
