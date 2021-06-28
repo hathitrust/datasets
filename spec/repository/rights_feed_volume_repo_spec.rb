@@ -7,7 +7,11 @@ module Datasets
     let(:end_time) { Time.now }
 
     before(:all) do
-      @connection = Sequel.sqlite
+      @connection = Sequel.connect(adapter: 'mysql2',
+                                   database: 'ht',
+                                   host: 'mariadb-test',
+                                   user: 'datasets',
+                                   password: 'datasets')
       @schema_builder = SchemaBuilder.new(@connection)
       @schema_builder.create!
     end

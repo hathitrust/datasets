@@ -84,7 +84,6 @@ GEM
       rack (~> 2.2)
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
-    sqlite3 (1.4.2)
     thor (1.1.0)
     tilt (2.0.10)
     timecop (0.9.4)
@@ -111,7 +110,6 @@ DEPENDENCIES
   rubyzip
   sequel
   simplecov
-  sqlite3
   thor
   timecop
 

@@ -1,6 +1,6 @@
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 
+require "bundler/setup"
 require "rspec/core/rake_task"
 require "resque/tasks"
 require "resque/pool/tasks"

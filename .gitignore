@@ -20,3 +20,4 @@ tags
 .vendor
 .bash_history
 .local
+/example/datasets/*

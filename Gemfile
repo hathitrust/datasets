@@ -12,7 +12,6 @@ gem "thor"
 gem "rake", "~> 12.3"
 
 group :development, :test do
-  gem "sqlite3"
   gem "rspec", "~> 3.0"
   gem "pry"
   gem "timecop"

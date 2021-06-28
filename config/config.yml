@@ -21,8 +21,8 @@ dest_parent_dir:
   :pd_world_open: '/tmp/datasets/ht_text_pd_world_open_access'
 
 db:
-  adapter: mysql
+  adapter: mysql2
   database: ht
-  host: mysql
+  host: mariadb-dev
   user: datasets
   password: datasets

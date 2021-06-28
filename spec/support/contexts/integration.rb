@@ -7,7 +7,6 @@ require_relative "../schema_builder"
 RSpec.shared_context "integration" do
   SPEC_HOME ||= Pathname.new(__FILE__).expand_path.dirname.parent.parent
   INTEGRATION_ROOT ||= Pathname.new("/tmp/integration")
-  DB_PATH ||= INTEGRATION_ROOT + "test.db"
   CONFIG_YML ||= SPEC_HOME + "support" + "config" + "integration.yml"
 
   before(:all) do
@@ -32,7 +31,6 @@ RSpec.shared_context "integration" do
   after(:all) do
     Timecop.return
     (INTEGRATION_ROOT + "datasets").rmtree
-    DB_PATH.rmtree
   end
 
 end
