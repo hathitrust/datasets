@@ -37,7 +37,7 @@ DOC
   message+="===END ID LIST===\n"
 
   puts "sending message with #{data.count} deletes to #{recipient}"
-  Net::SMTP.start(ENV[SMTP_HOST] || 'localhost') do |smtp|  
+  Net::SMTP.start(ENV['SMTP_HOST'] || 'localhost') do |smtp|  
     smtp.send_message message, 'feedback@issues.hathitrust.org', recipient    
   end
 end
