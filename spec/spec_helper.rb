@@ -1,6 +1,9 @@
 $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), "../lib/datasets"))
 
 require 'simplecov'
+require "active_support/isolated_execution_state"
+require "active_support/core_ext/numeric/time"
+require "active_support/core_ext/hash/slice"
 SimpleCov.start
 
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}

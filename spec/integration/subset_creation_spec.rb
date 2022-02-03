@@ -65,7 +65,7 @@ module Datasets
                 ]
               expect(File.read(pd_world_open_root + deleted_report))
                 .to be_empty
-              expect(YAML.load_file(pd_world_open_root + summary_report))
+              expect(YAML.unsafe_load_file(pd_world_open_root + summary_report))
                 .to eql(
                   { saved: 2, deleted: 0,
                     start_time: Time.at(0), end_time: two_days_ago

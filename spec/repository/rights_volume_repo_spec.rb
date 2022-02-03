@@ -4,9 +4,6 @@ require "volume"
 
 require "set"
 require "sequel"
-require "active_support/core_ext/numeric/time"
-require "active_support/core_ext/hash/slice"
-
 
 module Datasets
   RSpec.describe Repository::RightsVolumeRepo do
