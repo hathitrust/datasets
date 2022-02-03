@@ -11,7 +11,7 @@ module Datasets
     end
 
     def self.from_yaml(path)
-      new(YAML.load(File.read(path)))
+      new(YAML.unsafe_load(File.read(path)))
     end
 
     private

@@ -66,7 +66,7 @@ module Datasets
     end
 
     def read_summary(path)
-      hash = YAML.load(fs.read(path))
+      hash = YAML.unsafe_load(fs.read(path))
       ReportSummary.new(hash[:saved], hash[:deleted], hash[:start_time]..hash[:end_time], fs)
     end
 

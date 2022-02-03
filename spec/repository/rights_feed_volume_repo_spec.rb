@@ -1,5 +1,4 @@
 require "datasets/repository/rights_feed_volume_repo"
-require "active_support/core_ext/numeric/time"
 
 module Datasets
   RSpec.describe Repository::RightsFeedVolumeRepo do

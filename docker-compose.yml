@@ -38,7 +38,7 @@ services:
       - mariadb-dev
 
   mariadb-test:
-    image: hathitrust/db-image
+    image: ghcr.io/hathitrust/db-image
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: mysqlroot
@@ -47,7 +47,7 @@ services:
       MYSQL_PASSWORD: datasets
 
   mariadb-dev:
-    image: hathitrust/db-image
+    image: ghcr.io/hathitrust/db-image
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: mysqlroot

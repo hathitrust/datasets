@@ -51,7 +51,7 @@ module Datasets
               .to match_array [
                 "#{volume1_rights_tuple[:namespace]}.#{volume1_rights_tuple[:id]}"
               ]
-            expect(YAML.load_file(full_root + summary_report))
+            expect(YAML.unsafe_load_file(full_root + summary_report))
               .to eql(
                 { saved: 0, deleted: 1,
                   start_time: Time.at(0), end_time: two_days_ago
