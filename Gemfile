@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem "activesupport"
 gem "mysql2"
+gem "puma"
 gem "rpairtree"
 gem "resque"
 gem "resque-retry"

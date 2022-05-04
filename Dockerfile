@@ -19,5 +19,6 @@ USER $UNAME
 COPY --chown=$UID:$GID Gemfile* /usr/src/app/
 WORKDIR /usr/src/app
 ENV BUNDLE_PATH /gems
+ENV RUBYLIB /usr/src/app/lib
 RUN bundle install
 COPY --chown=$UID:$GID . /usr/src/app
