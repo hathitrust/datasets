@@ -12,5 +12,5 @@ jobs:
         with:
           registry_token: ${{ github.token }}
           existing_tag: ghcr.io/hathitrust/datasets-unstable:${{ github.sha }}
-          image: ${{ github.event.inputs.image_to_tag }}
-          new_tag: ${{ github.event.inputs.tag }}
+          image: ghcr.io/hathitrust/datasets
+          new_tag: ${{ github.event.release.tag_name }}
