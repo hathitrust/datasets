@@ -10,7 +10,7 @@ module Datasets
     let(:pt_volume_id) { "39015012345678" }
     let(:pt_path) { "mdp/39/01/50/12/34/56/78" }
 
-    include_context "with mocked resque logger"
+    include_context "with mocked sidekiq logger"
     include_context "with volume creator fixtures"
 
     describe "#save" do
@@ -31,7 +31,7 @@ module Datasets
           expect(writer).to have_received(:write).with(src_zip, dest_zip)
         end
         it "logs that destination zip was updated" do
-          expect(Resque.logger).to have_received(:info).with("#{log_prefix}: updated")
+          expect(Sidekiq.logger).to have_received(:info).with("#{log_prefix}: updated")
         end
       end
     end

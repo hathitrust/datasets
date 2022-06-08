@@ -4,32 +4,16 @@ require "pathname"
 module Datasets
   class SaveJob < Job
 
-    # @param volume [Volume]
-    # @param src_path [Pathname]
-    # @param writer [VolumeWriter]
-    def initialize(volume, src_path, writer)
-      @volume = volume
-      @src_path = src_path
-      @writer = writer
-    end
-
-    def perform
+    def perform(volume_params, src_path, writer_id)
+      volume = deserialize_volume(volume_params)
+      src_path = Pathname.new(src_path)
+      writer = Datasets.config.volume_writer[writer_id.to_sym]
       writer.save(volume, Pathname.new(src_path))
     end
 
-    def serialize
-      [volume.to_h, src_path.to_s, writer.id]
+    def self.serialize(volume,src_path,writer)
+      [volume.to_h, src_path.to_s, writer.id.to_s]
     end
 
-    def self.deserialize(volume, src_path, writer_id)
-      new(
-        deserialize_volume(volume),
-        Pathname.new(src_path),
-        Datasets.config.volume_writer[writer_id.to_sym]
-      )
-    end
-
-    private
-    attr_accessor :volume, :src_path, :writer
   end
 end

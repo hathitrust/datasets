@@ -2,7 +2,7 @@ require "datasets/scheduler"
 require "datasets/retriever/time_range_retriever"
 require "datasets/filesystem"
 require "datasets/job"
-require "resque"
+require "sidekiq/api"
 require "pathname"
 
 module Datasets
@@ -39,7 +39,10 @@ module Datasets
     end
 
     def queue_empty?
-      Resque.size(Job.queue) == 0 && Resque::Failure.count == 0 && Resque.count_all_scheduled_jobs == 0
+      Sidekiq::Queue.new.size == 0 && 
+        Sidekiq::RetrySet.new.size == 0 && 
+        Sidekiq::ScheduledSet.new.size == 0 &&
+        Sidekiq::DeadSet.new.size == 0
     end
 
   end

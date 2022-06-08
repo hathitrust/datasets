@@ -12,18 +12,22 @@ services:
     depends_on:
       - redis
       - mariadb-test
+    environment:
+      REDIS_URL: redis://redis/
 
-  worker:
+  processor:
     build: .
     restart: always
     volumes:
       - .:/usr/src/app
       - gem_cache:/gems
       - ./example/datasets:/tmp/datasets
-    command: bundle exec rake resque:pool
+    command: bundle exec sidekiq
     depends_on:
       - redis
       - mariadb-dev
+    environment:
+      REDIS_URL: redis://redis/
 
   queuer:
     build: .
@@ -36,6 +40,8 @@ services:
     depends_on:
       - redis
       - mariadb-dev
+    environment:
+      REDIS_URL: redis://redis/
 
   mariadb-test:
     image: ghcr.io/hathitrust/db-image
@@ -54,15 +60,6 @@ services:
       MYSQL_DATABASE: ht
       MYSQL_USER: datasets
       MYSQL_PASSWORD: datasets
-
-  resque-web:
-    build: .
-    volumes:
-      - .:/usr/src/app
-      - gem_cache:/gems
-    depends_on:
-      - redis
-    command: bundle exec bin/resque_web.sh
 
   redis:
     image: redis

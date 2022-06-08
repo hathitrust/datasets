@@ -23,8 +23,8 @@ module Datasets
 
     def to_h
       {
-        namespace: namespace, id: id,
-        access_profile: access_profile, right: right
+        "namespace" => namespace.to_s, "id" => id.to_s,
+        "access_profile" => access_profile.to_s, "right" => right.to_s
       }
     end
 

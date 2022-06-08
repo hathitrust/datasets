@@ -17,7 +17,7 @@ module Datasets
     def delete(volume); end
 
     def log(volume,action)
-      Resque.logger.info("profile: #{id}, volume: #{volume}: #{action}")
+      Sidekiq.logger.info("profile: #{id}, volume: #{volume}: #{action}")
     end
 
   end

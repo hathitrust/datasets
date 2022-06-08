@@ -3,27 +3,15 @@ require "datasets/job"
 module Datasets
   class DeleteJob < Job
 
-    def initialize(volume, writer)
-      @volume = volume
-      @writer = writer
-    end
-
-    def perform
+    def perform(volume_params, writer_id)
+      volume = deserialize_volume(volume_params)
+      writer = Datasets.config.volume_writer[writer_id.to_sym]
       writer.delete(volume)
     end
 
-    def serialize
-      [volume.to_h, writer.id]
+    def self.serialize(volume, writer)
+      [volume.to_h, writer.id.to_s]
     end
 
-    def self.deserialize(volume, writer_id)
-      new(
-        deserialize_volume(volume),
-        Datasets.config.volume_writer[writer_id.to_sym]
-      )
-    end
-
-    private
-    attr_accessor :volume, :writer
   end
 end
