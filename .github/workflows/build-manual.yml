@@ -1,0 +1,20 @@
+---
+name: Manual Image Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: tag
+        required: true
+
+jobs:
+  build_manual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hathitrust/github_actions/build@v1
+        with:
+          image: ghcr.io/hathitrust/datasets-unstable
+          tag: ${{ github.event.inputs.tag }}
+          push_latest: false
+          registry_token: ${{ github.token }}
