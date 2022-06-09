@@ -21,3 +21,4 @@ tags
 .bash_history
 .local
 /example/datasets/*
+.session.key

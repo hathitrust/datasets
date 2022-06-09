@@ -22,10 +22,24 @@ services:
       - .:/usr/src/app
       - gem_cache:/gems
       - ./example/datasets:/tmp/datasets
-    command: bundle exec sidekiq
+    command: bundle exec sidekiq -r ./lib/datasets/sidekiq_jobs.rb
     depends_on:
       - redis
       - mariadb-dev
+    environment:
+      REDIS_URL: redis://redis/
+
+  sidekiq_web:
+    build: .
+    restart: always
+    volumes:
+      - .:/usr/src/app
+      - gem_cache:/gems
+    command: bundle exec puma bin/sidekiq_web.ru
+    depends_on:
+      - redis
+    ports:
+      - 9292:9292
     environment:
       REDIS_URL: redis://redis/
 
