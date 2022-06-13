@@ -6,7 +6,6 @@ require "sidekiq/api"
 require "pathname"
 
 module Datasets
-
   # Represents a "safe run" of a scheduler for the specified rights profile.
   # Nothing will be enqueued if the queue for this rights profile contains
   # pending jobs.
@@ -24,7 +23,7 @@ module Datasets
     end
 
     def queue_and_report(profile)
-      raise RuntimeError, "Not implemented."
+      raise "Not implemented."
     end
 
     def time_scheduler_for(profile, time_range)
@@ -34,16 +33,16 @@ module Datasets
         filter: Datasets.config.filter[profile],
         retriever: TimeRangeRetriever.new(
           time_range: time_range,
-          repository: Datasets.config.volume_repo[profile])
+          repository: Datasets.config.volume_repo[profile]
+        )
       )
     end
 
     def queue_empty?
-      Sidekiq::Queue.new.size == 0 && 
-        Sidekiq::RetrySet.new.size == 0 && 
+      Sidekiq::Queue.new.size == 0 &&
+        Sidekiq::RetrySet.new.size == 0 &&
         Sidekiq::ScheduledSet.new.size == 0 &&
         Sidekiq::DeadSet.new.size == 0
     end
-
   end
 end

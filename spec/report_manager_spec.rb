@@ -4,14 +4,13 @@ require "filesystem"
 require "pathname"
 
 module Datasets
-
   RSpec.describe ReportManager do
     let(:parent_dir) { Pathname.new("some/dir") }
     let(:fs) { double(:fs, mkdir_p: nil, read: nil, write: nil, exists?: true) }
     let(:mgr) { described_class.new(parent_dir, fs) }
 
     describe "#last_range" do
-      let(:last_range) { Time.new(2017,05,20,01,30,00,"-05:00")..Time.new(2017,05,21,01,29,59,"-05:00") }
+      let(:last_range) { Time.new(2017, 0o5, 20, 0o1, 30, 0o0, "-05:00")..Time.new(2017, 0o5, 21, 0o1, 29, 59, "-05:00") }
       it "returns the time range for the most recent report" do
         manager = described_class.new(fixtures_dir + "report_test", Filesystem.new)
         expect(manager.last_range).to eql last_range
@@ -31,16 +30,15 @@ module Datasets
         expect(mgr.save_path(time_range)).to eql(Pathname.new("some/dir/20010101000000-20021231115959"))
       end
     end
-      
 
     # We mock #last_range here because it is convenient and should
     # help to isolate errors.
     describe "#build_next_report" do
-      let(:saved_volumes) { [1,2] }
-      let(:deleted_volumes) { [3,4,5] }
+      let(:saved_volumes) { [1, 2] }
+      let(:deleted_volumes) { [3, 4, 5] }
       let(:last_range) { Time.new(2001, 1, 1)..Time.new(2001, 1, 3, 6, 30, 25) }
       let(:new_range) { last_range.last..Time.new(2001, 1, 4, 0, 0, 0) }
-      let(:fake_today) { Date.parse('2001-01-06') }
+      let(:fake_today) { Date.parse("2001-01-06") }
       let(:report) { double(:report, save: nil) }
       before(:each) do
         allow(Report).to receive(:new).and_return(report)
@@ -48,7 +46,7 @@ module Datasets
         allow(Date).to receive(:today).and_return(fake_today)
       end
       it "yields a period of last_range.last..two_days_ago_at_midnight" do
-        expect{|spy|
+        expect { |spy|
           mgr.build_next_report(&spy)
         }.to yield_with_args(new_range)
       end
@@ -61,7 +59,5 @@ module Datasets
         mgr.build_next_report { [saved_volumes, deleted_volumes] }
       end
     end
-
   end
-
 end

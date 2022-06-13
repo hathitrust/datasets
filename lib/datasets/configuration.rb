@@ -3,9 +3,7 @@ require "ostruct"
 require "yaml"
 
 module Datasets
-
   class Configuration < OpenStruct
-
     def initialize(hash = {})
       super hash.merge(logger: NullLogger.new)
     end
@@ -17,10 +15,11 @@ module Datasets
     private
 
     class NullLogger < Logger
-      def initialize(*args); end
-      def add(*args, &block); end
+      def initialize(*args)
+      end
+
+      def add(*args, &block)
+      end
     end
-
   end
-
 end

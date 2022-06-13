@@ -2,7 +2,6 @@
 # to the superset.
 module Datasets
   class VolumeLinker < VolumeWriter
-
     # @param [PathResolver] dest_path_resolver
     # @param [Filesystem] fs
     def initialize(id:, dest_path_resolver:, fs:)
@@ -22,7 +21,7 @@ module Datasets
       dest_path = dest_path_resolver.path(volume)
       fs.mkdir_p dest_path.parent
       linked = fs.ln_s src_path.relative_path_from(dest_path.parent), dest_path
-      log(volume, linked ? 'added' : 'already present')
+      log(volume, linked ? "added" : "already present")
     end
 
     # Delete a link for the volume within the
@@ -34,13 +33,12 @@ module Datasets
     def delete(volume)
       dest_path = dest_path_resolver.path(volume)
       removed = fs.remove(dest_path)
-      log(volume, removed ? 'removed' : 'not present')
+      log(volume, removed ? "removed" : "not present")
       fs.rm_empty_tree(dest_path.parent)
     end
 
     private
 
     attr_reader :dest_path_resolver, :fs
-
   end
 end

@@ -4,7 +4,6 @@ require "datasets/job"
 require "json"
 
 module Datasets
-
   shared_examples "a job" do
     let(:queue) { :test }
 
@@ -17,5 +16,4 @@ module Datasets
       described_class.enqueue(*params)
     end
   end
-
 end

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
+
 require_relative "./spec_helper"
 require "scheduler"
 
 module Datasets
   RSpec.describe Scheduler do
-
     let(:src) { double(:src_path_resovler) }
     let(:writer) { double(:writer) }
     let(:filter) { double(:filter) }
@@ -31,8 +31,8 @@ module Datasets
 
       allow(src).to receive(:path).and_return(*src_paths)
 
-      in_volumes.each {|v| allow(filter).to receive(:matches?).with(v).and_return(true) }
-      out_volumes.each {|v| allow(filter).to receive(:matches?).with(v).and_return(false) }
+      in_volumes.each { |v| allow(filter).to receive(:matches?).with(v).and_return(true) }
+      out_volumes.each { |v| allow(filter).to receive(:matches?).with(v).and_return(false) }
     end
 
     describe "#add" do
@@ -61,7 +61,6 @@ module Datasets
       it "returns the enqueued volumes" do
         expect(scheduler.add).to eql(in_volumes)
       end
-
     end
 
     describe "#delete" do
@@ -90,7 +89,6 @@ module Datasets
       it "returns the enqueued volumes" do
         expect(scheduler.delete).to eql(out_volumes)
       end
-
     end
   end
 end

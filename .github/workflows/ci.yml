@@ -23,6 +23,9 @@ jobs:
       - name: make fixtures writable
         run: chmod -R 777 spec/integration/src
 
+      - name: Run standardrb
+        run: docker-compose run --rm test bundle exec standardrb
+
       - name: Run tests
         run: docker-compose run --rm test
 

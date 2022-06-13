@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative "./spec_helper"
 require "force_volume_creator"
 require "pathname"

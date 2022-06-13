@@ -1,5 +1,5 @@
-require 'zip'
-require 'digest'
+require "zip"
+require "digest"
 
 # Writes a zip file from a volume source path
 # to a destination path.
@@ -22,9 +22,9 @@ module Datasets
         end
       end
 
-      File.open(tmp_path,"w") do |output_zip|
+      File.open(tmp_path, "w") do |output_zip|
         stringio.rewind
-        IO.copy_stream(stringio,output_zip)
+        IO.copy_stream(stringio, output_zip)
       end
 
       # rename should be atomic since we have guaranteed tmp_path is in the same
@@ -43,7 +43,7 @@ module Datasets
 
     def copy_text
       @copy_text_proc ||= proc do |input_zip, output_zip_stream|
-        input_zip.glob('**/*.txt').each do |txt|
+        input_zip.glob("**/*.txt").each do |txt|
           output_zip_stream.put_next_entry(txt.name)
           txt.get_input_stream do |txt_input_stream|
             IO.copy_stream(txt_input_stream, output_zip_stream)

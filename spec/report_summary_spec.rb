@@ -2,7 +2,6 @@ require_relative "./spec_helper"
 require "report_summary"
 
 module Datasets
-
   RSpec.describe ReportSummary do
     let(:num_saved) { 55 }
     let(:num_deleted) { 1031 }
@@ -35,5 +34,4 @@ module Datasets
       end
     end
   end
-
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "thor"
 require "pp"
 require "sequel"
@@ -43,7 +44,6 @@ module Datasets
       aliases: "-e",
       desc: "Run to this end time; must also specify start time"
 
-
     desc "all", "Do all the dataset operations."
     def all
       Datasets.config = load_config(options[:config])
@@ -72,7 +72,6 @@ module Datasets
       HTIDSafeRun.new(htids).queue_and_report(:force_full)
     end
 
-
     # Non-task cli functions
     private
 
@@ -95,6 +94,5 @@ module Datasets
     def load_config(config)
       Datasets::HathiTrust::Configuration.from_yaml(config)
     end
-
   end
 end

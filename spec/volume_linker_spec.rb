@@ -11,8 +11,7 @@ module Datasets
     let(:fs) do
       double(:fs,
         mkdir_p: nil,
-        rm_empty_tree: nil
-      )
+        rm_empty_tree: nil)
     end
     let(:id) { :some_id }
     let(:dest_path) { Pathname.new("/dest/path/to/volume") }
@@ -61,8 +60,8 @@ module Datasets
 
     describe "#delete" do
       context "when the link is present at removal time" do
-        before(:each) do 
-          allow(fs).to receive(:remove).and_return(true) 
+        before(:each) do
+          allow(fs).to receive(:remove).and_return(true)
           volume_linker.delete(volume)
         end
 
@@ -88,6 +87,5 @@ module Datasets
         end
       end
     end
-
   end
 end

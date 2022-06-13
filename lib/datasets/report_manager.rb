@@ -4,13 +4,11 @@ require "pathname"
 require "yaml"
 
 module Datasets
-
   # A class that manages writing report_test.  Generally the primary
   # avenue used to write report.  Contains functionality to discover
   # the period of the most recent report and write a new one, as a sort
   # of last_run_time manager.
   class ReportManager
-
     TIME_FORMAT = "%Y%m%d%H%M%S"
 
     def initialize(parent_dir, fs)
@@ -59,10 +57,9 @@ module Datasets
     # @return [ReportSummary]
     def last_summary_path
       @last_summary_path ||= fs.children(parent_dir)
-        .map{|dir| dir + "summary.yml" }
-        .select {|path| fs.exists?(path) }
-        .sort
-        .last || Pathname.new("")
+        .map { |dir| dir + "summary.yml" }
+        .select { |path| fs.exists?(path) }
+        .max || Pathname.new("")
     end
 
     def read_summary(path)
@@ -72,5 +69,4 @@ module Datasets
 
     attr_reader :parent_dir, :fs
   end
-
 end

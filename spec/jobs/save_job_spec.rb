@@ -4,7 +4,6 @@ require "jobs/save_job"
 require "pathname"
 
 module Datasets
-
   RSpec.describe SaveJob do
     include_context "with mocked job parameters"
     let(:params) { [volume, src_path, volume_writer] }
@@ -21,6 +20,4 @@ module Datasets
       end
     end
   end
-
 end
-

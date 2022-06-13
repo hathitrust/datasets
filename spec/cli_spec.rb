@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative "./spec_helper"
 require "cli"
 
@@ -7,7 +8,7 @@ module Datasets
     let(:config) { double("config") }
     let(:start_date) { "1970-01-01" }
     let(:end_date) { "1970-01-02" }
-    let(:volumes) { ["test.0001","test.0002","test.003"] }
+    let(:volumes) { ["test.0001", "test.0002", "test.003"] }
     let(:time_range) { DateTime.parse(start_date).to_time..DateTime.parse(end_date).to_time }
 
     before(:each) do
@@ -22,7 +23,7 @@ module Datasets
 
       it "does not accept garbage parameters" do
         expect do
-          described_class.start(%w(I don't know what I'm doing))
+          described_class.start(%w[I don't know what I'm doing])
         end.to output(/Could not find command/).to_stderr
       end
 
@@ -76,17 +77,16 @@ module Datasets
         htid_run = double("htid run")
         old_stdin = $stdin
         begin
-          $stdin=StringIO.new(volumes.join("\n"))
+          $stdin = StringIO.new(volumes.join("\n"))
           allow(HTIDSafeRun).to receive(:new).and_return(htid_run)
           expect(HTIDSafeRun).to receive(:new).with(volumes).once
           expect(htid_run).to receive(:queue_and_report).with(:force_full).once
 
           described_class.start(["force"])
         ensure
-          $stdin=old_stdin
+          $stdin = old_stdin
         end
       end
-
     end
   end
 end

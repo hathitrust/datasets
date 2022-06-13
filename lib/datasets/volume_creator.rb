@@ -4,7 +4,6 @@ require "pairtree"
 # Writes and deletes volumes within the superset.
 module Datasets
   class VolumeCreator < VolumeWriter
-
     # @param [PathResolver] dest_path_resolver
     # @param [ZipWriter] writer
     # @param [Filesystem] fs
@@ -27,7 +26,7 @@ module Datasets
     def delete(volume)
       dest_path = dest_path_resolver.path(volume)
       removed = fs.remove(dest_path)
-      log(volume,removed ? 'removed' : 'not present')
+      log(volume, removed ? "removed" : "not present")
       fs.rm_empty_tree(dest_path.parent)
     end
 
@@ -56,9 +55,9 @@ module Datasets
       dest_zip = zip_path(volume, dest_path)
       if should_write_zip?(src_zip, dest_zip)
         writer.write(src_zip, dest_zip)
-        log(volume,'updated')
+        log(volume, "updated")
       else
-        log(volume,'up to date')
+        log(volume, "up to date")
       end
     end
 
@@ -69,6 +68,5 @@ module Datasets
     def pt_id(volume)
       Pairtree::Identifier.encode(volume.id)
     end
-
   end
 end

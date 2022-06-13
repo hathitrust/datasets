@@ -9,9 +9,6 @@
 # @param timestamp [Time] The timestamp of the volume's mtime.
 RSpec.shared_context "with volume1 paths for" do |profile, dirname, timestamp|
   # Setup paths
-  SPEC_HOME ||= Pathname.new(__FILE__).expand_path.dirname.parent.parent
-  INTEGRATION_ROOT ||= Pathname.new("/tmp/integration")
-  DATASETS_ROOT ||= INTEGRATION_ROOT + "datasets"
   let(:root) { INTEGRATION_ROOT }
   let(:orig_src_root) { SPEC_HOME + "integration" + "src" }
   let(:src_root) { INTEGRATION_ROOT + "src" }
@@ -26,11 +23,11 @@ RSpec.shared_context "with volume1 paths for" do |profile, dirname, timestamp|
   let(:volume1_dest_zip) { volume1_dest_dir + "001.zip" }
   let(:volume1_dest_mets) { volume1_dest_dir + "001.mets.xml" }
   let(:volume1_dest_files) { [volume1_dest_zip, volume1_dest_mets] }
-  let(:volume1_zip_files) { [ Pathname.new("test_volume/00000001.txt"), Pathname.new("test_volume/00000002.txt")] }
+  let(:volume1_zip_files) { [Pathname.new("test_volume/00000001.txt"), Pathname.new("test_volume/00000002.txt")] }
 
   let(:relative_volume1_dest_files) do
     volume1_dest_files
-      .map{|p| p.relative_path_from(send(:"#{profile}_root"))}
+      .map { |p| p.relative_path_from(send(:"#{profile}_root")) }
   end
 
   before(:each) do

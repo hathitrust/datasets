@@ -2,11 +2,9 @@ require "datasets/report_summary"
 require "yaml"
 
 module Datasets
-
   # Represents a report of work done.  Contains methods
   # to write and read a report to and from the filesystem.
   class Report
-
     attr_reader :saved_volumes, :deleted_volumes, :time_range
 
     # Create a new report
@@ -46,7 +44,7 @@ module Datasets
     private
 
     def volumes_to_s(volumes)
-      volumes.map{|volume| volume_to_s(volume) }
+      volumes.map { |volume| volume_to_s(volume) }
         .join("\n")
     end
 
@@ -55,7 +53,5 @@ module Datasets
     end
 
     attr_reader :fs
-
   end
-
 end

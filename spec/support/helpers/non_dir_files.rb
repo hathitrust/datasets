@@ -5,7 +5,7 @@
 def non_dir_files(path)
   `find -L #{path}`
     .split
-    .map{|f| Pathname.new(f) }
-    .reject{|f| f.directory? }
-    .map{|f| f.relative_path_from(path) }
+    .map { |f| Pathname.new(f) }
+    .reject { |f| f.directory? }
+    .map { |f| f.relative_path_from(path) }
 end

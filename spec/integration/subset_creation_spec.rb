@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "spec_helper"
 require "job_helper"
 require "datasets"
@@ -21,7 +22,8 @@ module Datasets
             filter: Datasets.config.filter[:pd_world_open],
             retriever: TimeRangeRetriever.new(
               time_range: time_range,
-              repository: Datasets.config.volume_repo[:pd_world_open])
+              repository: Datasets.config.volume_repo[:pd_world_open]
+            )
           )
           [scheduler.add, scheduler.delete]
         end
@@ -30,7 +32,7 @@ module Datasets
       context "no previous report exists" do
         context "volumes match rights profile" do
           context "dest empty" do
-            include_context "with volume1 as", :pd, :open , new_timestamp
+            include_context "with volume1 as", :pd, :open, new_timestamp
             include_context "with volume2 as", :"cc-zero", :open, old_timestamp
             include_context "with volume1 paths for", :pd_world_open, "ht_text_pd_world_open_access", new_timestamp
             include_context "with volume2 paths for", :pd_world_open, "ht_text_pd_world_open_access", old_timestamp
@@ -51,8 +53,8 @@ module Datasets
               expect(files_from_zip(volume2_dest_zip)).to match_array volume2_zip_files
               expect(non_dir_files(pd_world_open_root)).to match_array(
                 relative_volume1_dest_files
-                  .concat relative_volume2_dest_files
-                  .concat relative_report_files
+                  .concat(relative_volume2_dest_files
+                  .concat(relative_report_files))
               )
             end
 
@@ -67,16 +69,13 @@ module Datasets
                 .to be_empty
               expect(YAML.unsafe_load_file(pd_world_open_root + summary_report))
                 .to eql(
-                  { saved: 2, deleted: 0,
-                    start_time: Time.at(0), end_time: two_days_ago
-                  }
+                  {saved: 2, deleted: 0,
+                   start_time: Time.at(0), end_time: two_days_ago}
                 )
             end
           end
-
         end
       end
-
     end
   end
 end

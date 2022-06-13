@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "spec_helper"
 require "job_helper"
 require "datasets"
@@ -21,7 +22,8 @@ module Datasets
             filter: Datasets.config.filter[:full],
             retriever: TimeRangeRetriever.new(
               time_range: time_range,
-              repository: Datasets.config.volume_repo[:full])
+              repository: Datasets.config.volume_repo[:full]
+            )
           )
           [scheduler.add, scheduler.delete]
         end
@@ -29,7 +31,7 @@ module Datasets
 
       context "no previous report exists" do
         context "a volume has mismatched rights" do
-          include_context "with volume1 as", :nobody, :open , old_timestamp
+          include_context "with volume1 as", :nobody, :open, old_timestamp
           include_context "with volume1 paths for", :full, "ht_text", old_timestamp
           include_context "relative report paths"
           before(:each) do
@@ -53,16 +55,12 @@ module Datasets
               ]
             expect(YAML.unsafe_load_file(full_root + summary_report))
               .to eql(
-                { saved: 0, deleted: 1,
-                  start_time: Time.at(0), end_time: two_days_ago
-                }
+                {saved: 0, deleted: 1,
+                 start_time: Time.at(0), end_time: two_days_ago}
               )
           end
         end
       end
-
-
-
     end
   end
 end
