@@ -28,7 +28,6 @@ module Datasets
     end
 
     describe "creation/deletion methods" do
-
       around(:each) do |example|
         Dir.mktmpdir do |tmppath|
           @tmppath = Pathname.new(tmppath)
@@ -38,7 +37,7 @@ module Datasets
 
       describe "#read" do
         let(:file) { @tmppath + "somefile.txt" }
-        let(:contents) { "some\ncontents\n\n\n\nmore"}
+        let(:contents) { "some\ncontents\n\n\n\nmore" }
         it "returns the contents of a file" do
           File.write(file, contents)
           expect(fs.read(file)).to eql(contents)
@@ -47,7 +46,7 @@ module Datasets
 
       describe "#write" do
         let(:path) { @tmppath + "somefile.txt" }
-        let(:contents) { "some\ncontents\n\n\n\nmore"}
+        let(:contents) { "some\ncontents\n\n\n\nmore" }
         it "writes a file" do
           fs.write(path, contents)
           expect(File.read(path)).to eql(contents)
@@ -58,11 +57,11 @@ module Datasets
         let(:files) { [@tmppath + "one_file.txt", @tmppath + ".hidden.yml"] }
         let(:dirs) { [@tmppath + "some_dir", @tmppath + ".hidden_dir"] }
         before(:each) do
-          files.each {|f| File.write(f, "dummy_contents") }
-          dirs.each {|d| FileUtils.mkpath d}
+          files.each { |f| File.write(f, "dummy_contents") }
+          dirs.each { |d| FileUtils.mkpath d }
         end
         it "returns the entries in the dir as pathnames" do
-          expect(fs.children(@tmppath)).to match_array( (files + dirs))
+          expect(fs.children(@tmppath)).to match_array((files + dirs))
         end
       end
 
@@ -100,7 +99,7 @@ module Datasets
         it "is successful if dest is already a file" do
           File.write(src_file_path, "contents")
           File.write(dest_path, "other contents")
-          expect{
+          expect {
             fs.ln_s(src_file_path, dest_path)
           }.to_not raise_error
         end
@@ -156,7 +155,7 @@ module Datasets
           expect(dir_path.exist?).to be false
         end
         it "is idempotent" do
-          expect{
+          expect {
             fs.remove(file_path)
           }.to_not raise_error
         end
@@ -208,19 +207,16 @@ module Datasets
           expect(inside_file_path.exist?).to be true
         end
         it "is idempotent" do
-          expect{
+          expect {
             fs.rm_empty_tree abc_dir
           }.to_not raise_error
         end
         it "raises an ArgumentError when given a filepath" do
-          expect{
+          expect {
             fs.rm_empty_tree Pathname.new("/etc/passwd")
           }.to raise_error(ArgumentError)
         end
       end
-
-
     end
-
   end
 end

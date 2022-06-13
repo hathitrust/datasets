@@ -4,7 +4,6 @@ require "fileutils"
 # and to be clear about which methods we need.
 module Datasets
   class Filesystem
-
     # @param [Pathname] dir
     # @return [Array<Pathname>]
     def children(dir)
@@ -36,11 +35,11 @@ module Datasets
     # @param [Pathname] dest_path
     # @return [Boolean] true if link was created; false otherwise.
     def ln_s(src_path, dest_path)
-      unless exists?(dest_path) or symlink?(dest_path)
+      if exists?(dest_path) || symlink?(dest_path)
+        false
+      else
         dest_path.make_symlink src_path
         true
-      else
-        false
       end
     end
 
@@ -89,6 +88,5 @@ module Datasets
     def write(path, contents)
       File.write(path, contents)
     end
-
   end
 end

@@ -3,16 +3,16 @@ RSpec.shared_context "with volume creator fixtures" do
 
   let(:fs) do
     double(:fs,
-           mkdir_p: nil,
-           ln_s: nil,
-           rm_empty_tree: nil)
+      mkdir_p: nil,
+      ln_s: nil,
+      rm_empty_tree: nil)
   end
 
   let(:volume) do
     double(:volume,
-           namespace: namespace,
-           id: volume_id,
-           to_s: "mocked_volume")
+      namespace: namespace,
+      id: volume_id,
+      to_s: "mocked_volume")
   end
 
   let(:dest_path) { Pathname.new("/dest/#{pt_path}/#{volume_id}") }

@@ -18,6 +18,5 @@ module Datasets
         right: hash[:right] || hash["right"]
       )
     end
-
   end
 end

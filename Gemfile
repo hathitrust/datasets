@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 gem "activesupport"
 gem "mysql2"
@@ -13,6 +13,7 @@ gem "rake", "~> 12.3"
 group :development, :test do
   gem "rspec", "~> 3.0"
   gem "pry"
+  gem "standard"
   gem "timecop"
   gem "byebug"
   gem "simplecov"

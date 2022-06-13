@@ -1,5 +1,5 @@
-
 # frozen_string_literal: true
+
 module Datasets
   class Volume
     attr_reader :namespace, :id,
@@ -35,6 +35,5 @@ module Datasets
     def hash
       to_s.hash
     end
-
   end
 end

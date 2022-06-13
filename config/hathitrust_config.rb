@@ -4,7 +4,6 @@ require "sequel"
 
 module Datasets
   module HathiTrust
-
     class Configuration < Datasets::Configuration
       def volume_writer
         @volume_writer ||=
@@ -20,10 +19,10 @@ module Datasets
         @src_path_resolver ||= {
           superset => superset_src_path_resolver,
           force_superset => superset_src_path_resolver,
-          pd: subset_src_path_resolver,
-          pd_open: subset_src_path_resolver,
-          pd_world: subset_src_path_resolver,
-          pd_world_open: subset_src_path_resolver
+          :pd => subset_src_path_resolver,
+          :pd_open => subset_src_path_resolver,
+          :pd_world => subset_src_path_resolver,
+          :pd_world_open => subset_src_path_resolver
         }
       end
 
@@ -44,15 +43,14 @@ module Datasets
         @db_connection ||= Sequel.connect(db)
       end
 
-
       def filter
         @filter ||= {
           force_superset => FullSetFilter.new,
           superset => FullSetFilter.new,
-          pd: PdFilter.new,
-          pd_open: PdOpenFilter.new,
-          pd_world: PdWorldFilter.new,
-          pd_world_open: PdWorldOpenFilter.new
+          :pd => PdFilter.new,
+          :pd_open => PdOpenFilter.new,
+          :pd_world => PdWorldFilter.new,
+          :pd_world_open => PdWorldOpenFilter.new
         }
       end
 
@@ -121,9 +119,6 @@ module Datasets
       def force_superset
         :force_full
       end
-
     end
-
   end
 end
-

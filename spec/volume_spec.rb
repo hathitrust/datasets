@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require_relative "./spec_helper.rb"
+
+require_relative "./spec_helper"
 require "datasets/volume"
 
 module Datasets
@@ -20,29 +21,29 @@ module Datasets
 
     context "given string parameters" do
       let(:volume_params) do
-        { namespace: "mdp", id: "12356",
-          access_profile: "open", right: "pd" }
+        {namespace: "mdp", id: "12356",
+         access_profile: "open", right: "pd"}
       end
       include_examples "coerces parameters"
     end
 
     context "given symbol parameters" do
       let(:volume_params) do
-        { namespace: :mdp, id: :"8675309",
-          access_profile: :closed, right: :nobody }
+        {namespace: :mdp, id: :"8675309",
+         access_profile: :closed, right: :nobody}
       end
       include_examples "coerces parameters"
     end
 
     context "given common volume" do
       let(:volume_params) do
-        { namespace: "mdp", id: "12356",
-          access_profile: :open, right: :pd }
+        {namespace: "mdp", id: "12356",
+         access_profile: :open, right: :pd}
       end
 
       let(:other_volume_params) do
-        { namespace: "test", id: "1234",
-          access_profile: :open, right: :pd }
+        {namespace: "test", id: "1234",
+         access_profile: :open, right: :pd}
       end
 
       let(:volume) { described_class.new(**volume_params) }
@@ -51,10 +52,10 @@ module Datasets
 
       describe "#to_h" do
         it "returns a hash with stringified keys and values" do
-          expect(volume.to_h).to eql( {
+          expect(volume.to_h).to eql({
             "namespace" => "mdp", "id" => "12356",
             "access_profile" => "open", "right" => "pd"
-          } )
+          })
         end
       end
 
@@ -83,7 +84,6 @@ module Datasets
           expect(volume.hash).not_to eql(other_volume.hash)
         end
       end
-
     end
   end
 end

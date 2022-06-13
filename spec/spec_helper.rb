@@ -1,15 +1,20 @@
 $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), "../lib/datasets"))
 
-require 'simplecov'
+require "simplecov"
 require "active_support/isolated_execution_state"
 require "active_support/core_ext/numeric/time"
 require "active_support/core_ext/hash/slice"
-require 'sidekiq'
+require "sidekiq"
 
 SimpleCov.start
 Sidekiq.strict_args!
 
-Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
+Dir[File.expand_path(File.join(File.dirname(__FILE__), "support", "**", "*.rb"))].each { |f| require f }
+
+SPEC_HOME = Pathname.new(__FILE__).expand_path.dirname
+INTEGRATION_ROOT = Pathname.new("/tmp/integration")
+DATASETS_ROOT = INTEGRATION_ROOT + "datasets"
+CONFIG_YML = SPEC_HOME + "support" + "config" + "integration.yml"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -25,9 +30,8 @@ RSpec.configure do |config|
   config.warnings = false
 
   if config.files_to_run.one?
-    config.default_formatter = 'doc'
+    config.default_formatter = "doc"
   end
-
 end
 
 def fixtures_dir

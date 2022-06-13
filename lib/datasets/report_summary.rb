@@ -1,9 +1,7 @@
 module Datasets
-
   # Represents a report of work done.  Contains methods
   # to write and read a report to and from the filesystem.
   class ReportSummary
-
     attr_reader :num_saved, :num_deleted, :time_range
 
     # Create a new report summary
@@ -36,8 +34,7 @@ module Datasets
     end
 
     private
+
     attr_reader :fs
-
   end
-
 end

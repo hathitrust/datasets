@@ -37,8 +37,7 @@ module Datasets
     def config
       @config ||= Configuration.new
     end
-    def config=(obj)
-      @config = obj
-    end
+
+    attr_writer :config
   end
 end

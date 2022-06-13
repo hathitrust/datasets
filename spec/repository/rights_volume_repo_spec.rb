@@ -8,17 +8,17 @@ require "sequel"
 module Datasets
   RSpec.describe Repository::RightsVolumeRepo do
     before(:all) do
-      @connection = Sequel.connect(adapter: 'mysql2',
-                                   database: 'ht',
-                                   host: 'mariadb-test',
-                                   user: 'datasets',
-                                   password: 'datasets')
+      @connection = Sequel.connect(adapter: "mysql2",
+        database: "ht",
+        host: "mariadb-test",
+        user: "datasets",
+        password: "datasets")
       @schema_builder = SchemaBuilder.new(@connection)
       @schema_builder.create!
     end
 
     around(:example) do |example|
-      @connection.transaction(rollback: :always, auto_savepoint: true) {example.run}
+      @connection.transaction(rollback: :always, auto_savepoint: true) { example.run }
     end
 
     let(:table) { @connection.from(:rights_current) }
@@ -52,7 +52,6 @@ module Datasets
       }
     end
 
-
     def volume_from(hash)
       Volume.new(
         namespace: hash[:namespace],
@@ -85,7 +84,7 @@ module Datasets
 
     describe "#volumes" do
       before(:each) do
-        [tuple_1,tuple_2,tuple_3,tuple_miun].each do |tuple|
+        [tuple_1, tuple_2, tuple_3, tuple_miun].each do |tuple|
           table.insert(tuple)
         end
       end
@@ -110,13 +109,10 @@ module Datasets
         expect(volumes).to contain_exactly(volume_from(tuple_miun))
       end
 
-
       it "returns only those volumes that were requested" do
-        volumes = repo.volumes(["mdp.120398120938","mdp.22222222"])
-        expect(volumes).to contain_exactly(volume_from(tuple_1),volume_from(tuple_2))
+        volumes = repo.volumes(["mdp.120398120938", "mdp.22222222"])
+        expect(volumes).to contain_exactly(volume_from(tuple_1), volume_from(tuple_2))
       end
     end
-
-
   end
 end

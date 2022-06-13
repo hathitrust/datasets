@@ -5,10 +5,6 @@ require_relative "../schema_builder"
 
 # Performs setup and teardown for integration tests.
 RSpec.shared_context "integration" do
-  SPEC_HOME ||= Pathname.new(__FILE__).expand_path.dirname.parent.parent
-  INTEGRATION_ROOT ||= Pathname.new("/tmp/integration")
-  CONFIG_YML ||= SPEC_HOME + "support" + "config" + "integration.yml"
-
   before(:all) do
     FileUtils.mkdir(INTEGRATION_ROOT) if !File.exist?(INTEGRATION_ROOT)
     Datasets.config = Datasets::HathiTrust::Configuration.from_yaml(CONFIG_YML)
@@ -18,7 +14,7 @@ RSpec.shared_context "integration" do
 
   around(:example) do |example|
     Datasets.config.db_connection.transaction(rollback: :always, auto_savepoint: true) do
-        example.run
+      example.run
     end
   end
 
@@ -32,5 +28,4 @@ RSpec.shared_context "integration" do
     Timecop.return
     (INTEGRATION_ROOT + "datasets").rmtree
   end
-
 end

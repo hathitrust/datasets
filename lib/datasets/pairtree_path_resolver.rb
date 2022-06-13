@@ -4,7 +4,6 @@ require "pathname"
 
 module Datasets
   class PairtreePathResolver < PathResolver
-
     def initialize(parent_dir)
       @parent_dir = Pathname.new(parent_dir)
     end
@@ -13,10 +12,8 @@ module Datasets
       parent_dir + "obj" + volume.namespace + "pairtree_root" + Pairtree::Path.id_to_path(volume.id)
     end
 
-
     private
 
     attr_reader :parent_dir
-
   end
 end

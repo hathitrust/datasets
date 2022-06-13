@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "datasets/jobs/save_job"
 require "datasets/jobs/delete_job"
 
@@ -9,7 +10,7 @@ module Datasets
     # @param [VolumeWriter] volume_writer
     # @param [Filter] filter
     # @param [Retriever] retriever
-    def initialize(src_path_resolver:, volume_writer:, filter:, retriever:, save_job: SaveJob, delete_job: DeleteJob )
+    def initialize(src_path_resolver:, volume_writer:, filter:, retriever:, save_job: SaveJob, delete_job: DeleteJob)
       @src_path_resolver = src_path_resolver
       @volume_writer = volume_writer
       @filter = filter
@@ -20,18 +21,18 @@ module Datasets
 
     def add
       retriever.retrieve
-        .select {|volume| filter.matches?(volume) }.tap do |volumes|
+        .select { |volume| filter.matches?(volume) }.tap do |volumes|
         volumes
-          .map {|volume| [volume, src_path_resolver.path(volume)] }
-          .map {|volume, src_path| save_job.enqueue(volume, src_path, volume_writer) }
-      end 
+          .map { |volume| [volume, src_path_resolver.path(volume)] }
+          .map { |volume, src_path| save_job.enqueue(volume, src_path, volume_writer) }
+      end
     end
 
     def delete
       retriever.retrieve
-        .reject {|volume| filter.matches?(volume) }.tap do |volumes|
+        .reject { |volume| filter.matches?(volume) }.tap do |volumes|
         volumes
-          .map {|volume| delete_job.enqueue(volume, volume_writer) }
+          .map { |volume| delete_job.enqueue(volume, volume_writer) }
       end
     end
 

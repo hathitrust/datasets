@@ -6,17 +6,17 @@ module Datasets
     let(:end_time) { Time.now }
 
     before(:all) do
-      @connection = Sequel.connect(adapter: 'mysql2',
-                                   database: 'ht',
-                                   host: 'mariadb-test',
-                                   user: 'datasets',
-                                   password: 'datasets')
+      @connection = Sequel.connect(adapter: "mysql2",
+        database: "ht",
+        host: "mariadb-test",
+        user: "datasets",
+        password: "datasets")
       @schema_builder = SchemaBuilder.new(@connection)
       @schema_builder.create!
     end
 
     around(:example) do |example|
-      @connection.transaction(rollback: :always, auto_savepoint: true) {example.run}
+      @connection.transaction(rollback: :always, auto_savepoint: true) { example.run }
     end
 
     let(:feed_table) { @connection.from(:feed_audit) }
@@ -31,7 +31,7 @@ module Datasets
         lastchecked: Time.new(2017, 1, 1), md5check_ok: true
       }
     end
-    let(:vol_rights_1) do 
+    let(:vol_rights_1) do
       {
         namespace: vol_feed_1[:namespace], id: vol_feed_1[:id],
         attr: 1, reason: 1, source: 1, access_profile: 1,
@@ -46,7 +46,7 @@ module Datasets
         lastchecked: Time.new(2016, 5, 15), md5check_ok: nil
       }
     end
-    let(:vol_rights_2) do 
+    let(:vol_rights_2) do
       {
         namespace: vol_feed_2[:namespace], id: vol_feed_2[:id],
         attr: 1, reason: 1, source: 1, access_profile: 1,
@@ -88,16 +88,16 @@ module Datasets
     it "returns tuples with a zip_date or rights timestamp in the range" do
       # old zip and rights time
       feed_table.insert(vol_feed_1.merge(zip_date: Time.new(1997, 12, 25)))
-      rights_table.insert(vol_rights_1.merge(time: Time.new(1997,12,25)))
+      rights_table.insert(vol_rights_1.merge(time: Time.new(1997, 12, 25)))
       # zip date in range, old rights time
       feed_table.insert(vol_feed_2.merge(zip_date: Time.new(2002, 10, 31)))
-      rights_table.insert(vol_rights_2.merge(time: Time.new(1998,01,01)))
+      rights_table.insert(vol_rights_2.merge(time: Time.new(1998, 0o1, 0o1)))
       # zip date too new, rights time in range
       feed_table.insert(vol_feed_3.merge(zip_date: Time.new(2017, 1, 1)))
-      rights_table.insert(vol_rights_3.merge(time: Time.new(2002,10,31)))
+      rights_table.insert(vol_rights_3.merge(time: Time.new(2002, 10, 31)))
 
       tuples = repo.changed_between(Time.new(2001, 1, 1), Time.new(2016, 1, 1))
-      expect(tuples).to contain_exactly(volume_from(vol_rights_2),volume_from(vol_rights_3))
+      expect(tuples).to contain_exactly(volume_from(vol_rights_2), volume_from(vol_rights_3))
     end
 
     it "does not return volumes with md5check_ok: false" do
@@ -111,8 +111,8 @@ module Datasets
       rights_table.insert vol_rights_1
       feed_table.insert vol_feed_2.merge(md5check_ok: nil, zip_date: Time.now)
       rights_table.insert vol_rights_2
-      expect(repo.changed_between( 1.day.ago, 1.day.from_now))
-        .to contain_exactly(volume_from(vol_rights_1),volume_from(vol_rights_2))
+      expect(repo.changed_between(1.day.ago, 1.day.from_now))
+        .to contain_exactly(volume_from(vol_rights_1), volume_from(vol_rights_2))
     end
 
     it "returns an empty set when nothing to find" do
@@ -130,6 +130,5 @@ module Datasets
       feed_table.insert vol_feed_1
       expect(repo.changed_between(Time.at(0), Time.now)).to be_empty
     end
-
   end
 end

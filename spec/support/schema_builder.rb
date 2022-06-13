@@ -2,7 +2,6 @@ require "csv"
 
 module Datasets
   class SchemaBuilder
-
     def initialize(connection)
       @connection = connection
     end
@@ -20,6 +19,7 @@ module Datasets
     def access_profile(id)
       find(:access_profiles, id)
     end
+
     def access_profile_id(name)
       find_id(:access_profiles, name)
     end
@@ -27,6 +27,7 @@ module Datasets
     def attribute(id)
       find(:attributes, id)
     end
+
     def attribute_id(name)
       find_id(:attributes, name)
     end
@@ -34,6 +35,7 @@ module Datasets
     def reason(id)
       find(:reasons, id)
     end
+
     def reason_id(name)
       find_id(:reasons, name)
     end
@@ -41,6 +43,7 @@ module Datasets
     def source(id)
       find(:sources, id)
     end
+
     def source_id(name)
       find_id(:sources, name)
     end
@@ -52,6 +55,7 @@ module Datasets
     def find(table, id)
       @connection.from(table).where(id: id).first
     end
+
     def find_id(table, name)
       @connection.from(table).where(name: name.to_s).first&.fetch(:id, nil)
     end
@@ -66,7 +70,7 @@ module Datasets
     end
 
     def insert_from_csv(name)
-      connection.transaction do 
+      connection.transaction do
         csv(config_file("#{name}.csv")).each do |row|
           connection[name.to_sym].insert(row.to_h)
         end
@@ -86,7 +90,6 @@ module Datasets
         String :dscr, text: true, null: false
       end
     end
-
 
     def create_attributes
       connection.create_table!(:attributes) do
@@ -146,6 +149,5 @@ module Datasets
         primary_key [:namespace, :id]
       end
     end
-
   end
 end

@@ -6,6 +6,7 @@ module Datasets
     # @param [Time] start_time
     # @param [Time] end_time
     # @return Set<Volume>
-    def changed_between(start_time, end_time); end
+    def changed_between(start_time, end_time)
+    end
   end
 end

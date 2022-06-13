@@ -1,4 +1,3 @@
-
 # Get the relative paths of each file in the zip.
 # @param zipfile [Pathname]
 # @return [Array<Pathname>]

@@ -4,7 +4,6 @@ require "report_summary"
 require "pathname"
 
 module Datasets
-
   RSpec.describe Report do
     let(:saved_volumes) do
       [
@@ -35,14 +34,14 @@ module Datasets
       it "writes the saved volumes to dir/saved.txt" do
         expect(fs).to receive(:write).with(
           dir + "saved.txt",
-          saved_volumes.map{|v| "#{v.namespace}.#{v.id}"}.join("\n")
+          saved_volumes.map { |v| "#{v.namespace}.#{v.id}" }.join("\n")
         )
         report.save(dir)
       end
       it "writes the deleted volumes to dir/deleted.txt" do
         expect(fs).to receive(:write).with(
           dir + "deleted.txt",
-          deleted_volumes.map{|v| "#{v.namespace}.#{v.id}"}.join("\n")
+          deleted_volumes.map { |v| "#{v.namespace}.#{v.id}" }.join("\n")
         )
         report.save(dir)
       end
@@ -54,7 +53,7 @@ module Datasets
         report.save(dir)
       end
     end
-    
+
     describe "#summary" do
       before(:each) { allow(ReportSummary).to receive(:new) }
       it "returns a ReportSummary" do
@@ -63,7 +62,8 @@ module Datasets
           saved_volumes.size,
           deleted_volumes.size,
           time_range,
-          fs)
+          fs
+        )
       end
     end
 
@@ -78,9 +78,5 @@ module Datasets
         expect(report.ended).to eql(time_range.last)
       end
     end
-    
-    
   end
-
-
 end

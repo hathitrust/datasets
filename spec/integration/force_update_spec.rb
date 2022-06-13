@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "spec_helper"
 require "job_helper"
 require "datasets"
@@ -12,11 +13,11 @@ module Datasets
       old_timestamp = (Date.today - 7).to_time
       new_timestamp = (Date.today - 3).to_time
 
-      let(:htids) { ['test.001','test.002' ] }
+      let(:htids) { ["test.001", "test.002"] }
       subject { HTIDSafeRun.new(htids).queue_and_report(:force_full) }
 
       context "dest contains up-to-date zip and outdated zip" do
-        include_context "with volume1 as", :ic, :open , new_timestamp
+        include_context "with volume1 as", :ic, :open, new_timestamp
         include_context "with volume2 as", :pd, :google, new_timestamp
         include_context "with volume1 paths for", :full, "ht_text", new_timestamp
         include_context "with volume2 paths for", :full, "ht_text", new_timestamp
@@ -39,9 +40,7 @@ module Datasets
           expect(outdated_zip.mtime).to be > new_timestamp
           expect(files_from_zip(outdated_zip)).to match_array volume2_zip_files
         end
-
       end
-
     end
   end
 end

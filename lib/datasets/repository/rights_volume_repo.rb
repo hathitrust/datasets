@@ -6,7 +6,6 @@ require "sequel"
 module Datasets
   module Repository
     class RightsVolumeRepo < VolumeRepo
-
       def initialize(connection)
         @connection = connection
         @table_name = :rights_current
@@ -26,10 +25,11 @@ module Datasets
 
       def volumes(ids)
         ids.map do |id|
-          (namespace,id) = id.split(".",2)
+          (namespace, id) = id.split(".", 2)
           project(joined_tables.where(
-            Sequel.qualify(table_name, "namespace") => namespace, 
-            Sequel.qualify(table_name,"id") => id))
+            Sequel.qualify(table_name, "namespace") => namespace,
+            Sequel.qualify(table_name, "id") => id
+          ))
             .first
         end
       end
@@ -44,11 +44,11 @@ module Datasets
           .select_append(Sequel[table_name][:namespace])
           .select_append(Sequel.as(Sequel[:access_profiles][:name], :access_profile))
           .select_append(Sequel.as(Sequel[:attributes][:name], :attribute))
-          .map{|row| row_to_volume(row) }
+          .map { |row| row_to_volume(row) }
       end
 
       def format_pairs(pairs)
-        pairs.map{|h| [h.fetch(:namespace, ""), h.fetch(:id, "")] }
+        pairs.map { |h| [h.fetch(:namespace, ""), h.fetch(:id, "")] }
       end
 
       def joined_tables

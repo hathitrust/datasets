@@ -4,7 +4,6 @@ require "jobs/delete_job"
 require "pathname"
 
 module Datasets
-
   RSpec.describe DeleteJob do
     include_context "with mocked job parameters"
     let(:params) { [volume, volume_writer] }
@@ -21,6 +20,4 @@ module Datasets
       end
     end
   end
-
 end
-
