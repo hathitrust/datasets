@@ -4,7 +4,10 @@ require 'simplecov'
 require "active_support/isolated_execution_state"
 require "active_support/core_ext/numeric/time"
 require "active_support/core_ext/hash/slice"
+require 'sidekiq'
+
 SimpleCov.start
+Sidekiq.strict_args!
 
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 

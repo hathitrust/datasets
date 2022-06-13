@@ -1,6 +1,6 @@
 require "datasets/scheduler"
 require "datasets/filesystem"
-require "resque"
+require "sidekiq"
 
 module Datasets
 

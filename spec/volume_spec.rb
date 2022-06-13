@@ -50,8 +50,11 @@ module Datasets
       let(:other_volume) { described_class.new(**other_volume_params) }
 
       describe "#to_h" do
-        it "returns a hash representing the volume" do
-          expect(volume.to_h).to eql(volume_params)
+        it "returns a hash with stringified keys and values" do
+          expect(volume.to_h).to eql( {
+            "namespace" => "mdp", "id" => "12356",
+            "access_profile" => "open", "right" => "pd"
+          } )
         end
       end
 

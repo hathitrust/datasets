@@ -1,12 +1,9 @@
 require "datasets/version"
 
-require_relative "../config/resque.rb"
-
 require "datasets/configuration"
 require "datasets/job"
 require "datasets/jobs/delete_job"
 require "datasets/jobs/save_job"
-require "datasets/jobs/scheduler_job"
 require "datasets/filter"
 require "datasets/filter/full_set_filter"
 require "datasets/filter/pd_filter"

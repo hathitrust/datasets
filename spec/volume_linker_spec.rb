@@ -4,7 +4,7 @@ require "pathname"
 
 module Datasets
   RSpec.describe VolumeLinker do
-    include_context "with mocked resque logger"
+    include_context "with mocked sidekiq logger"
 
     let(:log_prefix) { "profile: some_id, volume: mocked_volume" }
 
@@ -43,7 +43,7 @@ module Datasets
           expect(fs).to have_received(:ln_s).with(path_from_dest_to_src, dest_path)
         end
         it "logs the link creation" do
-          expect(Resque.logger).to have_received(:info).with("#{log_prefix}: added")
+          expect(Sidekiq.logger).to have_received(:info).with("#{log_prefix}: added")
         end
       end
 
@@ -54,7 +54,7 @@ module Datasets
         end
 
         it "logs the no-op" do
-          expect(Resque.logger).to have_received(:info).with("#{log_prefix}: already present")
+          expect(Sidekiq.logger).to have_received(:info).with("#{log_prefix}: already present")
         end
       end
     end
@@ -73,7 +73,7 @@ module Datasets
           expect(fs).to have_received(:rm_empty_tree).with(dest_path.parent)
         end
         it "logs the deletion" do
-          expect(Resque.logger).to have_received(:info).with("#{log_prefix}: removed")
+          expect(Sidekiq.logger).to have_received(:info).with("#{log_prefix}: removed")
         end
       end
 
@@ -84,7 +84,7 @@ module Datasets
         end
 
         it "logs the no-op" do
-          expect(Resque.logger).to have_received(:info).with("#{log_prefix}: not present")
+          expect(Sidekiq.logger).to have_received(:info).with("#{log_prefix}: not present")
         end
       end
     end

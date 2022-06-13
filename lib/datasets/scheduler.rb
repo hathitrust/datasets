@@ -23,8 +23,7 @@ module Datasets
         .select {|volume| filter.matches?(volume) }.tap do |volumes|
         volumes
           .map {|volume| [volume, src_path_resolver.path(volume)] }
-          .map {|volume, src_path| save_job.new(volume, src_path, volume_writer) }
-          .each {|job| job.enqueue }
+          .map {|volume, src_path| save_job.enqueue(volume, src_path, volume_writer) }
       end 
     end
 
@@ -32,8 +31,7 @@ module Datasets
       retriever.retrieve
         .reject {|volume| filter.matches?(volume) }.tap do |volumes|
         volumes
-          .map {|volume| delete_job.new(volume, volume_writer) }
-          .each {|job| job.enqueue }
+          .map {|volume| delete_job.enqueue(volume, volume_writer) }
       end
     end
 
