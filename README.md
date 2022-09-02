@@ -1,3 +1,7 @@
+[![Tests](https://github.com/hathitrust/datasets/actions/workflows/ci.yml/badge.svg)](https://github.com/hathitrust/datasets/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/hathitrust/datasets/badge.svg?branch=main)](https://coveralls.io/github/hathitrust/datasets?branch=main)
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://github.com/testdouble/standard)
+
 # HathiTrust Datasets Builder
 This project maintains the full text datasets provided to researchers and the HathiTrust Research Center.
 

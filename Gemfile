@@ -17,4 +17,5 @@ group :development, :test do
   gem "timecop"
   gem "byebug"
   gem "simplecov"
+  gem "simplecov-lcov"
 end
