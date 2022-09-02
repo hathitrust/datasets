@@ -65,7 +65,7 @@ GEM
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
     rubyzip (2.3.2)
-    sequel (5.60.0)
+    sequel (5.60.1)
     sidekiq (6.5.6)
       connection_pool (>= 2.2.5)
       rack (~> 2.0)
@@ -75,6 +75,7 @@ GEM
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
+    simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.4)
     standard (1.16.1)
       rubocop (= 1.35.1)
@@ -101,6 +102,7 @@ DEPENDENCIES
   sequel
   sidekiq
   simplecov
+  simplecov-lcov
   standard
   thor
   timecop
