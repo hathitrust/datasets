@@ -31,6 +31,7 @@ require "datasets/volume_writer"
 require "datasets/zip_writer"
 require "datasets/repository/rights_feed_volume_repo"
 require "datasets/repository/rights_volume_repo"
+require "datasets/whatever"
 
 module Datasets
   class << self

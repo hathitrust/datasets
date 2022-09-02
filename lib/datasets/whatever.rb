@@ -5,8 +5,7 @@ module Datasets
     end
 
     def foo(param)
-      param*rand(100)
+      param * rand(100)
     end
-
   end
 end
