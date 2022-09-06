@@ -23,5 +23,5 @@ jobs:
         namespace_token: ${{ secrets.KUBERNETES_TOKEN }}
         namespace: datasets
         type: 'all'
-        resource: "--selector='app=datasets'"
+        resource: "--selector=app=datasets"
         container: datasets
