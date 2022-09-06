@@ -1,0 +1,27 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: Deploy to Production
+      uses: mlibrary/deploy-to-kubernetes@just-set-image
+      with:
+        registry_username: ${{ github.actor }}
+        registry_token: ${{ secrets.GITHUB_TOKEN }}
+        image: ghcr.io/hathitrust/datasets:${{ github.event.inputs.tag }}
+        cluster_ca: ${{ secrets.KUBERNETES_CA }}
+        cluster_server: ${{ secrets.KUBERNETES_SERVER }}
+        namespace_token: ${{ secrets.KUBERNETES_TOKEN }}
+        namespace: datasets
+        type: 'all'
+        resource: "--selector='app=datasets'"
+        container: datasets
