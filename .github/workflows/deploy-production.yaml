@@ -22,6 +22,6 @@ jobs:
         cluster_server: ${{ secrets.KUBERNETES_SERVER }}
         namespace_token: ${{ secrets.KUBERNETES_TOKEN }}
         namespace: datasets
-        type: 'all'
-        resource: "--selector=app=datasets"
+        resource_type: 'all'
+        resource_name: "--selector=app=datasets"
         container: datasets
