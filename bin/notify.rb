@@ -12,7 +12,7 @@ def email(set_name,recipient,data)
   (data.count < 1) and return
 
   message = <<DOC
-From: HathiTrust <feedback@issues.hathitrust.org>
+From: HathiTrust <support@hathitrust.org>
 To: #{recipient}
 Subject: Delete notifications for #{set_name} dataset
 
@@ -23,7 +23,7 @@ This email is to notify you that volumes in the HathiTrust \"#{set_name}\" datas
 
 Please review the data you have synced from HathiTrust to check whether you have the volumes listed below. If so, delete all copies you retain of these volumes in accordance with our terms of use. Alternatively, you may delete your copy of the dataset and re-sync to the updated dataset.
 
-If you no longer possess HathiTrust datasets, or if you have other questions regarding datasets, then please email feedback@issues.hathitrust.org.
+If you no longer possess HathiTrust datasets, or if you have other questions regarding datasets, then please email support@hathitrust.org.
 
 Thank you,
 
@@ -38,7 +38,7 @@ DOC
 
   puts "sending message with #{data.count} deletes to #{recipient}"
   Net::SMTP.start(ENV['SMTP_HOST'] || 'localhost') do |smtp|  
-    smtp.send_message message, 'feedback@issues.hathitrust.org', recipient    
+    smtp.send_message message, 'support@hathitrust.org', recipient    
   end
 end
 
