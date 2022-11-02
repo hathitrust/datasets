@@ -1,13 +1,13 @@
-name: Docker Build
+name: Build latest from main and deploy to staging
 
 on:
   workflow_run:
-    workflows: [ 'Run CI']
+    workflows: [ 'Run Tests']
     branches: [ 'main' ]
     types: [ completed ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: hathitrust/github_actions/build@v1
         with:
-          image: ghcr.io/hathitrust/datasets-unstable
+          image: ghcr.io/${{ github.repository }}-unstable
           tag: ${{ github.sha }}
           push_latest: true
           registry_token: ${{ github.token }}
