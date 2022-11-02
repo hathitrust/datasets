@@ -1,8 +1,9 @@
+---
 name: Docker Tag Latest Release
 
 on:
   release:
-    types: [ released ]
+    types: [released]
 
 jobs:
   tag-release:
@@ -11,6 +12,6 @@ jobs:
       - uses: hathitrust/github_actions/tag-release@v1
         with:
           registry_token: ${{ github.token }}
-          existing_tag: ghcr.io/hathitrust/datasets-unstable:${{ github.sha }}
-          image: ghcr.io/hathitrust/datasets
+          existing_tag: ghcr.io/${{ github.repository }}-unstable:${{ github.sha }}
+          image: ghcr.io/${{ github.repository }}
           new_tag: ${{ github.event.release.tag_name }}

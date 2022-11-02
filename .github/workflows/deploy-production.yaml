@@ -13,15 +13,14 @@ jobs:
     environment: production
     steps:
     - name: Deploy to Production
-      uses: mlibrary/deploy-to-kubernetes@just-set-image
+      uses: mlibrary/deploy-to-kubernetes@v3
       with:
-        registry_username: ${{ github.actor }}
-        registry_token: ${{ secrets.GITHUB_TOKEN }}
-        image: ghcr.io/hathitrust/datasets:${{ github.event.inputs.tag }}
+        registry_token: ${{ github.token }}
+        image: ghcr.io/${{ github.repository }}:${{ github.event.inputs.tag }}
         cluster_ca: ${{ secrets.KUBERNETES_CA }}
         cluster_server: ${{ secrets.KUBERNETES_SERVER }}
         namespace_token: ${{ secrets.KUBERNETES_TOKEN }}
-        namespace: datasets
+        namespace: ${{ secrets.KUBERNETES_NAMESPACE }}
         resource_type: 'all'
         resource_name: "--selector=app=datasets"
         container: datasets
