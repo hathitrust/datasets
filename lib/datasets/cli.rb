@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "thor"
-require "pp"
 require "sequel"
 require "datasets"
 require_relative "../../config/hathitrust_config"
