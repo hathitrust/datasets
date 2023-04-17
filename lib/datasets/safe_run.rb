@@ -11,10 +11,10 @@ module Datasets
   # pending jobs.
   class SafeRun
     def execute
-      if queue_empty?
-        Datasets.config.profiles.each do |profile|
-          queue_and_report(profile.to_sym)
-        end
+      raise "Queue is not empty; not queuing more (check sidekiq-web)" unless queue_empty?
+
+      Datasets.config.profiles.each do |profile|
+        queue_and_report(profile.to_sym)
       end
     end
 
@@ -27,6 +27,7 @@ module Datasets
     end
 
     def time_scheduler_for(profile, time_range)
+      puts "Scheduling updates for #{profile} #{time_range}"
       Scheduler.new(
         src_path_resolver: Datasets.config.src_path_resolver[profile],
         volume_writer: Datasets.config.volume_writer[profile],
