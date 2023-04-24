@@ -30,10 +30,11 @@ GEM
       method_source (~> 1.0)
     puma (6.2.1)
       nio4r (~> 2.0)
-    rack (2.2.6.4)
+    rack (3.0.7)
     rainbow (3.1.1)
     rake (12.3.3)
-    redis (4.8.1)
+    redis-client (0.14.1)
+      connection_pool
     regexp_parser (2.7.0)
     rexml (3.2.5)
     rspec (3.12.0)
@@ -67,10 +68,11 @@ GEM
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
     sequel (5.66.0)
-    sidekiq (6.5.8)
-      connection_pool (>= 2.2.5, < 3)
-      rack (~> 2.0)
-      redis (>= 4.5.0, < 5)
+    sidekiq (7.0.8)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      rack (>= 2.2.4)
+      redis-client (>= 0.11.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -102,7 +104,7 @@ DEPENDENCIES
   rspec (~> 3.0)
   rubyzip
   sequel
-  sidekiq (~> 6.0)
+  sidekiq (~> 7.0)
   simplecov
   simplecov-lcov
   standard
