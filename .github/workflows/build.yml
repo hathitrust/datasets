@@ -1,0 +1,46 @@
+name: Build A Branch
+
+on:
+  workflow_run:
+    workflows: [ 'Run Tests' ]
+    branches: [ 'main' ]
+    types: [ completed ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release or Tag
+        required: true
+        push_latest:
+          description: Set True if the build is for the latest version
+          type: boolean
+          required: false
+          default: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Set Inputs
+        id: set_inputs
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_run" ]; then
+            echo "tag=${{ github.sha }}" >> $GITHUB_ENV
+            echo "push_latest=true" >> $GITHUB_ENV
+          else
+              # workflow_dispatch or other trigger
+              echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
+              echo "push_latest=${{ github.event.inputs.push_latest }}" >> $GITHUB_ENV
+          fi 
+      
+      - name: Build Image
+        uses: hathitrust/github_actions/build@v1
+        with:
+          image: ghcr.io/${{ github.repository }}-unstable
+          dockerfile: Dockerfile
+          tag: ${{ env.tag }}
+          push_latest: ${{ env.push_latest}}
+          registry_token: ${{ github.token }}
