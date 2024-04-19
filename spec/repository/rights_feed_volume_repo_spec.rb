@@ -4,6 +4,10 @@ module Datasets
   RSpec.describe Repository::RightsFeedVolumeRepo do
     let(:start_time) { Time.at(0) }
     let(:end_time) { Time.now }
+    let(:one_day) { 86400 }
+    let(:two_minutes) { 120 }
+    let(:yesterday) { Time.now - one_day }
+    let(:tomorrow) { Time.now + one_day }
 
     before(:all) do
       @connection = Sequel.connect(adapter: "mysql2",
@@ -81,7 +85,7 @@ module Datasets
     it "returns Volume objects" do
       feed_table.insert(vol_feed_1)
       rights_table.insert(vol_rights_1)
-      volumes = repo.changed_between(Time.at(0), vol_rights_1[:time] + 1.day)
+      volumes = repo.changed_between(Time.at(0), vol_rights_1[:time] + one_day)
       expect(volumes.first).to be_an_instance_of Volume
     end
 
@@ -103,7 +107,7 @@ module Datasets
     it "does not return volumes with md5check_ok: false" do
       feed_table.insert vol_feed_1.merge(md5check_ok: false, zip_date: Time.now)
       rights_table.insert vol_rights_1
-      expect(repo.changed_between(1.day.ago, 1.day.from_now)).to be_empty
+      expect(repo.changed_between(yesterday, tomorrow)).to be_empty
     end
 
     it "does return volumes with md5check_ok: true or null" do
@@ -111,13 +115,13 @@ module Datasets
       rights_table.insert vol_rights_1
       feed_table.insert vol_feed_2.merge(md5check_ok: nil, zip_date: Time.now)
       rights_table.insert vol_rights_2
-      expect(repo.changed_between(1.day.ago, 1.day.from_now))
+      expect(repo.changed_between(yesterday, tomorrow))
         .to contain_exactly(volume_from(vol_rights_1), volume_from(vol_rights_2))
     end
 
     it "returns an empty set when nothing to find" do
       feed_table.insert vol_feed_1
-      expect(repo.changed_between(vol_feed_1[:zip_date] + 1.day, vol_feed_1[:zip_date] + 2.minutes))
+      expect(repo.changed_between(vol_feed_1[:zip_date] + one_day, vol_feed_1[:zip_date] + two_minutes))
         .to be_empty
     end
 

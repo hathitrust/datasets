@@ -1,63 +1,60 @@
-version: '3'
+---
+x-condition-healthy: &healthy
+  condition: service_healthy
+
+x-healthcheck-defaults: &healthcheck-defaults
+  interval: 5s
+  timeout: 10s
+  start_period: 10s
+  retries: 5
+
+x-common-service: &common-service
+  build:
+    context: .
+    target: base
+  volumes:
+    - .:/usr/src/app
+    - gem_cache:/gems
+    - ./example/datasets:/tmp/datasets
+  environment:
+    REDIS_URL: redis://redis/
 
 services:
 
   test:
-    build: .
+    <<: *common-service
     restart: never
-    volumes:
-      - .:/usr/src/app
-      - gem_cache:/gems
-    command: bin/wait-for --timeout=300 mariadb-test:3306 redis:6379 -- bundle exec rspec
+    command: bundle exec rspec
     depends_on:
-      - redis
-      - mariadb-test
-    environment:
-      REDIS_URL: redis://redis/
+      redis: *healthy
+      mariadb-test: *healthy
 
   processor:
-    build: .
+    <<: *common-service
     restart: always
-    volumes:
-      - .:/usr/src/app
-      - gem_cache:/gems
-      - ./example/datasets:/tmp/datasets
     command: bundle exec sidekiq -r ./lib/datasets/sidekiq_jobs.rb
     depends_on:
-      - redis
-      - mariadb-dev
-    environment:
-      REDIS_URL: redis://redis/
+      redis: *healthy
+      mariadb-dev: *healthy
 
   sidekiq_web:
-    build: .
+    <<: *common-service
     restart: always
-    volumes:
-      - .:/usr/src/app
-      - gem_cache:/gems
     command: bundle exec puma bin/sidekiq_web.ru
     depends_on:
-      - redis
+      redis: *healthy
     ports:
       - 9292:9292
-    environment:
-      REDIS_URL: redis://redis/
 
   queuer:
-    build: .
+    <<: *common-service
     restart: never
-    volumes:
-      - .:/usr/src/app
-      - gem_cache:/gems
-      - ./example/datasets:/tmp/datasets
     command: bin/datasets.rb
     depends_on:
-      - redis
-      - mariadb-dev
-    environment:
-      REDIS_URL: redis://redis/
+      redis: *healthy
+      mariadb-dev: *healthy
 
-  mariadb-test:
+  mariadb-dev: &mariadb
     image: ghcr.io/hathitrust/db-image
     restart: always
     environment:
@@ -65,19 +62,18 @@ services:
       MYSQL_DATABASE: ht
       MYSQL_USER: datasets
       MYSQL_PASSWORD: datasets
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized"]
 
-  mariadb-dev:
-    image: ghcr.io/hathitrust/db-image
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: mysqlroot
-      MYSQL_DATABASE: ht
-      MYSQL_USER: datasets
-      MYSQL_PASSWORD: datasets
+  mariadb-test: *mariadb
 
   redis:
     image: redis
     restart: always
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "redis-cli", "ping"]
 
 volumes:
   gem_cache:
