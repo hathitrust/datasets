@@ -1,7 +1,6 @@
 require "spec_helper"
 require "repository/rights_volume_repo"
 require "volume"
-require "set"
 require "sequel"
 
 module Datasets

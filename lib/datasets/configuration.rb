@@ -5,7 +5,7 @@ require "yaml"
 module Datasets
   class Configuration < OpenStruct
     def initialize(hash = {})
-      super hash.merge(logger: NullLogger.new)
+      super(hash.merge(logger: NullLogger.new))
     end
 
     def self.from_yaml(path)

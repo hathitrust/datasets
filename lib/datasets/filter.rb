@@ -1,6 +1,4 @@
 # Filters volumes based on criteria.
-require "set"
-
 module Datasets
   class Filter
     PD_RIGHTS = [:"cc-by-3.0",
