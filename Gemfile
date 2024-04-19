@@ -1,6 +1,5 @@
 source "https://rubygems.org"
 
-gem "activesupport"
 gem "mysql2"
 gem "puma"
 gem "pairtree", "~> 0.3"
@@ -9,6 +8,8 @@ gem "sequel"
 gem "rubyzip"
 gem "thor"
 gem "rake", "~> 12.3"
+gem "csv"
+gem "base64"
 
 group :development, :test do
   gem "rspec", "~> 3.0"
