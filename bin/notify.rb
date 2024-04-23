@@ -5,8 +5,22 @@
 # send notifications to users about recent deletes
 
 require 'net/smtp'
+require 'dedupe_delete_log'
 
-deletes = ARGF.readlines.map { |l| l.strip.split("\t") }
+def main
+  dataset_emails = [
+    ['ht_text_pd','dataset-pd','pd'],
+    ['ht_text_pd_open_access','dataset-pd-oa','pd_open'],
+    ['ht_text_pd_world','dataset-pd-world','pd_world'],
+    ['ht_text_pd_world_open_access','dataset-pd-world-oa','pd_world_open']
+  ]
+
+  deletes = DedupeDeleteLog.new(ARGV).compile_results
+
+  dataset_emails.each do |subset_full_name,email,subset_short_name| 
+    email(subset_full_name,"#{email}@hathitrust.org",deletes[subset_short_name])
+  end
+end
 
 def email(set_name,recipient,data)
   (data.count < 1) and return
@@ -32,23 +46,24 @@ HathiTrust
 ===BEGIN ID LIST===
 DOC
   data.each do |item|
-    message+="#{item[1]}\n"
+    message+="#{item}\n"
   end
   message+="===END ID LIST===\n"
 
   puts "sending message with #{data.count} deletes to #{recipient}"
-  Net::SMTP.start(ENV['SMTP_HOST'] || 'localhost') do |smtp|  
-    smtp.send_message message, 'support@hathitrust.org', recipient    
+  send_or_preview(message,recipient)
+end
+
+def send_or_preview(message,recipient)
+  if ENV['PREVIEW_EMAIL']
+    puts "To: support@hathitrust.org, #{recipient}"
+    puts
+    puts message
+  else
+    Net::SMTP.start(ENV['SMTP_HOST'] || 'localhost') do |smtp|  
+      smtp.send_message message, 'support@hathitrust.org', recipient
+    end
   end
 end
 
-dataset_emails = [
-  ['ht_text_pd','dataset-pd','pd'],
-  ['ht_text_pd_open_access','dataset-pd-oa','pd_open'],
-  ['ht_text_pd_world','dataset-pd-world','pd_world'],
-  ['ht_text_pd_world_open_access','dataset-pd-world-oa','pd_world_open']
-]
-
-dataset_emails.each do |subset_full_name,email,subset_short_name| 
-  email(subset_full_name,"#{email}@hathitrust.org",deletes.select { |i| i[0] == subset_short_name }.sort)
-end
+main if __FILE__ == $0

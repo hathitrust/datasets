@@ -18,6 +18,7 @@ x-common-service: &common-service
     - ./example/datasets:/tmp/datasets
   environment:
     REDIS_URL: redis://redis/
+    PREVIEW_EMAIL: true
 
 services:
 
