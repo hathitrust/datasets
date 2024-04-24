@@ -1,12 +1,12 @@
 require "spec_helper"
 require "repository/rights_volume_repo"
 require "volume"
-
-require "set"
 require "sequel"
 
 module Datasets
   RSpec.describe Repository::RightsVolumeRepo do
+    let(:one_day) { 86400 }
+
     before(:all) do
       @connection = Sequel.connect(adapter: "mysql2",
         database: "ht",
@@ -64,7 +64,7 @@ module Datasets
     describe "#rights_changed_between" do
       it "returns Volume objects" do
         table.insert(tuple_1)
-        volumes = repo.changed_between(Time.at(0), tuple_1[:time] + 1.day)
+        volumes = repo.changed_between(Time.at(0), tuple_1[:time] + one_day)
         expect(volumes.first).to be_an_instance_of Volume
       end
 

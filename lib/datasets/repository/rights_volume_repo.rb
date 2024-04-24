@@ -1,6 +1,5 @@
 require "datasets/volume_repo"
 require "datasets/volume"
-require "set"
 require "sequel"
 
 module Datasets
