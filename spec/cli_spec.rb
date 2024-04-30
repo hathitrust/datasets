@@ -87,6 +87,16 @@ module Datasets
           $stdin = old_stdin
         end
       end
+
+      it "runs notification processes when given the notify flag" do
+        files = ["deletelog1", "deletelog2"]
+        notification = double("notification")
+        allow(Notify).to receive(:new).and_return(notification)
+        expect(Notify).to receive(:new).with(files, dry_run: true, smtp_host: "localhost").once
+        expect(notification).to receive(:notify).once
+
+        described_class.start(["notify", "--dry-run", "deletelog1", "deletelog2"])
+      end
     end
   end
 end
