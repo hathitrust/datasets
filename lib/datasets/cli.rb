@@ -12,14 +12,6 @@ end
 
 module Datasets
   class CLI < Thor
-    def self.option_config
-      option :config,
-        type: :string,
-        default: "#{APP_ROOT}/config/config.yml",
-        aliases: "-c",
-        desc: "Path to the configuration file to use."
-    end
-
     def self.exit_on_failure?
       # If we fail we will raise an exception and Ruby will report the exit
       # status (rather than Thor)
@@ -30,8 +22,32 @@ module Datasets
 
     APP_ROOT = Pathname.new(__FILE__).expand_path.parent.parent.dirname
 
+    # Global option
+    class_option :config,
+      type: :string,
+      default: "#{APP_ROOT}/config/config.yml",
+      aliases: "-c",
+      desc: "Path to the configuration file to use."
+
     # Tasks
-    option_config
+
+    option :dry_run,
+      type: :boolean,
+      default: false,
+      aliases: "-n",
+      desc: "Preview email rather than sending"
+
+    option :smtp_host,
+      default: "localhost",
+      type: :string,
+      desc: "Host to use for sending email. Defaults to localhost."
+
+    desc "notify logfile ...", "Collate and send deletion notifications gathered from logs"
+    def notify(*files)
+      Datasets.config = load_config(options[:config])
+
+      Notify.new(files, dry_run: options[:dry_run], smtp_host: options[:smtp_host]).notify
+    end
 
     option :start_time,
       type: :string,
@@ -60,8 +76,6 @@ module Datasets
     end
 
     default_task :all
-
-    option_config
 
     desc "force", "Force update of a list of volumes."
     def force

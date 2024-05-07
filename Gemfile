@@ -10,6 +10,7 @@ gem "thor"
 gem "rake", "~> 12.3"
 gem "csv"
 gem "base64"
+gem "net-smtp"
 
 group :development, :test do
   gem "rspec", "~> 3.0"

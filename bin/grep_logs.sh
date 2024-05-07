@@ -27,8 +27,3 @@ if [[ ! -e $COMBINED_LOG ]]; then
   # concat & compress logs
   cat $LOGDIR/*-$DATE.log | bzip2 -9 > $COMBINED_LOG && rm $LOGDIR/*-$DATE.log
 fi
-
-if compgen -G "$LOGDIR/deletelog*" > /dev/null; then
-  # email deletes; move delete log to 'sent' if success
-  /usr/src/app/bin/notify.rb $LOGDIR/deletelog* && mv $LOGDIR/deletelog* $LOGDIR/delete_notifications_sent/
-fi

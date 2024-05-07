@@ -26,6 +26,15 @@ module Datasets
         }
       end
 
+      def dest_path_resolver
+        subsets.map do |subset|
+          [subset, PairtreePathResolver.new(dest_parent_dir[subset])]
+        end.to_h.merge({
+          superset => PairtreePathResolver.new(dest_parent_dir[superset]),
+          force_superset => PairtreePathResolver.new(dest_parent_dir[superset])
+        })
+      end
+
       def volume_repo
         @volume_repo ||=
           subsets.map do |subset|
@@ -85,7 +94,7 @@ module Datasets
       def subset_volume_writer(profile)
         VolumeLinker.new(
           id: profile,
-          dest_path_resolver: PairtreePathResolver.new(dest_parent_dir[profile]),
+          dest_path_resolver: dest_path_resolver[profile],
           fs: Filesystem.new
         )
       end
@@ -93,7 +102,7 @@ module Datasets
       def superset_volume_writer
         VolumeCreator.new(
           id: superset,
-          dest_path_resolver: PairtreePathResolver.new(dest_parent_dir[superset]),
+          dest_path_resolver: dest_path_resolver[superset],
           writer: ZipWriter.new,
           fs: Filesystem.new
         )
@@ -102,7 +111,7 @@ module Datasets
       def force_superset_volume_writer
         ForceVolumeCreator.new(
           id: force_superset,
-          dest_path_resolver: PairtreePathResolver.new(dest_parent_dir[superset]),
+          dest_path_resolver: dest_path_resolver[force_superset],
           writer: ZipWriter.new,
           fs: Filesystem.new
         )

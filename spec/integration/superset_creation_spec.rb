@@ -3,7 +3,6 @@
 require "spec_helper"
 require "job_helper"
 require "datasets"
-require_relative "../../config/hathitrust_config"
 require "yaml"
 require "fileutils"
 require "date"
