@@ -5,8 +5,7 @@ ARG UNAME=app
 
 # for rotatelogs
 RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
-  apache2-utils \
-  netcat-traditional
+  apache2-utils
 
 # sdrN for volumes and symlinks
 RUN bash -c 'for i in $(seq 1 24); do ln -s /sdr/$i /sdr$i; done'
