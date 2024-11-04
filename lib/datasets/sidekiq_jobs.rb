@@ -14,9 +14,10 @@ def setup_logs
   rotatelogs_cmd = "/usr/bin/rotatelogs -f -l #{log_template} 86400"
   log_io = IO.popen(rotatelogs_cmd, "w")
   log_io.sync = true
-
-  Sidekiq.logger = Logger.new(log_io)
-  Sidekiq.logger.level = Logger::INFO
+  Sidekiq.configure_server do |config|
+    config.logger = Logger.new(log_io)
+    config.logger.level = Logger::INFO
+  end
 end
 
 load_config

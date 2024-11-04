@@ -10,7 +10,7 @@ gem "pairtree", "~> 0.3"
 gem "puma"
 gem "rake"
 gem "rubyzip"
-gem "sidekiq", "~> 6.0"
+gem "sidekiq"
 gem "sequel"
 gem "thor"
 
