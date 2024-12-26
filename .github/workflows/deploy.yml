@@ -4,8 +4,7 @@ on:
     workflow_dispatch:
         inputs:
             branch_hash:
-                description: Branch hash or revision to deploy
-                default: main
+                description: Branch hash or revision to deploy. Defailts to branch ref has
             environments:
                 description: The environment to deploy to
                 type: choice
@@ -24,7 +23,7 @@ jobs:
                 - name: Deploy to ${{inputs.environments}}
                   uses: hathitrust/github_actions/deploy@v1
                   with:
-                    image: ghcr.io/${{ github.repository }}:${{ inputs.branch_hash }}
+                    image: ghcr.io/${{ github.repository }}:${{ inputs.branch_hash || github.ref}}
                     file: environments/${{ github.event.repository.name }}/${{inputs.environments}}/datasets.txt
                     CONFIG_REPO_RW_APP_ID: ${{ vars.CONFIG_REPO_RW_APP_ID }}
                     CONFIG_REPO_FULL_NAME: ${{ vars.CONFIG_REPO_FULL_NAME }}
