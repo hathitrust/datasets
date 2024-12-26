@@ -12,6 +12,6 @@ jobs:
       - uses: hathitrust/github_actions/tag-release@v1
         with:
           registry_token: ${{ github.token }}
-          existing_tag: ghcr.io/${{ github.repository }}-unstable:${{ github.sha }}
+          existing_tag: ghcr.io/${{ github.repository }}:${{ github.sha }}
           image: ghcr.io/${{ github.repository }}
           new_tag: ${{ github.event.release.tag_name }}
