@@ -23,7 +23,7 @@ jobs:
                 - name: Deploy to ${{inputs.environments}}
                   uses: hathitrust/github_actions/deploy@v1
                   with:
-                    image: ghcr.io/${{ github.repository }}:${{ inputs.branch_hash || github.ref}}
+                    image: ghcr.io/${{ github.repository }}:${{ inputs.branch_hash || github.sha}}
                     file: environments/${{ github.event.repository.name }}/${{inputs.environments}}/datasets.txt
                     CONFIG_REPO_RW_APP_ID: ${{ vars.CONFIG_REPO_RW_APP_ID }}
                     CONFIG_REPO_FULL_NAME: ${{ vars.CONFIG_REPO_FULL_NAME }}
