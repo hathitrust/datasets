@@ -13,6 +13,7 @@ gem "rubyzip"
 gem "sidekiq"
 gem "sequel"
 gem "thor"
+gem "rack-session"
 
 group :development, :test do
   gem "debug"
