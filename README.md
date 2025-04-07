@@ -10,9 +10,9 @@ This project maintains the full text datasets provided to researchers and the Ha
 ```bash
 git clone https://github.com/hathitrust/datasets
 cd datasets
-docker-compose build
-docker-compose run test bundle install
-docker-compose run test
+docker compose build
+docker compose run test bundle install
+docker compose run test
 ```
 
 ## Datasets Design

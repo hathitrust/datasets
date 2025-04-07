@@ -1,4 +1,4 @@
-FROM ruby:3.3 AS base
+FROM ruby:3.4 AS base
 LABEL org.opencontainers.image.source="https://github.com/hathitrust/datasets"
 
 ARG UNAME=app
