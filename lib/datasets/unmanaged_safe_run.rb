@@ -20,11 +20,11 @@ module Datasets
         .save(save_path(profile))
     end
 
+    TIME_FORMAT = "%Y%m%d%H%M%S"
+
     private
 
     attr_reader :time_range, :fs
-
-    TIME_FORMAT = "%Y%m%d%H%M%S"
 
     def save_path(profile)
       report_dir(profile) + "#{time_range.first.strftime(TIME_FORMAT)}-#{time_range.last.strftime(TIME_FORMAT)}"

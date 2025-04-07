@@ -22,11 +22,11 @@ module Datasets
         .save(save_path(profile))
     end
 
+    TIME_FORMAT = "%Y%m%d%H%M%S"
+
     private
 
     attr_reader :time_range, :fs, :time, :htids
-
-    TIME_FORMAT = "%Y%m%d%H%M%S"
 
     def htid_scheduler(profile)
       Scheduler.new(
