@@ -1,5 +1,3 @@
-require "datasets/version"
-
 require "datasets/configuration"
 require "datasets/job"
 require "datasets/jobs/delete_job"

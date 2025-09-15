@@ -19,6 +19,10 @@ x-common-service: &common-service
   environment:
     REDIS_URL: redis://redis/
     PREVIEW_EMAIL: true
+    MARIADB_HT_RO_HOST: mariadb-dev
+    MARIADB_HT_RO_USERNAME: datasets
+    MARIADB_HT_RO_PASSWORD: datasets
+    MARIADB_HT_RO_DATABASE: ht
 
 services:
 
@@ -29,6 +33,13 @@ services:
     depends_on:
       redis: *healthy
       mariadb-test: *healthy
+    environment:
+      REDIS_URL: redis://redis/
+      PREVIEW_EMAIL: true
+      MARIADB_HT_RO_HOST: mariadb-test
+      MARIADB_HT_RO_USERNAME: datasets
+      MARIADB_HT_RO_PASSWORD: datasets
+      MARIADB_HT_RO_DATABASE: ht
 
   processor:
     <<: *common-service

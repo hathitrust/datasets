@@ -47,9 +47,14 @@ module Datasets
       end
 
       def db_connection
-        # Example with logging enabled
-        # @db_connection ||= Sequel.connect(db.merge({loggers: [Logger.new($stdout)]}))
-        @db_connection ||= Sequel.connect(db)
+        @db_connection ||= Sequel.connect(
+          adapter: "mysql2",
+          user: ENV["MARIADB_HT_RO_USERNAME"],
+          password: ENV["MARIADB_HT_RO_PASSWORD"],
+          host: ENV["MARIADB_HT_RO_HOST"],
+          database: ENV["MARIADB_HT_RO_DATABASE"],
+          encoding: "utf8mb4"
+        )
       end
 
       def filter
