@@ -8,6 +8,14 @@ x-healthcheck-defaults: &healthcheck-defaults
   start_period: 10s
   retries: 5
 
+x-environment: &environment
+  REDIS_URL: redis://redis/
+  PREVIEW_EMAIL: true
+  MARIADB_HT_RO_HOST: mariadb-dev
+  MARIADB_HT_RO_USERNAME: datasets
+  MARIADB_HT_RO_PASSWORD: datasets
+  MARIADB_HT_RO_DATABASE: ht
+
 x-common-service: &common-service
   build:
     context: .
@@ -16,9 +24,7 @@ x-common-service: &common-service
     - .:/usr/src/app
     - gem_cache:/gems
     - ./example/datasets:/tmp/datasets
-  environment:
-    REDIS_URL: redis://redis/
-    PREVIEW_EMAIL: true
+  environment: *environment
 
 services:
 
@@ -29,6 +35,9 @@ services:
     depends_on:
       redis: *healthy
       mariadb-test: *healthy
+    environment:
+      <<: *environment
+      MARIADB_HT_RO_HOST: mariadb-test
 
   processor:
     <<: *common-service
