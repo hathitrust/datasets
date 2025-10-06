@@ -61,7 +61,7 @@ module Datasets
           dirs.each { |d| FileUtils.mkpath d }
         end
         it "returns the entries in the dir as pathnames" do
-          expect(fs.children(@tmppath)).to match_array((files + dirs))
+          expect(fs.children(@tmppath)).to match_array(files + dirs)
         end
       end
 
