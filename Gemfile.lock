@@ -100,7 +100,7 @@ GEM
     rubyzip (3.2.2)
     sequel (5.98.0)
       bigdecimal
-    sidekiq (8.0.8)
+    sidekiq (8.0.9)
       connection_pool (>= 2.5.0)
       json (>= 2.9.0)
       logger (>= 1.6.2)
