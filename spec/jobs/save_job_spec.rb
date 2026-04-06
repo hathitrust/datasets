@@ -1,7 +1,6 @@
 require_relative "../spec_helper"
 require_relative "../job_helper"
 require "jobs/save_job"
-require "pathname"
 
 module Datasets
   RSpec.describe SaveJob do

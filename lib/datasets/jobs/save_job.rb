@@ -1,5 +1,4 @@
 require "datasets/job"
-require "pathname"
 
 module Datasets
   class SaveJob < Job

@@ -1,6 +1,5 @@
 require_relative "spec_helper"
 require "volume_linker"
-require "pathname"
 
 module Datasets
   RSpec.describe VolumeLinker do

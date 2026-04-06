@@ -1,7 +1,6 @@
 require_relative "spec_helper"
 require "zip_writer"
 require "zip"
-require "pathname"
 
 module Datasets
   RSpec.describe ZipWriter do

@@ -2,7 +2,6 @@
 
 require_relative "spec_helper"
 require "volume_creator"
-require "pathname"
 
 module Datasets
   RSpec.describe VolumeCreator do

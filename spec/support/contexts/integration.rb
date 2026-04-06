@@ -1,5 +1,4 @@
 require "sequel"
-require "pathname"
 require "timecop"
 require_relative "../../../config/hathitrust_config"
 require_relative "../schema_builder"

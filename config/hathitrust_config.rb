@@ -1,5 +1,4 @@
 require "datasets"
-require "pathname"
 require "sequel"
 
 module Datasets

@@ -1,6 +1,5 @@
 require "datasets/path_resolver"
 require "pairtree"
-require "pathname"
 
 module Datasets
   class PairtreePathResolver < PathResolver
