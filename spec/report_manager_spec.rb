@@ -1,7 +1,6 @@
 require_relative "spec_helper"
 require "report_manager"
 require "filesystem"
-require "pathname"
 
 module Datasets
   RSpec.describe ReportManager do

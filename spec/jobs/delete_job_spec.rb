@@ -1,7 +1,6 @@
 require_relative "../spec_helper"
 require_relative "../job_helper"
 require "jobs/delete_job"
-require "pathname"
 
 module Datasets
   RSpec.describe DeleteJob do

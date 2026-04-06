@@ -1,6 +1,5 @@
 require_relative "spec_helper"
 require "filesystem"
-require "pathname"
 require "fileutils"
 
 module Datasets

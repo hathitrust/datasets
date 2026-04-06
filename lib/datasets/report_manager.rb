@@ -1,6 +1,5 @@
 require "datasets/report_summary"
 require "datasets/report"
-require "pathname"
 require "yaml"
 
 module Datasets

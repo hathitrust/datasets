@@ -3,7 +3,6 @@ require "datasets/retriever/time_range_retriever"
 require "datasets/filesystem"
 require "datasets/job"
 require "sidekiq/api"
-require "pathname"
 
 module Datasets
   # Represents a "safe run" of a scheduler for the specified rights profile.
