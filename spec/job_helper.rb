@@ -1,8 +1,7 @@
 require "sidekiq"
 require "datasets"
 
-require "sidekiq/testing"
-Sidekiq::Testing.inline!
+Sidekiq.testing!(:inline)
 
 shared_context "with mocked job parameters" do
   let(:volume) do

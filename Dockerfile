@@ -11,8 +11,8 @@ RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
 RUN bash -c 'for i in $(seq 1 24); do ln -s /sdr/$i /sdr$i; done'
 
 WORKDIR /usr/src/app
-ENV BUNDLE_PATH /gems
-ENV RUBYLIB /usr/src/app/lib
+ENV BUNDLE_PATH=/gems
+ENV RUBYLIB=/usr/src/app/lib
 
 FROM base AS production
 
