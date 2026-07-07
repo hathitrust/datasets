@@ -28,20 +28,17 @@ on:
 
 jobs:
     build-image:
-        runs-on: ubuntu-latest
+        name: Build Image
+        uses: hathitrust/github_actions/.github/workflows/build.yml@77c502edf6fbbc42378a65373c2f80ff9c5ea4ef #v1.8.0
+        with:
+          image: ghcr.io/${{ github.repository }}
+          dockerfile: Dockerfile
+          img_tag: ${{ inputs.img_tag }}
+          tag: ${{ inputs.ref }}
+          push_latest: ${{ inputs.push_latest}}
+          registry_token: ${{ github.token }}
+          rebuild: ${{ inputs.rebuild }}
+          platforms: ${{ inputs.platforms }}
         permissions:
             contents: read
             packages: write
-
-        steps:
-            - name: Build Image
-              uses: hathitrust/github_actions/.github/workflows/build.yml@77c502edf6fbbc42378a65373c2f80ff9c5ea4ef #v1.8.0
-              with:
-                image: ghcr.io/${{ github.repository }}
-                dockerfile: Dockerfile
-                img_tag: ${{ inputs.img_tag }}
-                tag: ${{ inputs.ref }}
-                push_latest: ${{ inputs.push_latest}}
-                registry_token: ${{ github.token }}
-                rebuild: ${{ inputs.rebuild }}
-                platforms: ${{ inputs.platforms }}
