@@ -22,7 +22,7 @@ jobs:
         file: environments/${{ github.event.repository.name }}/${{inputs.environments}}/datasets.txt
         CONFIG_REPO_RW_APP_ID: ${{ vars.CONFIG_REPO_RW_APP_ID }}
         CONFIG_REPO_FULL_NAME: ${{ vars.CONFIG_REPO_FULL_NAME }}
-        CONFIG_REPO_RW_KEY: ${{secrets.CONFIG_REPO_RW_KEY}}
       permissions:
           contents: read
           packages: write
+      secrets: inherit
