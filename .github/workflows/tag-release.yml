@@ -9,7 +9,7 @@ jobs:
   tag-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: hathitrust/github_actions/tag-release@v1
+      - uses: hathitrust/github_actions/.github/workflows/tag-release.yml@77c502edf6fbbc42378a65373c2f80ff9c5ea4ef #v1.8.0
         with:
           registry_token: ${{ github.token }}
           existing_tag: ghcr.io/${{ github.repository }}:${{ github.sha }}

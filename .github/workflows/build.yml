@@ -35,7 +35,7 @@ jobs:
 
         steps:
             - name: Build Image
-              uses: hathitrust/github_actions/build@v1
+              uses: hathitrust/github_actions/.github/workflows/build.yml@77c502edf6fbbc42378a65373c2f80ff9c5ea4ef #v1.8.0
               with:
                 image: ghcr.io/${{ github.repository }}
                 dockerfile: Dockerfile

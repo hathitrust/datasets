@@ -21,7 +21,7 @@ jobs:
                 packages: write
             steps:
                 - name: Deploy to ${{inputs.environments}}
-                  uses: hathitrust/github_actions/deploy@v1
+                  uses: hathitrust/github_actions/.github/workflows/deploy.yml@77c502edf6fbbc42378a65373c2f80ff9c5ea4ef #v1.8.0
                   with:
                     image: ghcr.io/${{ github.repository }}:${{ inputs.branch_hash || github.sha}}
                     file: environments/${{ github.event.repository.name }}/${{inputs.environments}}/datasets.txt
