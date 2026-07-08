@@ -29,14 +29,13 @@ on:
 jobs:
     build-image:
         name: Build Image
-        uses: hathitrust/github_actions/.github/workflows/build.yml@77c502edf6fbbc42378a65373c2f80ff9c5ea4ef #v1.8.0
+        uses: hathitrust/github_actions/.github/workflows/build.yml@3064ae06d0c0f8b10161ea944178d494f1141f0d
         with:
           image: ghcr.io/${{ github.repository }}
           dockerfile: Dockerfile
           img_tag: ${{ inputs.img_tag }}
           tag: ${{ inputs.ref }}
           push_latest: ${{ inputs.push_latest}}
-          registry_token: ${{ github.token }}
           rebuild: ${{ inputs.rebuild }}
           platforms: ${{ inputs.platforms }}
         permissions:
