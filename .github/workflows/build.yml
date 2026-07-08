@@ -29,7 +29,7 @@ on:
 jobs:
     build-image:
         name: Build Image
-        uses: hathitrust/github_actions/.github/workflows/build.yml@3064ae06d0c0f8b10161ea944178d494f1141f0d
+        uses: hathitrust/github_actions/.github/workflows/build.yml@167b911da53b48b05280b6dfb99a235ac457f255
         with:
           image: ghcr.io/${{ github.repository }}
           dockerfile: Dockerfile
