@@ -19,7 +19,7 @@ jobs:
             contents: read
             packages: write
         name: Deploy to ${{inputs.environments}}
-        uses: hathitrust/github_actions/.github/workflows/deploy.yml@2936af20240b3438cd0694fdd0e598b52ced1324 # v2.0.1
+        uses: hathitrust/github_actions/.github/workflows/deploy.yml@98a7b0f67c16b968bb1f357ac50224dbfa789f3f # v2.0.2
         with:
             image: ghcr.io/${{ github.repository }}:${{ inputs.branch_hash || github.sha}}
             file: environments/${{ github.event.repository.name }}/${{inputs.environments}}/datasets.txt
