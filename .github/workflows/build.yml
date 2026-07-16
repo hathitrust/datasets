@@ -18,9 +18,9 @@ on:
                 type: choice
                 default: linux/amd64
                 options:
-                - linux/amd64,linux/arm64
-                - linux/amd64
-                - linux/arm64
+                    - linux/amd64,linux/arm64
+                    - linux/amd64
+                    - linux/arm64
             rebuild:
                 description: Rebuild this image?
                 type: boolean
@@ -28,17 +28,17 @@ on:
 
 jobs:
     build-image:
-        name: Build Image
-        uses: hathitrust/github_actions/.github/workflows/build.yml@167b911da53b48b05280b6dfb99a235ac457f255
-        with:
-          image: ghcr.io/${{ github.repository }}
-          dockerfile: Dockerfile
-          img_tag: ${{ inputs.img_tag }}
-          tag: ${{ inputs.ref }}
-          push_latest: ${{ inputs.push_latest}}
-          rebuild: ${{ inputs.rebuild }}
-          platforms: ${{ inputs.platforms }}
         permissions:
             contents: read
             packages: write
+        name: Build Image
+        uses: hathitrust/github_actions/.github/workflows/build.yml@98a7b0f67c16b968bb1f357ac50224dbfa789f3f # v2.0.2
+        with:
+            image: ghcr.io/${{ github.repository }}
+            dockerfile: Dockerfile
+            img_tag: ${{ inputs.img_tag }}
+            tag: ${{ inputs.ref }}
+            push_latest: ${{ inputs.push_latest}}
+            rebuild: ${{ inputs.rebuild }}
+            platforms: ${{ inputs.platforms }}
         secrets: inherit

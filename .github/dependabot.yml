@@ -9,28 +9,41 @@ multi-ecosystem-groups:
     commit-message:
       prefix: "Monthly dependency updates: "
 
-
 updates:
-  # For GitHub Actions updates
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    multi-ecosystem-group: "app-dependencies"
-    patterns: ["*"]
+# For GitHub Actions updates
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "monthly"
+    time: "06:00"
+    day: "monday"
+    timezone: "America/Detroit"
+  commit-message:
+    prefix: "fix: "
+  open-pull-requests-limit: 5
+  labels:
+  - "dependencies"
+  groups:
+    all:
+      patterns:
+      - "*"
+  cooldown:
+    default-days: 7
 
-  # For Bundler/Ruby
-  - package-ecosystem: "bundler"
-    directory: "/"
-    multi-ecosystem-group: "app-dependencies"
-    patterns: ["*"]
+# For Bundler/Ruby
+- package-ecosystem: "bundler"
+  directory: "/"
+  multi-ecosystem-group: "app-dependencies"
+  patterns: [ "*" ]
 
-  # For Docker
-  - package-ecosystem: "docker"
-    directory: "/"
-    multi-ecosystem-group: "app-dependencies"
-    patterns: ["*"]
+# For Docker
+- package-ecosystem: "docker"
+  directory: "/"
+  multi-ecosystem-group: "app-dependencies"
+  patterns: [ "*" ]
 
-  # For Docker Compose
-  - package-ecosystem: "docker-compose"
-    directory: "/"
-    multi-ecosystem-group: "app-dependencies"
-    patterns: ["*"]
+# For Docker Compose
+- package-ecosystem: "docker-compose"
+  directory: "/"
+  multi-ecosystem-group: "app-dependencies"
+  patterns: [ "*" ]

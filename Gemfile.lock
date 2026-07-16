@@ -101,7 +101,7 @@ GEM
       rubocop-ast (>= 1.47.1, < 2.0)
     ruby-progressbar (1.13.0)
     rubyzip (3.4.1)
-    sequel (5.105.0)
+    sequel (5.106.0)
       bigdecimal
     sidekiq (8.1.6)
       connection_pool (>= 3.0.0)

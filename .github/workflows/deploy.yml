@@ -10,19 +10,18 @@ on:
                 type: choice
                 default: testing
                 options:
-                - testing
-                - production
+                    - testing
+                    - production
 
 jobs:
     deploy:
-      name: Deploy to ${{inputs.environments}}
-      uses: hathitrust/github_actions/.github/workflows/deploy.yml@77c502edf6fbbc42378a65373c2f80ff9c5ea4ef #v1.8.0
-      with:
-        image: ghcr.io/${{ github.repository }}:${{ inputs.branch_hash || github.sha}}
-        file: environments/${{ github.event.repository.name }}/${{inputs.environments}}/datasets.txt
-        CONFIG_REPO_RW_APP_ID: ${{ vars.CONFIG_REPO_RW_APP_ID }}
-        CONFIG_REPO_FULL_NAME: ${{ vars.CONFIG_REPO_FULL_NAME }}
-      permissions:
-          contents: read
-          packages: write
-      secrets: inherit
+        permissions:
+            contents: read
+            packages: write
+        name: Deploy to ${{inputs.environments}}
+        uses: hathitrust/github_actions/.github/workflows/deploy.yml@98a7b0f67c16b968bb1f357ac50224dbfa789f3f # v2.0.2
+        with:
+            image: ghcr.io/${{ github.repository }}:${{ inputs.branch_hash || github.sha}}
+            file: environments/${{ github.event.repository.name }}/${{inputs.environments}}/datasets.txt
+            CONFIG_REPO_FULL_NAME: ${{ vars.CONFIG_REPO_FULL_NAME }}
+        secrets: inherit
