@@ -7,11 +7,10 @@ on:
 
 jobs:
   tag-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: hathitrust/github_actions/tag-release@v1
-        with:
-          registry_token: ${{ github.token }}
-          existing_tag: ghcr.io/${{ github.repository }}:${{ github.sha }}
-          image: ghcr.io/${{ github.repository }}
-          new_tag: ${{ github.event.release.tag_name }}
+    name: Tag Release
+    uses: hathitrust/github_actions/.github/workflows/tag-release.yml@98a7b0f67c16b968bb1f357ac50224dbfa789f3f # v2.0.2
+    with:
+      existing_tag: ghcr.io/${{ github.repository }}:${{ github.sha }}
+      image: ghcr.io/${{ github.repository }}
+      new_tag: ${{ github.event.release.tag_name }}
+    secrets: inherit
